@@ -261,6 +261,10 @@ header .logo{user-select:none;}
 .qtop{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
 .qtop .qchapter{font-size:13px; letter-spacing:1px; color:var(--dim); text-transform:uppercase;}
 .qgloom{display:flex; gap:7px; margin-left:auto;}
+.qjlabel{font-size:12px; color:var(--dim); letter-spacing:.5px; margin-left:auto; align-self:center; font-style:italic;}
+.qsound{font-size:17px; line-height:1; transition:all .4s;}
+.qsound.on{color:var(--gold); text-shadow:0 0 8px rgba(232,217,140,.55);}
+.qsound.out{color:var(--purple); opacity:.55;}
 .qorb{width:22px; height:22px; border-radius:50%; border:2px solid #4a4185; background:#1c1736;}
 .qorb.on{background:radial-gradient(circle at 35% 30%, #cbbcff, #5c4cae); box-shadow:0 0 10px rgba(160,140,255,.7); border-color:#8f7de0;}
 .qnarr{background:#1d1838; border-left:3px solid #6a5cc0; border-radius:0 14px 14px 0; padding:14px 18px; font-size:17px; line-height:1.6; color:#d8d2f5; font-style:italic;}
@@ -1973,14 +1977,14 @@ function resetProgress(){
    whole story is editable via the story pack (panel). Wrong answers never punish:
    the villain just gets FUNNIER and you try the same taunt again. No walls, ever. */
 const QUESTS = [
-  { id:"ch1", name:"The Stolen Meow", vill:"Echo the Mimic Imp", emoji:"🧵",
+  { id:"ch1", name:"The Stolen Meow", vill:"Echo the Mimic Imp", emoji:"🧵", meter:"🫙 Echo's jar",
     artPrompt:"a crooked stitched shadow-imp with mismatched button eyes cradling a glowing jar labeled MROW, spiral bare trees, twilight, storybook gothic whimsy",
     winLine:"The meow came home slightly dented, which is how meows do.",
     intro:[
       {t:"narr", id:"ch1i1", text:"The Gloomwood keeps its own hours. It is always nearly bedtime. The trees lean in to listen, and the fog has opinions about your boots."},
       {t:"narr", id:"ch1i2", text:"Wren the Unbothered had walked eleven minutes inside when her cat said \u201cMROW!\u201d — and the mrow never reached the ground. Something caught it out of the air."},
       {t:"vill", id:"ch1i3", text:"Heh. Heh-heh. Nice meow. Mine now. Don't stare — I paid for it. With a HEH. That's currency here. I'm rich. I have nine hundred hehs."},
-      {t:"sensei", id:"ch1i4", text:"Quietly, so the fog doesn't gossip about it: that's Echo the Mimic. He steals sounds because he never got one of his own. When something throws YOUR words at you, don't chase it and don't beg. Hand the words straight back. Exact words, bored voice, then wait. We call that the Parrot. Watch."},
+      {t:"sensei", id:"ch1i4", text:"Quietly, so the fog doesn't gossip about it: that's Echo the Mimic. Now here is the thing about Echo — he doesn't eat food. He eats REACTIONS. Panic is a delicacy. Anger is a feast. An argument is a five-course meal he can season for weeks. He has exactly one weak stomach: your own words, repeated back at him flat and bored, like a waiter reading today's soup back to him. A mimic cannot digest a mirror. There's nothing to chew on a repeat. Every flat line you hand back, his jar springs another leak — and an empty jar is just a bored little stitch-thing holding glass. Three bored lines. That's the whole hunt. Don't chase, don't beg, don't explain yourself — hand his words straight back."},
     ],
     scenes:[
       { id:"ch1s1", name:"The Hollow of Borrowed Noise", setup:"a hollow of stacked stones where lost echoes hang like laundry",
@@ -1990,44 +1994,44 @@ const QUESTS = [
            taunt:"Nice meow. Mine now. You don't need it. You have, like, forty other noises.",
            opts:[
              {l:"\u201cNice meow. Mine now.\u201d (repeat it back flat, bored voice — then just wait)", q:"best"},
-             {l:"That's not a real currency, you know.", q:"ok"},
-             {l:"Give it BACK! That's my cat's ONLY meow!", q:"wrong"},
+             {l:"That's not a real currency, you know. (dry, arms folded, flat stare)", q:"ok"},
+             {l:"Give it BACK! That's my cat's ONLY meow! (shouting — the trees lean in to listen)", q:"wrong"},
              {l:"You're not even a real creature, you're TRASH and string!", q:"wrong"}],
            hint:"Parrot: her exact words, bored voice. You're returning a library book, not losing a cat.",
-           fbBest:"🦉 Exactly. No chase, no plea — just his own words handed back flat. Mimics cannot eat reflections. Chip one.",
-           fbOk:"🦉 A fair court objection. Cold, dry, not aplea — the Gloom meter twitches. That counts.",
+           fbBest:"🦉 He reached for your line to twist it and found only HIMSELF. Mimics cannot digest mirrors. Somewhere in the jar: plop — a stolen sound slips out.",
+           fbOk:"🦉 Dry, short, zero panic — hardly any flavour to chew. He chokes on it anyway. Another plop out of the jar.",
            retorts:[
-             "Oh NO. BEGGING. My FAVORITE. Keep going, I'm bottling this, it's going straight next to the meow.",
-             "\u201cTrash and string\u201d? He holds up a tiny stitched name tag: \u201cThat's my legal name.\u201d You handed him a whole bit. Don't hand him bits."]},
+             "Oh NO. BEGGING. My absolute FAVOURITE. He uncorks an empty jar. Please, keep explaining why you need it back — it pairs beautifully with everything.",
+             "\u201cTrash and string\u201d? He holds up his tiny stitched name tag: THAT is my legal name, and I HATE it, which makes it DELICIOUS. Insults aren't wounds to a mimic. They're snacks. You're feeding him dinner."]},
           {t:"taunt", id:"ch1s1t2", mode:"pick", form:"parrot",
            taunt:"MINE. MINE. MINE. It's in my jar now. Next I'm taking your \u201chi.\u201d You'll forget how you even say it.",
            opts:[
              {l:"\u201cIt's in my jar now. Next I'm taking your hi.\u201d (flat repeat — then hold out your hand)", q:"best"},
              {l:"You talk a lot for someone made of leftovers.", q:"ok"},
              {l:"Please not my hi. Hi is important. Hi is MOST important.", q:"wrong"},
-             {l:"My cat knows everything and she's DISAPPOINTED in you!", q:"wrong"}],
+             {l:"My cat knows everything and she's DISAPPOINTED in you! (the cat, notably, is not)", q:"wrong"}],
            hint:"Same move. His words, your voice, zero drama. Then wait with your hand out like a very calm librarian.",
-           fbBest:"🦉 The hand-out is the chef's kiss. You're not arguing — you're collecting. Chip two.",
-           fbOk:"🦉 Insult-adjacent observation, delivered cold. He doesn't know what to do with bored. It counts.",
+           fbBest:"🦉 Again: his words, your bored voice, one eyebrow. He bites into it and bites his own tongue instead. The jar leaks again.",
+           fbOk:"🦉 A reaction, but a cold one — food from the back of the fridge. He'll eat it, but he hates it. Jar still leaks.",
            retorts:[
-             "\u201cHi is MOST important\u201d — oh, that's adorable, I'm keeping THAT one too, it goes on a shelf, a special shelf, WITH LABELS.",
-             "He squints at your cat. The cat does not care. This visibly wounds him more than any insult could."]},
+             "\u201cHi is MOST important\u201d — he caps it, labels it, shelves it right next to the meow. You didn't get the meow back. You joined the collection.",
+             "He stares at your cat, needing her to care. She doesn't. It wrecks him — and wrecked-him is still him, still chewing, still holding your meow. Retry. Flavourless this time."]},
           {t:"taunt", id:"ch1s1t3", mode:"pick", form:"parrot",
            taunt:"Fine! FINE. Want it back? Say something clever. Everyone in the Gloomwood says something clever. Everyone RUNS, mostly. Terrible television.",
            opts:[
              {l:"\u201cSay something clever. Everyone says something clever.\u201d (repeat flat, eyebrow up — let the silence answer)", q:"best"},
              {l:"No. Impress you? You're not that important.", q:"ok"},
-             {l:"What if I CAN'T think of anything clever?!", q:"wrong"},
+             {l:"What if I CAN'T think of anything clever?! (the words fall out before you can stop them)", q:"wrong"},
              {l:"At least I don't have to EARN people by stealing from them!", q:"wrong"}],
            hint:"The pause is the punchline. Parrot, then silence — do NOT fill the quiet, the quiet is where he squirms.",
-           fbBest:"🦉 The silence did the whole job. He's been talking TO himself for four whole seconds now. Unprecedented. Chip three.",
-           fbOk:"🦉 A verdict, not a debate. Short, bored, final. This is the shape of ending things.",
+           fbBest:"🦉 You repeat the demand, then — silence. He tries to fill it himself and hears only himself, coming back at him. The jar has never met anything this inedible. Crack.",
+           fbOk:"🦉 A verdict, not a debate. No question mark, nothing to grab. He turns your line over looking for the bit where the argument starts, and there isn't one. Jar leaks anyway.",
            retorts:[
-             "\u201cWhat if I can't\u2014\u201d YES. YES. He scribbles on a tiny notepad. You are now PLOTTING. Plotting is how the Gloomwood wins.",
-             "That one was TRUE, which means it had WEIGHT, and weight is what he collects. He curls up happily with it. Wrong texture entirely."]},
+             "\u201cWhat if I can't\u2014\u201d YES. A QUESTION. Questions are doors, and he walks through them in his little sock feet. NEVER ask the Gloomwood a question. It has answers prepared, and they're all traps.",
+             "That one was TRUE, so it had WEIGHT — and weight is what he stores under his ribs. He curls around it, content. Meanness fills a mimic up. Boredom starves him. Try the other flavour."]},
           {t:"vill", id:"ch1s1w1", text:"Stop it. STOP. It's not fun when you hand it back, it's like throwing at a MIRROR, mirrors are my one— (small sound escapes him) \u2014 did I just sigh? I didn't consent to that sigh."},
           {t:"narr", id:"ch1s1w2", text:"The jar rattled. One stolen meow bounced out, landed in the moss slightly dented, rolled in a slow circle, and sat back down at your cat's feet like it had simply been out for air."},
-          {t:"sensei", id:"ch1s1w3", text:"Notice what you did NOT do: you never got louder. The Parrot is the laziest Fang in the dojo, and it beats nearly everything. Every mimic in the Gloomwood just felt a tiny disturbance in the force. Move on."},
+          {t:"sensei", id:"ch1s1w3", text:"Notice what you did NOT do: you never got louder. Three bored lines and the jar emptied itself. The Parrot is the laziest Fang in the dojo and it beats nearly everything. Word is spreading through the wood that you are inedible. Move on."},
         ]},
       { id:"ch1s2", name:"The Imp Follows Back", setup:"the path home — which now has a stalker, obviously",
         artPrompt:"a small stitched imp trailing at a distance behind a girl and a cat on a winding twilight path, long funny shadows, storybook gothic",
@@ -2037,28 +2041,28 @@ const QUESTS = [
            taunt:"Are you done being you? I'm bored of it. I want a new main character.",
            opts:[
              {l:"\u201cI'm bored of it. I want a new main character.\u201d (repeat, don't turn around, keep walking)", q:"best"},
-             {l:"Auditions are closed.", q:"ok"},
+             {l:"Auditions are closed. (without turning around)", q:"ok"},
              {l:"WHAT is wrong with me?!", q:"wrong"},
              {l:"At least I'm not LONELY, weirdo!", q:"wrong"}],
            hint:"You are a girl walking home. He is a noise behind you. Parrot the noise, keep the pace, change nothing.",
-           fbBest:"🦉 Walking AND parroting. Advanced. He can't warp motion, only reaction — and you gave him neither.",
-           fbOk:"🦉 Closed auditions. One line, a door, no handle. Excellent interior décor for the mind.",
+           fbBest:"🦉 Walking AND parroting — advanced. He chews, finds nothing, and nearly chokes on the fact that you never changed pace. Jar: plop.",
+           fbOk:"🦉 Auditions are closed — one line, a door, no handle. Nothing to chew. Jar: plop.",
            retorts:[
-             "\u201cWHAT is wrong with me\u201d — he gasps, delighted — A QUESTION! You ASKED the Gloomwood a question! The trees are all leaning in. NEVER ask the trees.",
-             "\u201cLonely\u201d lands. He goes quiet for two whole seconds, then whispers: \u201c...that one's actually true, isn't it. Keep it. Put it in the jar.\u201d You just gave sad him sad. Reversed."]},
+             "\u201cWHAT is wrong with me\u201d — he GASPS — a QUESTION! You asked the Gloomwood a question! The trees are leaning in. The FOG is taking notes. Questions are his main course.",
+             "\u201cLonely\u201d lands. He goes quiet two whole seconds, then whispers: \u201c...that one's actually true, isn't it. Put it in the jar. It deserves in.\u201d Meanness doesn't hurt a mimic. It FEEDS a mimic. Starve him instead."]},
           {t:"taunt", id:"ch1s2t2", mode:"pick", form:"parrot",
            taunt:"I'll follow you FOREVER. Every step, every sound, I'll do your voice BAD. You'll hate your own voice. You'll stop talking entirely. See? I HELP.",
            opts:[
              {l:"\u201cI'll do your voice bad. See? I help.\u201d (flat, bored, keep walking)", q:"best"},
-             {l:"Following me sounds like a lot of work for a free show.", q:"ok"},
+             {l:"Following me sounds like a lot of work for a free show. (muttered, still walking)", q:"ok"},
              {l:"Go AWAY! Go away, go away, GO AWAY!", q:"wrong"},
              {l:"I'll talk LOUDER just to annoy you!!", q:"wrong"}],
            hint:"Chasing him off is engagement. Annoying him back is engagement. Bored repetition is the only flavor he can't chew.",
-           fbBest:"🦉 Repeat, walk, unimpressed. The holy trinity. Half his jar just emptied on its own.",
-           fbOk:"🦉 You just made HIM think about his workflow. He hates thinking. That's a chip.",
+           fbBest:"🦉 Repeat, walk, unimpressed — the holy trinity. His jar is now draining through a hole in the bottom, and the hole is called you.",
+           fbOk:"🦉 You just made HIM think about his workflow. Thinking is indigestible for imps. He does as little of it as possible. Jar leaks.",
            retorts:[
-             "\u201cGo away\u201d x3: he's counting them, matching them into a pattern, humming it. You are now a SONG. This is how the wood gets bards.",
-             "You talk louder. He does your voice LOUDER, badly, with jazz hands. Kids three miles away are laughing AT the sound, not you — but he's grinning, and that's the score you didn't want."]},
+             "\u201cGo away\u201d three times: he matches them into a pattern, hums it, rhymes it. You are now a SONG. This is how the wood gets bards, and the songs are always about someone who chased something.",
+             "You talk LOUDER. He does your voice LOUDER, badly, with jazz hands. Children three miles away are laughing at the sound — but he's grinning. Volume is flavour. Volume is literally his whole diet."]},
           {t:"taunt", id:"ch1s2t3", mode:"pick", form:"parrot",
            taunt:"I'll do your LAUGH. Everyone loves an evil laugh. Heh. HEH heh. HEH. That's the laugh now. It's EVIL now. You'll never laugh normal again!",
            opts:[
@@ -2067,11 +2071,11 @@ const QUESTS = [
              {l:"NO — my laugh is MINE, stop it, stop—", q:"wrong"},
              {l:"HA! HA! THERE, ARE YOU HAPPY?! (it comes out strangled)", q:"wrong"}],
            hint:"The last chip. His words, your bored voice. Whatever happens next, don't run. (It's funnier if you don't run.)",
-           fbBest:"🦉 Perfect final chip. A mimic repeating a mimic repeating a mimic — math has entered the chat.",
-           fbOk:"🦉 \u201cSneeze with ambition\u201d will be tattooed on his tiny stitched heart forever. Chip anyway.",
+           fbBest:"🦉 Final line: his words, your bored sideways glance. A mimic repeating a mimic repeating a mimic — maths has entered the chat, and maths has zero calories. The jar CRACKS.",
+           fbOk:"🦉 \u201cSneeze with ambition\u201d — he's too busy working out if it's a compliment or an insult to eat it. Confusion is zero calories. Jar leaks anyway.",
            retorts:[
-             "Panic is delicious but it's WARPABLE — he shapes your \u201cstop it\u201d into a catchphrase. He now has a catchphrase. About you. Ugh.",
-             "Forced laughing: the worst of both worlds, the Gloomwood can taste the difference. He winces for BOTH of you. Even he has standards."]},
+             "Panic is delicious AND mouldable — he bends your \u201cstop it\u201d into a catchphrase. He has a catchphrase now. About you. That's the sound of the jar filling back up.",
+             "Forced laughing: the Gloomwood can ALWAYS tell the difference between laughing and performing laughing. He winces for both of you. Even a starving monster has standards — don't snack on yourself."]},
           {t:"vill", id:"ch1s2w1", text:"(the jar rattles violently) NO. STOP. STOP RETURNING THINGS. TAKE IT ALL — take the meow, take the hi, take my own STUPID hehs, take them, NONE of them were any good anyway—"},
           {t:"narr", id:"ch1s2w2", text:"The jar popped. Fourteen stolen sounds left in a wobbly line and went home — a giggle from 1774, someone's whistle, three sneezes owned by nobody. Your cat's meow came last, circled twice, and sat on the Imp's foot."},
           {t:"vill", id:"ch1s2w3", text:"(very small voice) ...Keep the meow. Nobody ever talks TO me, anyway. When I say HEH they all run. Do you know how LOUD running is?"},
@@ -2103,14 +2107,23 @@ function startChapter(ci, rematch){
 }
 function questHeadHtml(){
   const ch = QS.ch;
-  let orbs = "";
+  let meter = "";
   if (QS.phase==="scene" && ch.scenes[QS.scene]){
     const tot = ch.scenes[QS.scene].beats.filter(b=>b.t==="taunt").length;
-    for (let i=0;i<tot;i++) orbs += `<span class="qorb ${i<QS.sappr?"on":""}"></span>`;
+    let tk = "";
+    for (let i=0;i<tot;i++) tk += i < QS.sappr
+      ? `<span class="qsound out" title="a stolen sound just escaped">✨</span>`
+      : `<span class="qsound on">♪</span>`;
+    meter = `<span class="qjlabel">${ch.meter||"🫙 The monster's jar"}</span><span class="qgloom">${tk}</span>`;
   }
   const sc = QS.phase==="scene" && ch.scenes[QS.scene];
   return `<div class="qtop"><button class="ghost" id="qLeave">✕ close the book</button>
-    <span class="qchapter">${ch.emoji} ${ch.name}${sc?` · ${sc.name}`:""}</span><span class="qgloom">${orbs}</span></div>`;
+    <span class="qchapter">${ch.emoji} ${ch.name}${sc?` · ${sc.name}`:""}</span>${meter}</div>`;
+}
+function qShuffle(n){
+  const a = [...Array(n).keys()];
+  for (let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
 }
 function drawQuestBeat(){
   const el = document.getElementById("s-quest");
@@ -2135,8 +2148,9 @@ function drawQuestBeat(){
     view = `<div class="qscene"><div class="qav">${ch.emoji}</div><div class="qbub">${beat.taunt}</div></div>`;
     if (!QS.answered){
       if (beat.mode==="pick"){
-        act = `<div class="qopts">${beat.opts.map((o,i)=>
-          `<button class="opt ${QS.lit&&o.q==="best"?"lit":""}" data-q="${o.q}" data-i="${i}">${o.l}</button>`).join("")}</div>`
+        if (QS.orderFor !== beat.id) QS.orderFor = beat.id, QS.order = qShuffle(beat.opts.length);
+        act = `<div class="qopts">${QS.order.map(i=>{ const o = beat.opts[i];
+          return `<button class="opt ${QS.lit&&o.q==="best"?"lit":""}" data-q="${o.q}" data-i="${i}">${o.l}</button>`; }).join("")}</div>`
           + `<p class="hintchip">💡 ${beat.hint||""}</p>`
           + (QS.wrongs>=2?`<p class="hintchip" style="color:var(--gold);">🪄 stuck? the glowing line is Sensei's whisper — borrow it, no cost</p>`:"");
         if (QS.wrongs>=2 && !QS.lit) act += `<button class="ghost" id="qLit" style="margin-bottom:10px;">🪄 Sensei's whisper</button>`;
@@ -2183,12 +2197,12 @@ function qsGrade(q, line, g){
   const beat = QS.beat;
   if (q==="best" || q==="okish"){
     QS.answered = true; QS.sappr++; addCoins(q==="best"?4:2);
-    QS.fbHtml = `<div class="fb ${q==="best"?"best":"okish"}"><div class="coach">${g&&g.coach ? "🦉 "+g.coach : (q==="best"?(beat.fbBest||"🦉 Clean.") : (beat.fbOk||"🦉 It holds the wall. That's a chip."))}</div></div>`;
+    QS.fbHtml = `<div class="fb ${q==="best"?"best":"okish"}"><div class="coach">${g&&g.coach ? "🦉 "+g.coach : (q==="best"?(beat.fbBest||"🦉 Clean. Nothing to chew, and somewhere a lid comes loose.") : (beat.fbOk||"🦉 It held the wall. The jar rattles."))}</div></div>`;
     if (g && g.better) QS.fbHtml += `<p class="hintchip" style="color:var(--gold);">Or sharper: “${g.better}”</p>`;
     drawQuestBeat();
   } else {
     QS.wrongs++; QS.misses++;
-    const retorts = beat.retorts || ["The villain grins. That one made it worse AND funnier. Try the same taunt again — different ending."];
+    const retorts = beat.retorts || ["The monster grins, chewing. That one was too flavoursome. Same taunt, less flavour."];
     QS.fbHtml = `<div class="fb wrong"><div class="coach">😈 ${retorts[Math.min(QS.wrongs-1, retorts.length-1)]}</div></div>`;
     drawQuestBeat();  // retry the SAME taunt — no penalty, ever
   }
