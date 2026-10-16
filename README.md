@@ -69,6 +69,25 @@ archetype, all hand-reviewed by the model itself for "would this actually land a
 - **🧒 Ninjas (accounts)** — a picker at launch; each ninja gets their own belt, coins, trophies, streak and
   pet. Progress lives server-side so any device remembers everyone. Legacy single-user data auto-migrates.
 
+## 📖 The Unbothered Quest (story mode)
+
+A separate, fictional adventure — deliberately **not** school-flavored, so the corridor never echoes in it.
+Eight chapters (Chapter 1 ships, the rest land as they're written) of over-the-top monsters with sad little
+problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary, every villain funnier than they are
+mean. Wren the Unboothered walks the Gloomwood with the dojo pet at her side; Sensei narrates.
+
+- **Battles = 3 taunts, no failure state.** An approved line (Sensei `okish` or `best`) chips the Gloom meter.
+  A wrong answer is never a loss — the villain gets *funnier* and you retry the same taunt. Two misses reveal a
+  free 🪄 lifeline. There are no walls and no costs for borrowing.
+- **Progressive difficulty:** Chapter 1 is all multiple choice; typed answers fade in from Chapter 2, by the
+  finale everything is typed (with the lifeline forever available).
+- Every defeated villain becomes a page in **The Little Book of Former Weirdos** (sticker wall) + a trophy.
+- **Story pack export / import / restore** in the parent panel: the entire story (text, taunts, options, coach
+  lines, ComfyUI `artPrompt`s) is JSON with stable ids — edit it, import it back, restore anytime. Story
+  *progress* is separate and survives story edits and progress resets.
+- **Art hooks:** each scene references `quest-art/<id>.png`; drop images there (later, via your ComfyUI batch)
+  and they appear automatically. The story runs happily on emoji art until then.
+
 ## Grown-up panel (⚙)
 
 - AI / voice settings, capability probe for the local model
@@ -147,6 +166,9 @@ it can't. The AI, if configured, is your own local model.
 - [ ] Cyberbullying pack: replies for group-chat / comment-section jabs (same doctrine, typed rather than spoken)
 
 **Content**
+
+- [ ] Quest chapters 2–8 (arc fully mapped in design notes)
+- [ ] ComfyUI scene-art pipeline (`COMFY_BASE` + batch script + `artPrompt` fields, already in the story JSON)
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
 - [ ] Two-kid scenarios (the pair dynamic that matches the real situation at school)
 - [ ] Voice-note roleplay: the app speaks the taunt, she answers out loud, ASR + Sensei grade spoken delivery

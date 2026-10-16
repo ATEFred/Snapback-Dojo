@@ -247,6 +247,34 @@ header .logo{user-select:none;}
 .avpick button.sel{border-color:var(--gold); background:var(--card2);}
 #userChip{cursor:pointer;}
 #userChip:hover{border-color:var(--bamboo); color:var(--ink);}
+/* ===== THE UNBOTHERED QUEST — gothic storybook skin, scoped ===== */
+.qgothic{--bg2:#191531; --card:#231d43; --card2:#2c2555; --ink:#eae6ff; --dim:#9c93cb; --bamboo:#7ee8b0; --gold:#e8d98c; --red:#e88ba0; --blue:#9db8ff; --purple:#c8a8ff; --line:#3b3470;
+  background:radial-gradient(900px 460px at 50% -12%, #2e2560 0%, #16121f 72%);
+  border:1px solid #38316a; border-radius:24px; padding:24px; font-family:Georgia,"Noto Serif",serif;}
+.qgothic .opt{font-family:inherit; background:#241e46; border-color:#3b3470;}
+.qgothic .opt:hover:not(:disabled){border-color:var(--bamboo);}
+.qgothic .opt.lit{border-color:var(--gold); box-shadow:0 0 14px rgba(232,217,140,.45);}
+.qgothic .opt.correct{background:#1b3a2d;} .qgothic .opt.wrongpick{background:#3a1b2a;}
+.qgothic textarea{background:#1c1736; border-color:#3b3470;}
+.qgothic textarea:focus{border-color:var(--bamboo);}
+.qart{display:block; width:100%; max-height:260px; object-fit:cover; border-radius:16px; margin-bottom:16px; border:1px solid #38316a;}
+.qtop{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.qtop .qchapter{font-size:13px; letter-spacing:1px; color:var(--dim); text-transform:uppercase;}
+.qgloom{display:flex; gap:7px; margin-left:auto;}
+.qorb{width:22px; height:22px; border-radius:50%; border:2px solid #4a4185; background:#1c1736;}
+.qorb.on{background:radial-gradient(circle at 35% 30%, #cbbcff, #5c4cae); box-shadow:0 0 10px rgba(160,140,255,.7); border-color:#8f7de0;}
+.qnarr{background:#1d1838; border-left:3px solid #6a5cc0; border-radius:0 14px 14px 0; padding:14px 18px; font-size:17px; line-height:1.6; color:#d8d2f5; font-style:italic;}
+.qscene{display:flex; gap:14px; align-items:flex-start; margin:4px 0 10px;}
+.qav{font-size:40px; width:66px; height:66px; display:flex; align-items:center; justify-content:center; background:#241e46; border:2px solid #3b3470; border-radius:50%; flex-shrink:0;}
+.qbub{background:#241e46; border:1px solid #463d85; border-radius:18px 18px 18px 4px; padding:15px 18px; font-size:19px; line-height:1.45;}
+.qsense{background:#14261f; border:1px solid #2f5c48; border-radius:14px; padding:13px 16px; font-size:15.5px; color:#bfe8d2; margin-top:4px;}
+.qtap{text-align:center; color:var(--dim); font-size:12.5px; margin-top:16px; animation:pulse 1.6s infinite; cursor:pointer;}
+.qgothic .fb{background:#221c42; font-family:system-ui,"Segoe UI",sans-serif;}
+.qgothic .fb .coach{font-size:15px;}
+.qgothic .hintchip{font-family:system-ui,"Segoe UI",sans-serif;}
+.qopts .opt{margin-bottom:9px;}
+.pklock{opacity:.4; filter:grayscale(.9); cursor:default !important;}
+.pkcard[data-rematch],.pkcard button{position:relative;}
 /* silly themes */
 body.theme-candy{--bg:#1c1021; --bg2:#29172f; --card:#33213c; --card2:#402a4b; --ink:#ffeef8; --dim:#d3a9cd; --bamboo:#ff8ac2; --gold:#ffd166; --red:#ff6f91; --blue:#8ec5ff; --purple:#c9a0ff; --line:#4d2e59;}
 body.theme-candy{background:radial-gradient(1200px 600px at 50% -10%, #3d1550 0%, var(--bg) 60%);}
@@ -291,6 +319,7 @@ body.theme-duck{background:radial-gradient(1200px 600px at 50% -10%, #4a3208 0%,
   <section class="screen" id="s-boss"></section>
   <section class="screen" id="s-book"></section>
   <section class="screen" id="s-loot"></section>
+  <section class="screen" id="s-quest"></section>
 </main>
 <div class="modal" id="parentModal"><div class="inner" id="parentInner"></div></div>
 <div id="bubbles"><div class="hud">Pop the nonsense — <b id="bubScore">0</b> · <b id="bubTime">60</b>s</div></div>
@@ -693,6 +722,7 @@ const DEFAULTS = {
   custom:[], overrides:{},
   coins:0, owned:[], title:"", theme:"", achv:[], petName:"Noodle",
   counters:{best:0, earned:0, bestCombo:0, books:0},
+  quest:{chapter:0, scene:0, cleared:[], stars:{}}, questOv:{},
 };
 let S = JSON.parse(JSON.stringify(DEFAULTS));
 /* DB = the whole dojo: every ninja's account + who's signed in.
@@ -799,6 +829,14 @@ const SHOP = [
   {id:"st_bubble",  kind:"sticker", emoji:"🫧", name:"Bubble Shield",       cost:40, desc:"Insults bounce. Squeaky sound included."},
   {id:"st_banana",  kind:"sticker", emoji:"🍌", name:"Banana Peel",         cost:55, desc:"Classic. Never used on anyone. Just stored."},
   {id:"st_penguin", kind:"sticker", emoji:"🐧", name:"Penguin Exit",        cost:45, desc:"Leave in a tuxedo waddle."},
+  {id:"stq1", kind:"sticker", quest:true, emoji:"🧵", name:"Echo, Reformed (Sort Of)", cost:999, desc:"Ch.1 · a tiny stitched spy with holes in his pockets. Emotional ones."},
+  {id:"stq2", kind:"sticker", quest:true, emoji:"🌉", name:"Toastbrig, Bridge-Adjacent", cost:999, desc:"Ch.2 · formerly of opinions. Currently of pizza."},
+  {id:"stq3", kind:"sticker", quest:true, emoji:"🎀", name:"The Duchess (Wound Down)", cost:999, desc:"Ch.3 · runs on laughter. Out of order, peacefully."},
+  {id:"stq4", kind:"sticker", quest:true, emoji:"🫙", name:"Wisp, Decaf Gossip", cost:999, desc:"Ch.4 · jar of whispers. Lid on."},
+  {id:"stq5", kind:"sticker", quest:true, emoji:"🖍️", name:"Your Less Flattering Side", cost:999, desc:"Ch.5 · now a pencil, just drawing ducks by the lake."},
+  {id:"stq6", kind:"sticker", quest:true, emoji:"☂️", name:"Twin & Sprite, Umbrellas Down", cost:999, desc:"Ch.6 · defected for pastries and being spoken TO."},
+  {id:"stq7", kind:"sticker", quest:true, emoji:"🪞", name:"The Court of Mirrors", cost:999, desc:"Ch.7 · everyone said you were cool. Suspicious? Good."},
+  {id:"stq8", kind:"sticker", quest:true, emoji:"👑", name:"Malvina, Slightly Deflated", cost:999, desc:"Ch.8 · under the big crown: a smaller spare one."},
 ];
 const RANK_LINES = [
   "", // white
@@ -875,6 +913,7 @@ const ACHV = [
   {id:"moves10",  emoji:"🥋", name:"Full Arsenal",     desc:"All 10 moves trained",                  coins:40, test:()=>S.formsLearned.length>=10},
   {id:"coins100", emoji:"🐉", name:"Coin Dragon",      desc:"100 coins earned in total",             coins:25, test:c=>c.earned>=100},
   {id:"book3",    emoji:"📕", name:"Bookwise",         desc:"Closed the book 3 times",               coins:20, test:c=>c.books>=3},
+  {id:"quest1",   emoji:"🌙", name:"Gloomwood Novice", desc:"Finished Chapter 1 of the Quest",       coins:25, test:()=>(S.quest&&S.quest.cleared||[]).length>=1},
 ];
 function checkAchv(){
   const got = S.achv || (S.achv = []);
@@ -902,7 +941,7 @@ function lootEgg(){
   };
 }
 function eggPrize(){
-  const unS = SHOP.filter(i=>i.kind==="sticker" && !S.owned.includes(i.id));
+  const unS = SHOP.filter(i=>i.kind==="sticker" && !i.quest && !S.owned.includes(i.id));
   const unT = SHOP.filter(i=>i.kind==="title" && !S.owned.includes(i.id));
   const r = Math.random();
   if (unS.length && r < .40){ const s = unS[Math.floor(Math.random()*unS.length)]; S.owned.push(s.id); save();
@@ -1195,7 +1234,7 @@ function clearTimers(){
   if (pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
   speakCB = null;
 }
-const screens = ["home","learn","drill","rapid","boss","book","loot"];
+const screens = ["home","learn","drill","rapid","boss","book","loot","quest"];
 function go(name){
   clearTimers();
   screens.forEach(s=>document.getElementById("s-"+s).classList.toggle("on", s===name));
@@ -1203,6 +1242,7 @@ function go(name){
   if (name==="home") renderHome();
   if (name==="learn") renderLearn();
   if (name==="loot") renderLoot();
+  if (name==="quest") renderQuest();
 }
 
 /* ============================================================ home */
@@ -1233,6 +1273,7 @@ function renderHome(){
   document.getElementById("xpChip").textContent = S.xp+" XP"+(next? " / "+next.xp : " 🏆");
   const due = nextDue();
   const tiles = [
+    {e:"📖", h:"The Unbothered Quest", p:"A story. Eight ridiculous villains. One girl who refuses to be an audience.", a:()=>go("quest"), sub: S.quest.cleared.length ? S.quest.cleared.length+" of 8 chapters cleared" : "Wren needs you"},
     {e:"📜", h:"Learn the Moves", p:"Forms of the Shield and the Fang. One at a time, out loud.", a:()=>go("learn"), sub: S.formsLearned.length+"/10 trained"},
     {e:"🎯", h:"Daily Drill", p:"Real scenes. Pick or type your line. Sensei grades it.", a:()=>startDrill(), sub: due+" scenario"+(due===1?"":"s")+" due"},
     {e:"⚡", h:"Rapid Fire", p:"Taunt hits you out loud. 3 seconds. Reflex wins. This is the secret.", a:()=>startRapid(), sub:"12 rounds · combos"},
@@ -1788,7 +1829,8 @@ function renderLoot(){
         if (owned) act = kind==="sticker" ? `<span class="cost">on your wall ✓</span>`
           : on ? `<button class="ghost" data-off="${it.id}">take off</button>`
                : `<button class="btn" data-use="${it.id}" style="padding:8px 16px;">use it</button>`;
-        else act = S.coins>=it.cost ? `<button class="btn" data-buy="${it.id}" style="padding:8px 16px;">🪙 ${it.cost}</button>`
+        else act = it.quest ? `<span class="cost short">📖 clear its chapter</span>`
+          : S.coins>=it.cost ? `<button class="btn" data-buy="${it.id}" style="padding:8px 16px;">🪙 ${it.cost}</button>`
           : `<span class="cost short">🪙 ${it.cost}<br>need ${it.cost-S.coins} more</span>`;
         return `<div class="shopitem"><span class="ic">${it.emoji}</span><div><h4>${it.name}${on?" · on":""}</h4><div class="cd">${it.desc}</div></div><span class="act">${act}</span></div>`;
       }).join("")}</div>`;
@@ -1918,11 +1960,339 @@ function renameAccount(oldN, raw){
 }
 function resetProgress(){
   if (!DB.active) return;
-  if (!confirm("Reset "+DB.active+"'s progress?\n\nBelt, XP, coins, shop, trophies, streak and the pet go back to day one.\nThe scenario pack, your settings and the AI stay exactly as they are.")) return;
-  const keep = {settings:S.settings, custom:S.custom, overrides:S.overrides, petName:S.petName};
+  if (!confirm("Reset "+DB.active+"'s progress?\n\nBelt, XP, coins, shop, trophies, streak, story and the pet go back to day one.\nThe scenario pack, your story edits, settings and the AI stay exactly as they are.")) return;
+  const keep = {settings:S.settings, custom:S.custom, overrides:S.overrides, petName:S.petName, questOv:S.questOv};
   S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep);
   save(); render(); toast("Fresh white rope for "+DB.active+" 🤍 — pack and settings kept");
   renderParent();
+}
+
+/* ============================================================ THE UNBOTHERED QUEST
+   A fictional eight-chapter story mode. Nothing here sounds like the corridor —
+   the villains are absurd monsters with sad little problems. Beats are data, so the
+   whole story is editable via the story pack (panel). Wrong answers never punish:
+   the villain just gets FUNNIER and you try the same taunt again. No walls, ever. */
+const QUESTS = [
+  { id:"ch1", name:"The Stolen Meow", vill:"Echo the Mimic Imp", emoji:"🧵",
+    artPrompt:"a crooked stitched shadow-imp with mismatched button eyes cradling a glowing jar labeled MROW, spiral bare trees, twilight, storybook gothic whimsy",
+    winLine:"The meow came home slightly dented, which is how meows do.",
+    intro:[
+      {t:"narr", id:"ch1i1", text:"The Gloomwood keeps its own hours. It is always nearly bedtime. The trees lean in to listen, and the fog has opinions about your boots."},
+      {t:"narr", id:"ch1i2", text:"Wren the Unbothered had walked eleven minutes inside when her cat said \u201cMROW!\u201d — and the mrow never reached the ground. Something caught it out of the air."},
+      {t:"vill", id:"ch1i3", text:"Heh. Heh-heh. Nice meow. Mine now. Don't stare — I paid for it. With a HEH. That's currency here. I'm rich. I have nine hundred hehs."},
+      {t:"sensei", id:"ch1i4", text:"Quietly, so the fog doesn't gossip about it: that's Echo the Mimic. He steals sounds because he never got one of his own. When something throws YOUR words at you, don't chase it and don't beg. Hand the words straight back. Exact words, bored voice, then wait. We call that the Parrot. Watch."},
+    ],
+    scenes:[
+      { id:"ch1s1", name:"The Hollow of Borrowed Noise", setup:"a hollow of stacked stones where lost echoes hang like laundry",
+        artPrompt:"a crooked hollow of stacked leaning stones with glowing scraps of words hanging on washing lines between them, twilight, whimsical gothic storybook",
+        beats:[
+          {t:"taunt", id:"ch1s1t1", mode:"pick", form:"parrot",
+           taunt:"Nice meow. Mine now. You don't need it. You have, like, forty other noises.",
+           opts:[
+             {l:"\u201cNice meow. Mine now.\u201d (repeat it back flat, bored voice — then just wait)", q:"best"},
+             {l:"That's not a real currency, you know.", q:"ok"},
+             {l:"Give it BACK! That's my cat's ONLY meow!", q:"wrong"},
+             {l:"You're not even a real creature, you're TRASH and string!", q:"wrong"}],
+           hint:"Parrot: her exact words, bored voice. You're returning a library book, not losing a cat.",
+           fbBest:"🦉 Exactly. No chase, no plea — just his own words handed back flat. Mimics cannot eat reflections. Chip one.",
+           fbOk:"🦉 A fair court objection. Cold, dry, not aplea — the Gloom meter twitches. That counts.",
+           retorts:[
+             "Oh NO. BEGGING. My FAVORITE. Keep going, I'm bottling this, it's going straight next to the meow.",
+             "\u201cTrash and string\u201d? He holds up a tiny stitched name tag: \u201cThat's my legal name.\u201d You handed him a whole bit. Don't hand him bits."]},
+          {t:"taunt", id:"ch1s1t2", mode:"pick", form:"parrot",
+           taunt:"MINE. MINE. MINE. It's in my jar now. Next I'm taking your \u201chi.\u201d You'll forget how you even say it.",
+           opts:[
+             {l:"\u201cIt's in my jar now. Next I'm taking your hi.\u201d (flat repeat — then hold out your hand)", q:"best"},
+             {l:"You talk a lot for someone made of leftovers.", q:"ok"},
+             {l:"Please not my hi. Hi is important. Hi is MOST important.", q:"wrong"},
+             {l:"My cat knows everything and she's DISAPPOINTED in you!", q:"wrong"}],
+           hint:"Same move. His words, your voice, zero drama. Then wait with your hand out like a very calm librarian.",
+           fbBest:"🦉 The hand-out is the chef's kiss. You're not arguing — you're collecting. Chip two.",
+           fbOk:"🦉 Insult-adjacent observation, delivered cold. He doesn't know what to do with bored. It counts.",
+           retorts:[
+             "\u201cHi is MOST important\u201d — oh, that's adorable, I'm keeping THAT one too, it goes on a shelf, a special shelf, WITH LABELS.",
+             "He squints at your cat. The cat does not care. This visibly wounds him more than any insult could."]},
+          {t:"taunt", id:"ch1s1t3", mode:"pick", form:"parrot",
+           taunt:"Fine! FINE. Want it back? Say something clever. Everyone in the Gloomwood says something clever. Everyone RUNS, mostly. Terrible television.",
+           opts:[
+             {l:"\u201cSay something clever. Everyone says something clever.\u201d (repeat flat, eyebrow up — let the silence answer)", q:"best"},
+             {l:"No. Impress you? You're not that important.", q:"ok"},
+             {l:"What if I CAN'T think of anything clever?!", q:"wrong"},
+             {l:"At least I don't have to EARN people by stealing from them!", q:"wrong"}],
+           hint:"The pause is the punchline. Parrot, then silence — do NOT fill the quiet, the quiet is where he squirms.",
+           fbBest:"🦉 The silence did the whole job. He's been talking TO himself for four whole seconds now. Unprecedented. Chip three.",
+           fbOk:"🦉 A verdict, not a debate. Short, bored, final. This is the shape of ending things.",
+           retorts:[
+             "\u201cWhat if I can't\u2014\u201d YES. YES. He scribbles on a tiny notepad. You are now PLOTTING. Plotting is how the Gloomwood wins.",
+             "That one was TRUE, which means it had WEIGHT, and weight is what he collects. He curls up happily with it. Wrong texture entirely."]},
+          {t:"vill", id:"ch1s1w1", text:"Stop it. STOP. It's not fun when you hand it back, it's like throwing at a MIRROR, mirrors are my one— (small sound escapes him) \u2014 did I just sigh? I didn't consent to that sigh."},
+          {t:"narr", id:"ch1s1w2", text:"The jar rattled. One stolen meow bounced out, landed in the moss slightly dented, rolled in a slow circle, and sat back down at your cat's feet like it had simply been out for air."},
+          {t:"sensei", id:"ch1s1w3", text:"Notice what you did NOT do: you never got louder. The Parrot is the laziest Fang in the dojo, and it beats nearly everything. Every mimic in the Gloomwood just felt a tiny disturbance in the force. Move on."},
+        ]},
+      { id:"ch1s2", name:"The Imp Follows Back", setup:"the path home — which now has a stalker, obviously",
+        artPrompt:"a small stitched imp trailing at a distance behind a girl and a cat on a winding twilight path, long funny shadows, storybook gothic",
+        beats:[
+          {t:"vill", id:"ch1s2b0", text:"(later, from the trees) Wren the Unbothered. BLAH blah. Unbothered. BLAH. Are you done being you? I'm bored of it. I want a new main character."},
+          {t:"taunt", id:"ch1s2t1", mode:"pick", form:"parrot",
+           taunt:"Are you done being you? I'm bored of it. I want a new main character.",
+           opts:[
+             {l:"\u201cI'm bored of it. I want a new main character.\u201d (repeat, don't turn around, keep walking)", q:"best"},
+             {l:"Auditions are closed.", q:"ok"},
+             {l:"WHAT is wrong with me?!", q:"wrong"},
+             {l:"At least I'm not LONELY, weirdo!", q:"wrong"}],
+           hint:"You are a girl walking home. He is a noise behind you. Parrot the noise, keep the pace, change nothing.",
+           fbBest:"🦉 Walking AND parroting. Advanced. He can't warp motion, only reaction — and you gave him neither.",
+           fbOk:"🦉 Closed auditions. One line, a door, no handle. Excellent interior décor for the mind.",
+           retorts:[
+             "\u201cWHAT is wrong with me\u201d — he gasps, delighted — A QUESTION! You ASKED the Gloomwood a question! The trees are all leaning in. NEVER ask the trees.",
+             "\u201cLonely\u201d lands. He goes quiet for two whole seconds, then whispers: \u201c...that one's actually true, isn't it. Keep it. Put it in the jar.\u201d You just gave sad him sad. Reversed."]},
+          {t:"taunt", id:"ch1s2t2", mode:"pick", form:"parrot",
+           taunt:"I'll follow you FOREVER. Every step, every sound, I'll do your voice BAD. You'll hate your own voice. You'll stop talking entirely. See? I HELP.",
+           opts:[
+             {l:"\u201cI'll do your voice bad. See? I help.\u201d (flat, bored, keep walking)", q:"best"},
+             {l:"Following me sounds like a lot of work for a free show.", q:"ok"},
+             {l:"Go AWAY! Go away, go away, GO AWAY!", q:"wrong"},
+             {l:"I'll talk LOUDER just to annoy you!!", q:"wrong"}],
+           hint:"Chasing him off is engagement. Annoying him back is engagement. Bored repetition is the only flavor he can't chew.",
+           fbBest:"🦉 Repeat, walk, unimpressed. The holy trinity. Half his jar just emptied on its own.",
+           fbOk:"🦉 You just made HIM think about his workflow. He hates thinking. That's a chip.",
+           retorts:[
+             "\u201cGo away\u201d x3: he's counting them, matching them into a pattern, humming it. You are now a SONG. This is how the wood gets bards.",
+             "You talk louder. He does your voice LOUDER, badly, with jazz hands. Kids three miles away are laughing AT the sound, not you — but he's grinning, and that's the score you didn't want."]},
+          {t:"taunt", id:"ch1s2t3", mode:"pick", form:"parrot",
+           taunt:"I'll do your LAUGH. Everyone loves an evil laugh. Heh. HEH heh. HEH. That's the laugh now. It's EVIL now. You'll never laugh normal again!",
+           opts:[
+             {l:"\u201cThat's the laugh now. You'll never laugh normal again.\u201d (repeat flat, glance back, one eyebrow)", q:"best"},
+             {l:"That's not even a good evil laugh. It's a sneeze with ambition.", q:"ok"},
+             {l:"NO — my laugh is MINE, stop it, stop—", q:"wrong"},
+             {l:"HA! HA! THERE, ARE YOU HAPPY?! (it comes out strangled)", q:"wrong"}],
+           hint:"The last chip. His words, your bored voice. Whatever happens next, don't run. (It's funnier if you don't run.)",
+           fbBest:"🦉 Perfect final chip. A mimic repeating a mimic repeating a mimic — math has entered the chat.",
+           fbOk:"🦉 \u201cSneeze with ambition\u201d will be tattooed on his tiny stitched heart forever. Chip anyway.",
+           retorts:[
+             "Panic is delicious but it's WARPABLE — he shapes your \u201cstop it\u201d into a catchphrase. He now has a catchphrase. About you. Ugh.",
+             "Forced laughing: the worst of both worlds, the Gloomwood can taste the difference. He winces for BOTH of you. Even he has standards."]},
+          {t:"vill", id:"ch1s2w1", text:"(the jar rattles violently) NO. STOP. STOP RETURNING THINGS. TAKE IT ALL — take the meow, take the hi, take my own STUPID hehs, take them, NONE of them were any good anyway—"},
+          {t:"narr", id:"ch1s2w2", text:"The jar popped. Fourteen stolen sounds left in a wobbly line and went home — a giggle from 1774, someone's whistle, three sneezes owned by nobody. Your cat's meow came last, circled twice, and sat on the Imp's foot."},
+          {t:"vill", id:"ch1s2w3", text:"(very small voice) ...Keep the meow. Nobody ever talks TO me, anyway. When I say HEH they all run. Do you know how LOUD running is?"},
+          {t:"sensei", id:"ch1s2w4", text:"And here is the twist the Gloomwood keeps folded in its pocket: the monsters here aren't mean because they're strong. They're mean because they're bored, and lonely, and nobody talks TO them — only at them, or away from them. Tuck that away. It explains a lot. Here... and elsewhere."},
+          {t:"vill", id:"ch1s2w5", text:"I'll come along. As a SPY. A terrifying spy. Nobody suspects the small stitched one. If anything in this wood plots against you, I'll steal the plot straight out of the air. Fair warning: I will lose most of it. My pockets have holes. Emotional ones."},
+        ]},
+    ]},
+];
+/* ---- runner ---- */
+let QS = null;
+function effStoryPack(){
+  const ov = S.questOv || {};
+  return { version:1, exported:new Date().toISOString(),
+    chapters: QUESTS.map(ch=>{
+      const c = Object.assign({}, ch, ov[ch.id]||{});
+      c.intro = (ch.intro||[]).map(b=>Object.assign({}, b, ov[b.id]||{}));
+      c.scenes = (ch.scenes||[]).map(sc=>{
+        const s = Object.assign({}, sc, ov[sc.id]||{});
+        s.beats = (sc.beats||[]).map(b=>Object.assign({}, b, ov[b.id]||{}));
+        return s;
+      });
+      return c;
+    })};
+}
+function startChapter(ci, rematch){
+  const ch = effStoryPack().chapters[ci];
+  QS = { ci, ch, rematch:!!rematch, phase:"intro", bi:0, scene:0, wrongs:0, borrows:0, misses:0, sappr:0, answered:false, fbHtml:"", lit:false };
+  drawQuestBeat();
+}
+function questHeadHtml(){
+  const ch = QS.ch;
+  let orbs = "";
+  if (QS.phase==="scene" && ch.scenes[QS.scene]){
+    const tot = ch.scenes[QS.scene].beats.filter(b=>b.t==="taunt").length;
+    for (let i=0;i<tot;i++) orbs += `<span class="qorb ${i<QS.sappr?"on":""}"></span>`;
+  }
+  const sc = QS.phase==="scene" && ch.scenes[QS.scene];
+  return `<div class="qtop"><button class="ghost" id="qLeave">✕ close the book</button>
+    <span class="qchapter">${ch.emoji} ${ch.name}${sc?` · ${sc.name}`:""}</span><span class="qgloom">${orbs}</span></div>`;
+}
+function drawQuestBeat(){
+  const el = document.getElementById("s-quest");
+  const ch = QS.ch;
+  let beat;
+  if (QS.phase==="intro"){
+    beat = ch.intro[QS.bi];
+    if (!beat){ QS.phase="scene"; QS.bi=0; QS.sappr=0; return drawQuestBeat(); }
+  } else {
+    const sc = ch.scenes[QS.scene];
+    if (!sc) return finishChapter();
+    beat = sc.beats[QS.bi];
+    if (!beat){ QS.scene++; QS.bi=0; QS.wrongs=0; QS.lit=false; return drawQuestBeat(); }
+  }
+  QS.beat = beat;
+  const artId = beat.art || (QS.phase==="scene" ? (ch.scenes[QS.scene].id) : ch.id);
+  let view = "", act = "", cont = "";
+  if (beat.t==="narr")   view = `<div class="qnarr">${beat.text}</div>`;
+  if (beat.t==="vill")   view = `<div class="qscene"><div class="qav">${ch.emoji}</div><div class="qbub">${beat.text}</div></div>`;
+  if (beat.t==="sensei") view = `<div class="qsense">🦉 ${beat.text}</div>`;
+  if (beat.t==="taunt"){
+    view = `<div class="qscene"><div class="qav">${ch.emoji}</div><div class="qbub">${beat.taunt}</div></div>`;
+    if (!QS.answered){
+      if (beat.mode==="pick"){
+        act = `<div class="qopts">${beat.opts.map((o,i)=>
+          `<button class="opt ${QS.lit&&o.q==="best"?"lit":""}" data-q="${o.q}" data-i="${i}">${o.l}</button>`).join("")}</div>`
+          + `<p class="hintchip">💡 ${beat.hint||""}</p>`
+          + (QS.wrongs>=2?`<p class="hintchip" style="color:var(--gold);">🪄 stuck? the glowing line is Sensei's whisper — borrow it, no cost</p>`:"");
+        if (QS.wrongs>=2 && !QS.lit) act += `<button class="ghost" id="qLit" style="margin-bottom:10px;">🪄 Sensei's whisper</button>`;
+      } else {
+        act = `<div class="answerbox"><textarea id="qType" placeholder="Your line…"></textarea></div>
+          <p class="hintchip">💡 ${beat.hint||""}</p>
+          <div class="modebtns"><button class="btn" id="qSend">Say it 🥋</button>
+          ${QS.wrongs>=2||QS.ch.ci>=2?`<button class="ghost" id="qBorrow">🪄 borrow a line</button>`:""}</div>`;
+      }
+    }
+  }
+  if (QS.answered || ["narr","vill","sensei"].includes(beat.t)) cont = `<p class="qtap" id="qsGo">tap anywhere to continue ▸</p>`;
+  el.innerHTML = `<div class="qgothic" id="qPanel" style="cursor:${QS.answered||["narr","vill","sensei"].includes(beat.t)?"pointer":"default"};">
+    <img class="qart" src="quest-art/${artId}.png" alt="" onerror="this.remove()">
+    ${questHeadHtml()}${QS.fbHtml}${view}${act}${cont}</div>`;
+  // TTS
+  if (beat.t==="vill") speak(beat.text, "bully");
+  if (beat.t==="narr" || beat.t==="sensei") speak(beat.text, "sensei");
+  const $ = id=>document.getElementById(id);
+  if ($("qLeave")) $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; renderQuest(); };
+  if ($("qPanel")) $("qPanel").onclick = (e)=>{ if (e.target.closest("button,textarea")) return;
+    if (QS.answered || ["narr","vill","sensei"].includes(QS.beat.t)) qsNext(); };
+  el.querySelectorAll("#qsAct .opt, .qopts .opt").forEach(b=>b.onclick=(e)=>{ e.stopPropagation();
+    qsGrade(QS.beat.opts[+b.dataset.i].q, QS.beat.opts[+b.dataset.i].l); });
+  if ($("qLit")) $("qLit").onclick = (e)=>{ e.stopPropagation(); QS.lit = true; QS.borrows++; drawQuestBeat(); };
+  if ($("qBorrow")) $("qBorrow").onclick = (e)=>{ e.stopPropagation(); QS.borrows++;
+    const ta = $("qType"); if (ta){ const best = QS.beat.opts.find(o=>o.q==="best"); ta.value = best? best.l.replace(/\s*\(.*?\)\s*/g,"") : ""; ta.focus(); } };
+  if ($("qSend")) $("qSend").onclick = async (e)=>{
+    e.stopPropagation();
+    const v = $("qType").value.trim();
+    if (!v){ toast("The Gloomwood waits. Say something."); return; }
+    $("qSend").disabled = true;
+    const sc = QS.ch.scenes[QS.scene];
+    const scn = { id:QS.beat.id, setup:sc.setup||QS.ch.name, taunt:QS.beat.taunt,
+      best:QS.beat.opts.filter(o=>o.q==="best").map(o=>o.l), wrong:QS.beat.opts.filter(o=>o.q==="wrong").map(o=>o.l),
+      form:QS.beat.form||"parrot", why:"" };
+    let g = null;
+    if (S.settings.ai && CAPS.chat) g = await aiGrade(scn, v);
+    if (!g){ try { g = ruleGrade(scn, v); } catch(err){ g = {quality:"okish", coach:"Sensei shrugs — weird counts as clever in the Gloomwood.", better:""}; } }
+    qsGrade(g.quality, v, g);
+  };
+}
+function qsGrade(q, line, g){
+  const beat = QS.beat;
+  if (q==="best" || q==="okish"){
+    QS.answered = true; QS.sappr++; addCoins(q==="best"?4:2);
+    QS.fbHtml = `<div class="fb ${q==="best"?"best":"okish"}"><div class="coach">${g&&g.coach ? "🦉 "+g.coach : (q==="best"?(beat.fbBest||"🦉 Clean.") : (beat.fbOk||"🦉 It holds the wall. That's a chip."))}</div></div>`;
+    if (g && g.better) QS.fbHtml += `<p class="hintchip" style="color:var(--gold);">Or sharper: “${g.better}”</p>`;
+    drawQuestBeat();
+  } else {
+    QS.wrongs++; QS.misses++;
+    const retorts = beat.retorts || ["The villain grins. That one made it worse AND funnier. Try the same taunt again — different ending."];
+    QS.fbHtml = `<div class="fb wrong"><div class="coach">😈 ${retorts[Math.min(QS.wrongs-1, retorts.length-1)]}</div></div>`;
+    drawQuestBeat();  // retry the SAME taunt — no penalty, ever
+  }
+}
+function qsNext(){ QS.answered = false; QS.fbHtml = ""; QS.lit = false; QS.bi++; drawQuestBeat(); }
+function finishChapter(){
+  const ch = QS.ch, ci = QS.ci;
+  const stars = QS.misses + QS.borrows === 0 ? 3 : QS.misses + QS.borrows <= 1 ? 2 : 1;
+  const first = !S.quest.cleared.includes(ch.id);
+  S.quest.stars[ch.id] = Math.max(S.quest.stars[ch.id]||0, stars);
+  const sticker = "stq"+(ci+1);
+  const stItem = SHOP.find(i=>i.id===sticker);
+  QS = null;
+  if (first){
+    S.quest.cleared.push(ch.id);
+    if (stItem && !S.owned.includes(sticker)) S.owned.push(sticker);
+    addCoins(40);
+    save();
+    hypeShow({emoji:ch.emoji, head:"Chapter "+(ci+1)+" cleared!", line:ch.winLine||"The fog pretends it wasn't moved.",
+      prize:"+40 🪙 · "+"⭐".repeat(stars) + (stItem?` · Little Book page: ${stItem.emoji} ${stItem.name}`:""),
+      onClose:()=>checkAchv()});
+    renderQuest();
+  } else {
+    addCoins(10);
+    save(); toast("The fog remembers this one. +10 🪙 for the re-read."); renderQuest();
+  }
+}
+function renderQuest(){
+  const el = document.getElementById("s-quest");
+  if (QS) return drawQuestBeat();
+  const cleared = S.quest.cleared;
+  const bookPages = QUESTS.map((ch,i)=>SHOP.find(x=>x.id==="stq"+(i+1))).filter(x=>x && S.owned.includes(x.id));
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">← dojo</button>
+    <div class="qgothic">
+      <h1 style="font-family:inherit;">📖 The Unbothered Quest</h1>
+      <p style="color:var(--dim);margin:6px 0 18px;font-family:inherit;">Wren the Unbothered walks into the Gloomwood, where every weird thing demands a reaction.
+      She intends to give them none. ${petNm()} trotted along beside her, unimpressed, as is correct.</p>
+      <div class="pkgrid" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr));">
+        ${QUESTS.map((ch,i)=>{
+          const done = cleared.includes(ch.id);
+          const open = !done && i === cleared.length;
+          const st = S.quest.stars[ch.id]||0;
+          return `<div class="pkcard ${done||open?"":"pklock"}" ${open?`data-open="${i}"`:done?`data-open="${i}"`:""}>
+            <span class="pkface">${done?"🌕":open?"🌙":"🌑"}</span>
+            <b>${i+1}. ${ch.name}</b>
+            <span class="pkbelt">${done?`cleared · ${"⭐".repeat(st)}` : open ? "open chapter" : "the previous fog must be cleared first"}</span>
+            ${done?`<span class="pkbelt" style="color:var(--bamboo);">tap to read again</span>`:""}</div>`;
+        }).join("")}
+        <div class="pkcard pklock"><span class="pkface">🌫️</span><b>…eight chapters await</b>
+          <span class="pkbelt">the fog is still writing the rest. Chapter 2 lands soon.</span></div>
+      </div>
+      <p style="color:var(--dim);margin-top:16px;font-family:inherit;">📕 The Little Book of Former Weirdos: <b style="color:var(--ink);">${bookPages.length}</b> page${bookPages.length===1?"":"s"}
+        ${bookPages.length?bookPages.map(p=>p.emoji).join(" "):""}</p>
+    </div>`;
+  el.querySelectorAll("[data-open]").forEach(c=>c.onclick=()=>{
+    const i = +c.dataset.open;
+    const done = S.quest.cleared.includes(QUESTS[i].id);
+    if (done){ if (confirm("Re-read this chapter? No coins-sticker twice — the fog remembers.")) startChapter(i, true); }
+    else startChapter(i);
+  });
+}
+/* ---- story pack: export / import / restore (panel) ---- */
+const STORY_KEYS = { ch:["name","vill","winLine","artPrompt"], sc:["name","setup","artPrompt"], beat:["text","taunt","mode","hint","fbBest","fbOk","retorts","opts"] };
+function storyPick(obj, keys){
+  const p = {};
+  keys.forEach(k=>{ if (obj[k]!==undefined) p[k]=obj[k]; });
+  if (p.opts){
+    const opts = p.opts.filter(o=>o && typeof o.l==="string" && ["best","ok","wrong"].includes(o.q));
+    if (opts.length >= 2 && opts.some(o=>o.q==="best")) p.opts = opts.slice(0,4); else delete p.opts;
+  }
+  return p;
+}
+function importStoryJson(txt){
+  let data; try { data = JSON.parse(txt); } catch(e){ toast("That wasn't valid JSON"); return; }
+  const chs = Array.isArray(data) ? data : (data && Array.isArray(data.chapters) ? data.chapters : null);
+  if (!chs){ toast("Need a list, or {\"chapters\":[…]}"); return; }
+  const known = {};
+  QUESTS.forEach(ch=>{ known[ch.id]="ch";
+    (ch.intro||[]).forEach(b=>known[b.id]="beat");
+    (ch.scenes||[]).forEach(sc=>{ known[sc.id]="sc"; (sc.beats||[]).forEach(b=>known[b.id]="beat"); }); });
+  let n=0, skipped=0;
+  for (const c of chs){
+    if (!known[c.id]){ skipped++; continue; }
+    S.questOv[c.id] = Object.assign(S.questOv[c.id]||{}, storyPick(c, STORY_KEYS.ch)); n++;
+    (c.intro||[]).forEach(b=>{ if(known[b.id]){ S.questOv[b.id]=Object.assign(S.questOv[b.id]||{},storyPick(b,STORY_KEYS.beat)); n++; } else skipped++; });
+    (c.scenes||[]).forEach(sc=>{
+      if (!known[sc.id]){ skipped++; return; }
+      S.questOv[sc.id] = Object.assign(S.questOv[sc.id]||{}, storyPick(sc,STORY_KEYS.sc)); n++;
+      (sc.beats||[]).forEach(b=>{ if(known[b.id]){ S.questOv[b.id]=Object.assign(S.questOv[b.id]||{},storyPick(b,STORY_KEYS.beat)); n++; } else skipped++; });
+    });
+  }
+  save();
+  toast(`story imported — ${n} piece${n===1?"":"s"} updated${skipped?`, ${skipped} unknown id${skipped===1?"":"s"} skipped`:""}`);
+  if (typeof renderParent === "function") renderParent();
+}
+function restoreStory(){
+  if (!Object.keys(S.questOv||{}).length){ toast("Story is already at the original words"); return; }
+  if (!confirm("Restore the original story text? Your imported edits (edited taunts, lines, options) will be removed. Story PROGRESS stays.")) return;
+  S.questOv = {}; save(); toast("the Gloomwood is back to its original script 📖"); renderParent();
+}
+function exportStory(){
+  const blob = new Blob([JSON.stringify(effStoryPack(),null,1)],{type:"application/json"});
+  const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="snapback-story.json"; a.click();
 }
 
 /* ============================================================ parent panel */
@@ -2078,6 +2448,17 @@ function renderParent(){
   <div class="field"><label>Search the pack (${allScenarios().length} cards)</label><input id="scSearch" placeholder="search taunts…"></div>
   <div id="scList" style="max-height:320px;overflow-y:auto;"></div>
   <hr>
+  <h3>📖 Story mode — pack</h3>
+  <p style="font-size:14px;color:var(--dim);margin-bottom:10px;">Every chapter text, taunt and answer option lives in this JSON, including the ComfyUI image prompts (<code>artPrompt</code>). Export, edit the words in any editor, import back — matching ids only. ${Object.keys(S.questOv).length ? `<b style="color:var(--gold);">${Object.keys(S.questOv).length} parts currently edited by you.</b>` : "No edits — the fog's original script."} Story <i>progress</i> is separate and survives all of this.</p>
+  <div class="row" style="margin-bottom:10px;">
+    <button class="btn secondary" id="storyExport">⬇ export story (JSON)</button>
+    <button class="btn secondary" id="storyImportBtn">⬆ import story file</button>
+    <button class="btn secondary" id="storyRestore">↩ restore default story</button>
+  </div>
+  <input type="file" id="storyFile" accept=".json" style="display:none;">
+  <div class="field"><label>…or paste story JSON</label><textarea id="storyPaste" rows="3" placeholder='{"chapters":[{"id":"ch1","scenes":[{"id":"ch1s1","beats":[{"id":"ch1s1t1","taunt":"…"}]}]}]}'></textarea></div>
+  <button class="ghost" id="storyPasteBtn">import pasted story JSON</button>
+  <hr>
   <h3>Stuck scenes (conversation starters for you two)</h3>
   ${stuck.length?stuck.map(s=>`<div class="listrow">${VILLAINS[s.villain].emoji} “${s.taunt.slice(0,55)}…” <span style="color:var(--red);font-size:12px;">${S.seen[s.id].wrong}✗/${S.seen[s.id].correct||0}✓</span></div>`).join(""):`<p style="color:var(--dim);font-size:14px;">nothing stuck yet 🎉</p>`}
   <hr>
@@ -2126,6 +2507,12 @@ function renderParent(){
     if(parentEditing) parentEditing = null;
     save(); toast("starter pack restored 🥋"); renderParent();
   };
+  $("storyExport").onclick = exportStory;
+  $("storyImportBtn").onclick = ()=>$("storyFile").click();
+  $("storyFile").onchange = e=>{ const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader(); r.onload=()=>importStoryJson(String(r.result)); r.readAsText(f); };
+  $("storyPasteBtn").onclick = ()=>importStoryJson($("storyPaste").value);
+  $("storyRestore").onclick = restoreStory;
   $("coinGift").onclick = ()=>{ addCoins(50, "🎁 Dad tax, refunded. Balance: "+(S.coins)+" coins"); checkAchv(); };
   $("resetProg").onclick = resetProgress;
   P.querySelectorAll("[data-accrn]").forEach(b=>b.onclick=()=>{
