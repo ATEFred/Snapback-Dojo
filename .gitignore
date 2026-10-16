@@ -9,3 +9,4 @@ audio/
 # misc
 *.log
 __pycache__/
+quest-art/

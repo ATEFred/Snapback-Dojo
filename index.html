@@ -1978,17 +1978,17 @@ function resetProgress(){
    the villain just gets FUNNIER and you try the same taunt again. No walls, ever. */
 const QUESTS = [
   { id:"ch1", name:"The Stolen Meow", vill:"Echo the Mimic Imp", emoji:"🧵", meter:"🫙 Echo's jar",
-    artPrompt:"a crooked stitched shadow-imp with mismatched button eyes cradling a glowing jar labeled MROW, spiral bare trees, twilight, storybook gothic whimsy",
+    artPrompt:"a crooked stitched shadow-imp with mismatched button eyes cradling a glowing glass jar, a cat-shaped wisp of light leaking from the lid, spiral leaning bare trees, twilight, storybook gothic whimsy",
     winLine:"The meow came home slightly dented, which is how meows do.",
     intro:[
       {t:"narr", id:"ch1i1", text:"The Gloomwood keeps its own hours. It is always nearly bedtime. The trees lean in to listen, and the fog has opinions about your boots."},
-      {t:"narr", id:"ch1i2", text:"Wren the Unbothered had walked eleven minutes inside when her cat said \u201cMROW!\u201d — and the mrow never reached the ground. Something caught it out of the air."},
-      {t:"vill", id:"ch1i3", text:"Heh. Heh-heh. Nice meow. Mine now. Don't stare — I paid for it. With a HEH. That's currency here. I'm rich. I have nine hundred hehs."},
+      {t:"narr", id:"ch1i2", art:"ch1i2", artPrompt:"a glowing wisp shaped like a leaping cat snatched out of the air by two quick stitched hands, a girl in an ink-blue coat reaching too late with a perfectly unbothered face, grumpy grey tabby cat below, twilight spiral forest", text:"Wren the Unbothered had walked eleven minutes inside when her cat said \u201cMROW!\u201d — and the mrow never reached the ground. Something caught it out of the air."},
+      {t:"vill", id:"ch1i3", art:"ch1i3", artPrompt:"close portrait of a small crooked patchwork fabric imp with mismatched button eyes and a lopsided stitched smile, holding up a glowing glass jar smugly, standing on a gnarled tree root, deep indigo twilight", text:"Heh. Heh-heh. Nice meow. Mine now. Don't stare — I paid for it. With a HEH. That's currency here. I'm rich. I have nine hundred hehs."},
       {t:"sensei", id:"ch1i4", text:"Quietly, so the fog doesn't gossip about it: that's Echo the Mimic. Now here is the thing about Echo — he doesn't eat food. He eats REACTIONS. Panic is a delicacy. Anger is a feast. An argument is a five-course meal he can season for weeks. He has exactly one weak stomach: your own words, repeated back at him flat and bored, like a waiter reading today's soup back to him. A mimic cannot digest a mirror. There's nothing to chew on a repeat. Every flat line you hand back, his jar springs another leak — and an empty jar is just a bored little stitch-thing holding glass. Three bored lines. That's the whole hunt. Don't chase, don't beg, don't explain yourself — hand his words straight back."},
     ],
     scenes:[
       { id:"ch1s1", name:"The Hollow of Borrowed Noise", setup:"a hollow of stacked stones where lost echoes hang like laundry",
-        artPrompt:"a crooked hollow of stacked leaning stones with glowing scraps of words hanging on washing lines between them, twilight, whimsical gothic storybook",
+        artPrompt:"a crooked hollow of stacked leaning standing stones with glowing wisps of captured sound hanging on washing lines between them like laundry, twilight indigo, whimsical gothic storybook",
         beats:[
           {t:"taunt", id:"ch1s1t1", mode:"pick", form:"parrot",
            taunt:"Nice meow. Mine now. You don't need it. You have, like, forty other noises.",
@@ -2002,7 +2002,7 @@ const QUESTS = [
            fbOk:"🦉 Dry, short, zero panic — hardly any flavour to chew. He chokes on it anyway. Another plop out of the jar.",
            retorts:[
              "Oh NO. BEGGING. My absolute FAVOURITE. He uncorks an empty jar. Please, keep explaining why you need it back — it pairs beautifully with everything.",
-             "\u201cTrash and string\u201d? He holds up his tiny stitched name tag: THAT is my legal name, and I HATE it, which makes it DELICIOUS. Insults aren't wounds to a mimic. They're snacks. You're feeding him dinner."]},
+             "\u201cTrash and string\u201d? He holds up his tiny stitched name tag: THAT is my legal name, and I HATE it, which makes it DELICIOUS. Insults aren't wounds to a mimic. They're snacks. You're feeding him dinner."], art:"ch1s1t1", artPrompt:"a small patchwork button-eyed imp leaning toward a very calm ten-year-old girl, one hand over its stitched mouth mocking her, glowing jar in the other hand, the girl shows nothing, her grey tabby cat more unimpressed than the imp, hollow of leaning stones behind"},
           {t:"taunt", id:"ch1s1t2", mode:"pick", form:"parrot",
            taunt:"MINE. MINE. MINE. It's in my jar now. Next I'm taking your \u201chi.\u201d You'll forget how you even say it.",
            opts:[
@@ -2015,7 +2015,7 @@ const QUESTS = [
            fbOk:"🦉 A reaction, but a cold one — food from the back of the fridge. He'll eat it, but he hates it. Jar still leaks.",
            retorts:[
              "\u201cHi is MOST important\u201d — he caps it, labels it, shelves it right next to the meow. You didn't get the meow back. You joined the collection.",
-             "He stares at your cat, needing her to care. She doesn't. It wrecks him — and wrecked-him is still him, still chewing, still holding your meow. Retry. Flavourless this time."]},
+             "He stares at your cat, needing her to care. She doesn't. It wrecks him — and wrecked-him is still him, still chewing, still holding your meow. Retry. Flavourless this time."], art:"ch1s1t2", artPrompt:"the stitched imp presenting a glowing glass jar proudly next to a faint wisp shaped like a question, while a bored girl holds out her open hand like a calm librarian demanding a return, standing stones and echo-laundry behind"},
           {t:"taunt", id:"ch1s1t3", mode:"pick", form:"parrot",
            taunt:"Fine! FINE. Want it back? Say something clever. Everyone in the Gloomwood says something clever. Everyone RUNS, mostly. Terrible television.",
            opts:[
@@ -2028,9 +2028,9 @@ const QUESTS = [
            fbOk:"🦉 A verdict, not a debate. No question mark, nothing to grab. He turns your line over looking for the bit where the argument starts, and there isn't one. Jar leaks anyway.",
            retorts:[
              "\u201cWhat if I can't\u2014\u201d YES. A QUESTION. Questions are doors, and he walks through them in his little sock feet. NEVER ask the Gloomwood a question. It has answers prepared, and they're all traps.",
-             "That one was TRUE, so it had WEIGHT — and weight is what he stores under his ribs. He curls around it, content. Meanness fills a mimic up. Boredom starves him. Try the other flavour."]},
-          {t:"vill", id:"ch1s1w1", text:"Stop it. STOP. It's not fun when you hand it back, it's like throwing at a MIRROR, mirrors are my one— (small sound escapes him) \u2014 did I just sigh? I didn't consent to that sigh."},
-          {t:"narr", id:"ch1s1w2", text:"The jar rattled. One stolen meow bounced out, landed in the moss slightly dented, rolled in a slow circle, and sat back down at your cat's feet like it had simply been out for air."},
+             "That one was TRUE, so it had WEIGHT — and weight is what he stores under his ribs. He curls around it, content. Meanness fills a mimic up. Boredom starves him. Try the other flavour."], art:"ch1s1t3", artPrompt:"the tiny imp perched on a leaning stone scribbling on a small notepad with a pencil stub, impatient and demanding, while the girl waits in complete silence with one eyebrow barely raised, fog leaning in to listen, twilight indigo"},
+          {t:"vill", id:"ch1s1w1", art:"ch1s1w1", artPrompt:"close view of a glowing glass jar cracking, a bright wisp of light slipping out through the crack, a small patchwork imp frozen in panic with fluttering hands, twilight hollow of stones", text:"Stop it. STOP. It's not fun when you hand it back, it's like throwing at a MIRROR, mirrors are my one— (small sound escapes him) \u2014 did I just sigh? I didn't consent to that sigh."},
+          {t:"narr", id:"ch1s1w2", art:"ch1s1w2", artPrompt:"a small glowing cat-shaped wisp of light landing softly in moss beside a plump grey tabby cat's paws, slightly dented, a tiny stitched imp blurred small in the background, gentle moonlight", text:"The jar rattled. One stolen meow bounced out, landed in the moss slightly dented, rolled in a slow circle, and sat back down at your cat's feet like it had simply been out for air."},
           {t:"sensei", id:"ch1s1w3", text:"Notice what you did NOT do: you never got louder. Three bored lines and the jar emptied itself. The Parrot is the laziest Fang in the dojo and it beats nearly everything. Word is spreading through the wood that you are inedible. Move on."},
         ]},
       { id:"ch1s2", name:"The Imp Follows Back", setup:"the path home — which now has a stalker, obviously",
@@ -2049,7 +2049,7 @@ const QUESTS = [
            fbOk:"🦉 Auditions are closed — one line, a door, no handle. Nothing to chew. Jar: plop.",
            retorts:[
              "\u201cWHAT is wrong with me\u201d — he GASPS — a QUESTION! You asked the Gloomwood a question! The trees are leaning in. The FOG is taking notes. Questions are his main course.",
-             "\u201cLonely\u201d lands. He goes quiet two whole seconds, then whispers: \u201c...that one's actually true, isn't it. Put it in the jar. It deserves in.\u201d Meanness doesn't hurt a mimic. It FEEDS a mimic. Starve him instead."]},
+             "\u201cLonely\u201d lands. He goes quiet two whole seconds, then whispers: \u201c...that one's actually true, isn't it. Put it in the jar. It deserves in.\u201d Meanness doesn't hurt a mimic. It FEEDS a mimic. Starve him instead."], art:"ch1s2t1", artPrompt:"view from behind: a small stitched imp heckling a walking girl with crossed arms and a theatrical bored expression, the girl keeps exactly the same pace mid-stride on a winding twilight path, one eyebrow slightly raised, cat trotting unbothered"},
           {t:"taunt", id:"ch1s2t2", mode:"pick", form:"parrot",
            taunt:"I'll follow you FOREVER. Every step, every sound, I'll do your voice BAD. You'll hate your own voice. You'll stop talking entirely. See? I HELP.",
            opts:[
@@ -2062,7 +2062,7 @@ const QUESTS = [
            fbOk:"🦉 You just made HIM think about his workflow. Thinking is indigestible for imps. He does as little of it as possible. Jar leaks.",
            retorts:[
              "\u201cGo away\u201d three times: he matches them into a pattern, hums it, rhymes it. You are now a SONG. This is how the wood gets bards, and the songs are always about someone who chased something.",
-             "You talk LOUDER. He does your voice LOUDER, badly, with jazz hands. Children three miles away are laughing at the sound — but he's grinning. Volume is flavour. Volume is literally his whole diet."]},
+             "You talk LOUDER. He does your voice LOUDER, badly, with jazz hands. Children three miles away are laughing at the sound — but he's grinning. Volume is flavour. Volume is literally his whole diet."], art:"ch1s2t2", artPrompt:"the patchwork imp mimicking a walking girl from behind with exaggerated jerky puppet movements like a bad ventriloquist act, curls of fog awkwardly imitating them both, long comic shadows, twilight path"},
           {t:"taunt", id:"ch1s2t3", mode:"pick", form:"parrot",
            taunt:"I'll do your LAUGH. Everyone loves an evil laugh. Heh. HEH heh. HEH. That's the laugh now. It's EVIL now. You'll never laugh normal again!",
            opts:[
@@ -2075,10 +2075,10 @@ const QUESTS = [
            fbOk:"🦉 \u201cSneeze with ambition\u201d — he's too busy working out if it's a compliment or an insult to eat it. Confusion is zero calories. Jar leaks anyway.",
            retorts:[
              "Panic is delicious AND mouldable — he bends your \u201cstop it\u201d into a catchphrase. He has a catchphrase now. About you. That's the sound of the jar filling back up.",
-             "Forced laughing: the Gloomwood can ALWAYS tell the difference between laughing and performing laughing. He winces for both of you. Even a starving monster has standards — don't snack on yourself."]},
-          {t:"vill", id:"ch1s2w1", text:"(the jar rattles violently) NO. STOP. STOP RETURNING THINGS. TAKE IT ALL — take the meow, take the hi, take my own STUPID hehs, take them, NONE of them were any good anyway—"},
-          {t:"narr", id:"ch1s2w2", text:"The jar popped. Fourteen stolen sounds left in a wobbly line and went home — a giggle from 1774, someone's whistle, three sneezes owned by nobody. Your cat's meow came last, circled twice, and sat on the Imp's foot."},
-          {t:"vill", id:"ch1s2w3", text:"(very small voice) ...Keep the meow. Nobody ever talks TO me, anyway. When I say HEH they all run. Do you know how LOUD running is?"},
+             "Forced laughing: the Gloomwood can ALWAYS tell the difference between laughing and performing laughing. He winces for both of you. Even a starving monster has standards — don't snack on yourself."], art:"ch1s2t3", artPrompt:"the tiny imp blowing enormous glowing laugh-bubbles shaped like crooked little crowns, trying very hard to look menacing and failing, ridiculous rather than scary, girl watching with one bored sideways glance"},
+          {t:"vill", id:"ch1s2w1", art:"ch1s2w1", artPrompt:"a glass jar bursting open, a dozen glowing sound-wisps of odd shapes bursting out in a wobbling spiral, the patchwork imp spinning in defeat with scraps fluttering, twilight forest clearing", text:"(the jar rattles violently) NO. STOP. STOP RETURNING THINGS. TAKE IT ALL — take the meow, take the hi, take my own STUPID hehs, take them, NONE of them were any good anyway—"},
+          {t:"narr", id:"ch1s2w2", art:"ch1s2w2", artPrompt:"wide moonlit shot: glowing sounds flying home in a wobbling procession above the leaning trees, a calm girl standing still, her grey tabby cat sitting firmly on the foot of a slumped defeated tiny imp, tender and funny", text:"The jar popped. Fourteen stolen sounds left in a wobbly line and went home — a giggle from 1774, someone's whistle, three sneezes owned by nobody. Your cat's meow came last, circled twice, and sat on the Imp's foot."},
+          {t:"vill", id:"ch1s2w3", art:"ch1s2w3", artPrompt:"close gentle scene: a very small patchwork imp sitting on a tree root looking lonely, looking up as a calm girl offers the empty glass jar back to him, soft moonlight through crooked branches, melancholy whimsy, not sad, not scary", text:"(very small voice) ...Keep the meow. Nobody ever talks TO me, anyway. When I say HEH they all run. Do you know how LOUD running is?"},
           {t:"sensei", id:"ch1s2w4", text:"And here is the twist the Gloomwood keeps folded in its pocket: the monsters here aren't mean because they're strong. They're mean because they're bored, and lonely, and nobody talks TO them — only at them, or away from them. Tuck that away. It explains a lot. Here... and elsewhere."},
           {t:"vill", id:"ch1s2w5", text:"I'll come along. As a SPY. A terrifying spy. Nobody suspects the small stitched one. If anything in this wood plots against you, I'll steal the plot straight out of the air. Fair warning: I will lose most of it. My pockets have holes. Emotional ones."},
         ]},
@@ -2266,7 +2266,7 @@ function renderQuest(){
   });
 }
 /* ---- story pack: export / import / restore (panel) ---- */
-const STORY_KEYS = { ch:["name","vill","winLine","artPrompt"], sc:["name","setup","artPrompt"], beat:["text","taunt","mode","hint","fbBest","fbOk","retorts","opts"] };
+const STORY_KEYS = { ch:["name","vill","winLine","artPrompt"], sc:["name","setup","artPrompt"], beat:["text","taunt","mode","hint","fbBest","fbOk","retorts","opts","art","artPrompt"] };
 function storyPick(obj, keys){
   const p = {};
   keys.forEach(k=>{ if (obj[k]!==undefined) p[k]=obj[k]; });

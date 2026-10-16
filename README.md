@@ -85,8 +85,12 @@ mean. Wren the Unboothered walks the Gloomwood with the dojo pet at her side; Se
 - **Story pack export / import / restore** in the parent panel: the entire story (text, taunts, options, coach
   lines, ComfyUI `artPrompt`s) is JSON with stable ids — edit it, import it back, restore anytime. Story
   *progress* is separate and survives story edits and progress resets.
-- **Art hooks:** each scene references `quest-art/<id>.png`; drop images there (later, via your ComfyUI batch)
-  and they appear automatically. The story runs happily on emoji art until then.
+- **Art:** each encounter, phase and story page references `quest-art/<id>.png` and shows it automatically
+  when the file exists. `gen_art.py` paints them all: it reads every `artPrompt` from the story pack
+  (chapter/scene/beat level), wraps it in the shared style anchor + character cast, and batch-generates via
+  ComfyUI with **Qwen Image 2.1** (`qwen_image_2.1_bf16` + Qwen3-VL encoder). LAN only, resumable:
+  `python3 gen_art.py` (skips existing) · `--only ch1s1t2` · `--force`. Edit any prompt in the story pack
+  export/import and regenerate just that id. Generated art is gitignored — it's all reproducible from the pack.
 
 ## Grown-up panel (⚙)
 
@@ -168,7 +172,7 @@ it can't. The AI, if configured, is your own local model.
 **Content**
 
 - [ ] Quest chapters 2–8 (arc fully mapped in design notes)
-- [ ] ComfyUI scene-art pipeline (`COMFY_BASE` + batch script + `artPrompt` fields, already in the story JSON)
+- [ ] Re-paint pass: review each generated scene, tune artPrompts in the story pack, regen single ids
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
 - [ ] Two-kid scenarios (the pair dynamic that matches the real situation at school)
 - [ ] Voice-note roleplay: the app speaks the taunt, she answers out loud, ASR + Sensei grade spoken delivery
