@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snap Back Dojo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥋</text></svg>">
+<style>
+:root{
+  --bg:#0e1216; --bg2:#151c22; --card:#1a232b; --card2:#212d37;
+  --ink:#e8eef2; --dim:#93a4b1; --bamboo:#7ac74f; --gold:#e8b64c;
+  --red:#e5604d; --blue:#5aa7d6; --purple:#a78bda; --line:#2b3844;
+  --radius:18px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%, #17222b 0%, var(--bg) 60%);
+  color:var(--ink);
+  font-family:"Segoe UI","Noto Sans",system-ui,sans-serif;
+  font-size:17px; line-height:1.45;
+}
+button{font:inherit; cursor:pointer; border:none; border-radius:14px;}
+input,textarea,select{
+  font:inherit; color:var(--ink); background:var(--bg2);
+  border:2px solid var(--line); border-radius:12px; padding:10px 14px; width:100%;
+}
+textarea{resize:vertical;}
+input:focus,textarea:focus,select:focus{outline:none; border-color:var(--bamboo);}
+header{
+  display:flex; align-items:center; gap:14px; padding:14px 20px;
+  border-bottom:1px solid var(--line); background:rgba(14,18,22,.85);
+  position:sticky; top:0; z-index:5; flex-wrap:wrap;
+}
+header .logo{font-size:22px; font-weight:800; letter-spacing:.5px;}
+header .logo em{color:var(--bamboo); font-style:normal;}
+.spacer{flex:1;}
+.chip{
+  background:var(--card); border:1px solid var(--line); border-radius:99px;
+  padding:6px 14px; font-size:14px; color:var(--dim); white-space:nowrap;
+}
+.chip b{color:var(--ink);}
+.chip.warn{border-color:var(--red); color:var(--red);}
+button.ghost{background:var(--card); color:var(--ink); border:1px solid var(--line); padding:6px 14px;}
+button.ghost:hover{background:var(--card2);}
+main{max-width:980px; margin:0 auto; padding:24px 20px 80px;}
+.screen{display:none;}
+.screen.on{display:block; animation:fade .25s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1;}}
+h1{font-size:26px; margin-bottom:4px;}
+h2{font-size:21px; margin-bottom:10px;}
+.sub{color:var(--dim); margin-bottom:22px;}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px;}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px; text-align:left;
+}
+button.card{transition:transform .12s ease, border-color .12s;}
+button.card:hover{transform:translateY(-3px); border-color:var(--bamboo);}
+.card .big{font-size:34px;}
+.card h3{font-size:19px; margin:8px 0 4px;}
+.card p{color:var(--dim); font-size:15px;}
+.tag{
+  display:inline-block; font-size:12px; font-weight:700; letter-spacing:.5px;
+  border-radius:99px; padding:2px 10px; margin-bottom:6px; text-transform:uppercase;
+}
+.tag.shield{background:#1d3a4d; color:var(--blue);}
+.tag.fang{background:#4d231d; color:var(--red);}
+.tag.locked{background:#33303f; color:var(--purple);}
+.tag.custom{background:#2c3d1f; color:var(--bamboo);}
+/* xp bar */
+.beltbar{display:flex; align-items:center; gap:14px; margin:4px 0 26px;}
+.beltbar .track{flex:1; height:14px; background:var(--bg2); border-radius:99px; overflow:hidden; border:1px solid var(--line);}
+.beltbar .fill{height:100%; background:linear-gradient(90deg,var(--bamboo),var(--gold)); width:0%; transition:width .5s;}
+/* drill */
+.stage{max-width:760px; margin:0 auto;}
+.scene{display:flex; gap:14px; align-items:center; margin-bottom:10px;}
+.avatar{
+  font-size:38px; width:64px; height:64px; display:flex; align-items:center; justify-content:center;
+  background:var(--card2); border-radius:50%; border:2px solid var(--line); flex-shrink:0;
+}
+.setup{color:var(--dim); font-size:15px;}
+.bubble{
+  background:var(--card2); border:1px solid var(--line); border-radius:16px 16px 16px 4px;
+  padding:16px 18px; font-size:20px; margin:12px 0 18px; position:relative;
+}
+.replay{
+  background:var(--bg2); color:var(--dim); border:1px solid var(--line);
+  border-radius:99px; padding:4px 14px; font-size:14px; margin-bottom:18px;
+}
+.opt{
+  display:block; width:100%; text-align:left; background:var(--card); color:var(--ink);
+  border:2px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px;
+  font-size:17px;
+}
+.opt:hover:not(:disabled){border-color:var(--bamboo);}
+.opt.correct{border-color:var(--bamboo); background:#1d3317;}
+.opt.okish{border-color:var(--gold); background:#33301a;}
+.opt.wrongpick{border-color:var(--red); background:#331714;}
+.opt:disabled{opacity:.85; cursor:default;}
+.answerbox{display:flex; gap:10px; margin-bottom:10px;}
+.answerbox textarea{min-height:56px;}
+.modebtns{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+.btn{
+  background:var(--bamboo); color:#0c1208; font-weight:800; padding:12px 22px; border-radius:14px;
+}
+.btn.secondary{background:var(--card2); color:var(--ink); border:1px solid var(--line); font-weight:600;}
+.btn.danger{background:var(--red); color:#fff;}
+.btn:disabled{opacity:.5;}
+.hintchip{font-size:13px; color:var(--dim); margin-bottom:14px;}
+/* feedback */
+.fb{border-radius:var(--radius); padding:18px; margin-top:8px; border:2px solid var(--line); background:var(--card);}
+.fb.best{border-color:var(--bamboo);} .fb.okish{border-color:var(--gold);} .fb.wrong{border-color:var(--red);}
+.fb .verdict{font-size:20px; font-weight:800; margin-bottom:6px;}
+.fb .coach{margin-bottom:8px;}
+.fb .better{color:var(--gold); margin-bottom:8px; font-size:15px;}
+.fb .why{color:var(--dim); font-size:15px;}
+.thinking{color:var(--dim); font-size:14px; animation:pulse 1.2s infinite;}
+@keyframes pulse{50%{opacity:.4;}}
+/* rapid fire */
+.rfbar{height:10px; background:var(--bg2); border-radius:99px; overflow:hidden; margin-bottom:18px; border:1px solid var(--line);}
+.rfbar .rffill{height:100%; background:var(--red); width:100%;}
+.combo{font-size:16px; font-weight:800; color:var(--gold); min-height:24px; margin-bottom:8px;}
+/* boss */
+.hpwrap{display:flex; align-items:center; gap:10px; margin-bottom:16px;}
+.hp{flex:1; height:18px; background:var(--bg2); border:1px solid var(--line); border-radius:99px; overflow:hidden;}
+.hp .in{height:100%; background:linear-gradient(90deg,var(--red),var(--gold)); transition:width .4s;}
+/* learn */
+.movecard .how{margin:10px 0 10px 20px; color:var(--dim);}
+.movecard .ex{
+  background:var(--bg2); border-left:4px solid var(--bamboo); padding:8px 14px;
+  border-radius:0 10px 10px 0; margin-bottom:8px; font-size:18px;
+}
+.movecard .say{display:flex; align-items:center; gap:10px; margin-bottom:6px; color:var(--dim); font-size:15px;}
+.backbtn{margin-bottom:18px;}
+/* parent modal */
+.modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:20;
+  overflow-y:auto; padding:30px 14px;
+}
+.modal.on{display:block;}
+.modal .inner{max-width:640px; margin:0 auto; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:24px;}
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:14px; color:var(--dim); margin-bottom:5px;}
+.row{display:flex; gap:10px; flex-wrap:wrap;}
+.row>*{flex:1;}
+.listrow{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:15px;}
+hr{border:none; border-top:1px solid var(--line); margin:20px 0;}
+/* bubbles minigame */
+#bubbles{
+  display:none; position:fixed; inset:0; background:rgba(10,14,18,.92); z-index:30; overflow:hidden;
+}
+#bubbles.on{display:block;}
+#bubbles .hud{position:absolute; top:14px; left:0; right:0; text-align:center; z-index:2; color:var(--dim);}
+#bubbles .hud b{color:var(--ink); font-size:22px;}
+.bub{
+  position:absolute; border-radius:50%; background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),rgba(122,199,79,.35));
+  border:2px solid rgba(122,199,79,.6); display:flex; align-items:center; justify-content:center;
+  color:var(--ink); font-weight:700; cursor:pointer; user-select:none; text-align:center; padding:6px;
+}
+.floatxp{
+  position:fixed; z-index:40; color:var(--gold); font-weight:900; pointer-events:none;
+  animation:rise 1.1s ease-out forwards; font-size:20px;
+}
+@keyframes rise{to{transform:translateY(-70px); opacity:0;}}
+.done-quote{font-size:24px; font-weight:800; color:var(--bamboo); margin:16px 0;}
+/* ===== coins, hype & shop ===== */
+header .logo{user-select:none;}
+.chip.coins{border-color:var(--gold); color:var(--gold); font-weight:800; cursor:pointer; background:var(--card);}
+.chip.coins.bump{animation:bump .5s cubic-bezier(.2,1.8,.4,1);}
+@keyframes bump{40%{transform:scale(1.4) rotate(-8deg);}}
+.floatcoin{position:fixed; z-index:50; color:var(--gold); font-weight:900; pointer-events:none; animation:rise 1.1s ease-out forwards; font-size:19px; text-shadow:0 2px 8px rgba(0,0,0,.6);}
+#confetti{position:fixed; inset:0; z-index:45; pointer-events:none; overflow:hidden;}
+.cfy{position:absolute; top:-24px; width:10px; height:15px; border-radius:3px; animation:cfyfall linear forwards; font-style:normal; font-size:20px;}
+@keyframes cfyfall{to{transform:translateY(115vh) rotate(720deg); opacity:.85;}}
+#hype{display:none; position:fixed; inset:0; background:rgba(5,8,11,.82); backdrop-filter:blur(3px); z-index:46; align-items:center; justify-content:center; padding:20px; cursor:pointer;}
+#hype.on{display:flex;}
+.hypebox{text-align:center; background:var(--card); border:2px solid var(--gold); border-radius:26px; padding:34px 40px; max-width:480px; animation:hypein .5s cubic-bezier(.2,1.7,.4,1);}
+@keyframes hypein{from{transform:scale(.25) rotate(-8deg); opacity:0;}}
+.hypebox .huge{font-size:74px; display:inline-block; animation:bob 1.1s ease-in-out infinite alternate;}
+@keyframes bob{to{transform:translateY(-12px) scale(1.07);}}
+.hypebox h2{font-size:26px; margin:12px 0 6px;}
+.hypebox p{color:var(--dim);}
+.hypebox .prize{color:var(--gold); font-weight:800; font-size:18px; margin-top:10px;}
+.hypebox .go{font-size:12px; margin-top:16px; opacity:.7;}
+.egg{font-size:92px; display:inline-block; animation:wob .9s ease-in-out infinite;}
+@keyframes wob{25%{transform:rotate(-14deg);} 75%{transform:rotate(14deg);}}
+.opt.wrongpick{animation:shake .45s;}
+@keyframes shake{20%{transform:translateX(-8px);} 40%{transform:translateX(7px);} 60%{transform:translateX(-5px);} 80%{transform:translateX(4px);}}
+.shopgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-bottom:22px;}
+.shopitem{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:13px 14px; display:flex; gap:12px; align-items:center;}
+.shopitem .ic{font-size:32px; flex-shrink:0;}
+.shopitem h4{font-size:15px; margin-bottom:2px;}
+.shopitem .cd{color:var(--dim); font-size:12.5px; line-height:1.3;}
+.shopitem .act{margin-left:auto; flex-shrink:0;}
+.cost{color:var(--gold); font-weight:800; font-size:14px;}
+.cost.short{color:var(--dim); font-weight:600;}
+.wallgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(86px,1fr)); gap:10px; margin-bottom:20px;}
+.cell{aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:36px; background:var(--card); border:1px solid var(--line); border-radius:16px; animation:hypein .4s cubic-bezier(.2,1.7,.4,1);}
+.cell small{font-size:10px; color:var(--dim); font-weight:600;}
+.cell.empty{border-style:dashed; color:var(--line); font-size:22px;}
+.tabs{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.tabs button{background:var(--card); border:1px solid var(--line); color:var(--dim); padding:8px 16px; border-radius:99px;}
+.tabs button.on{background:var(--card2); color:var(--ink); border-color:var(--bamboo); font-weight:700;}
+.trophy{display:flex; gap:12px; align-items:center; padding:12px 14px; border:1px solid var(--line); border-radius:14px; margin-bottom:8px; background:var(--card);}
+.trophy.locked{opacity:.45;}
+.trophy .ic{font-size:30px;}
+.trophy .coins-tag{margin-left:auto; color:var(--gold); font-weight:800; font-size:14px; white-space:nowrap;}
+.coinbank{font-size:34px; font-weight:900; color:var(--gold); margin-bottom:4px;}
+/* ===== dojo pet ===== */
+#miniPet{font-size:24px; cursor:pointer; transition:transform .3s; display:inline-block;}
+#miniPet:hover{transform:scale(1.25) rotate(-8deg);}
+.petcard{display:flex; align-items:center; gap:16px; margin:4px 0 22px; cursor:pointer; width:100%; transition:transform .12s, border-color .12s;}
+.petcard:hover{transform:translateY(-2px); border-color:var(--gold);}
+.petwrap{position:relative; font-size:54px; width:84px; height:84px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.petwrap .petbody{animation:bob 1.6s ease-in-out infinite alternate;}
+.petwrap .acc{position:absolute; top:-6px; right:-8px; font-size:26px;}
+.petwrap.aura-fire{filter:drop-shadow(0 0 12px rgba(229,96,77,.75));}
+.petwrap.aura-fire .petbody{animation:bob 1.1s ease-in-out infinite alternate, tigerglow 1.8s ease-in-out infinite alternate;}
+@keyframes tigerglow{to{filter:drop-shadow(0 0 16px rgba(232,182,76,.9));}}
+.petinfo b{font-size:18px;}
+.petinfo .petnext{color:var(--dim); font-size:13.5px; margin-top:3px;}
+.ladder{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 6px; justify-content:center;}
+.ladder .st{font-size:28px; background:var(--bg2); border:2px solid var(--line); border-radius:12px; padding:7px 10px; line-height:1;}
+.ladder .st.locked{opacity:.3; filter:grayscale(1);}
+.ladder .st.now{border-color:var(--gold); box-shadow:0 0 12px rgba(232,182,76,.4);}
+.petactions{display:flex; gap:8px; justify-content:center; margin-top:14px; flex-wrap:wrap;}
+.petactions>*{flex:0 1 auto;}
+/* ===== ninjas / accounts ===== */
+#acctPick{display:none; position:fixed; inset:0; background:radial-gradient(1100px 550px at 50% -10%, var(--bg2) 0%, var(--bg) 65%); z-index:60; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
+#acctPick.on{display:flex;}
+.pkbox{max-width:660px; width:100%; text-align:center;}
+.pkbox h1{font-size:29px; margin-bottom:6px;}
+.pkgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; margin-bottom:20px;}
+.pkcard{background:var(--card); border:2px solid var(--line); border-radius:20px; padding:20px 12px; cursor:pointer; transition:transform .12s, border-color .12s; position:relative;}
+.pkcard:hover{transform:translateY(-3px) scale(1.02); border-color:var(--bamboo);}
+.pkdel{position:absolute; top:8px; right:8px; width:26px; height:26px; border-radius:50%; background:var(--bg2); border:1px solid var(--line); color:var(--dim); font-size:12px; line-height:1; opacity:.5;}
+.pkdel:hover{background:var(--red); color:#fff; border-color:var(--red); opacity:1;}
+.pkcard .pkface{font-size:52px; display:block; animation:bob 1.4s ease-in-out infinite alternate;}
+.pkcard b{display:block; margin-top:8px; font-size:17px;}
+.pkcard .pkbelt{color:var(--dim); font-size:12.5px; margin-top:4px; display:block;}
+.pkcard.newpk{border-style:dashed; color:var(--dim); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:38px;}
+#pkCreate{display:none; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; text-align:left;}
+#pkCreate.on{display:block;}
+.avpick{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px;}
+.avpick button{font-size:26px; background:var(--bg2); border:2px solid var(--line); border-radius:12px; padding:6px 10px;}
+.avpick button.sel{border-color:var(--gold); background:var(--card2);}
+#userChip{cursor:pointer;}
+#userChip:hover{border-color:var(--bamboo); color:var(--ink);}
+/* silly themes */
+body.theme-candy{--bg:#1c1021; --bg2:#29172f; --card:#33213c; --card2:#402a4b; --ink:#ffeef8; --dim:#d3a9cd; --bamboo:#ff8ac2; --gold:#ffd166; --red:#ff6f91; --blue:#8ec5ff; --purple:#c9a0ff; --line:#4d2e59;}
+body.theme-candy{background:radial-gradient(1200px 600px at 50% -10%, #3d1550 0%, var(--bg) 60%);}
+body.theme-space{--bg:#080a1a; --bg2:#101430; --card:#161d3d; --card2:#1e2750; --ink:#e6f2ff; --dim:#8fa3d9; --bamboo:#3ef0c8; --gold:#ffe066; --red:#ff5d8f; --blue:#4dc9ff; --purple:#9b8cff; --line:#2a3566;}
+body.theme-space{background:radial-gradient(1200px 600px at 50% -10%, #1b1450 0%, var(--bg) 60%);}
+body.theme-toad{--bg:#0d1a10; --bg2:#152519; --card:#1c3122; --card2:#24402c; --ink:#eefdee; --dim:#a3c9a8; --bamboo:#7cf06e; --gold:#ffd75e; --red:#ff8a5c; --blue:#7fd4c1; --purple:#b5e08a; --line:#2e4a36;}
+body.theme-toad{background:radial-gradient(1200px 600px at 50% -10%, #16401f 0%, var(--bg) 60%);}
+body.theme-duck{--bg:#1f1708; --bg2:#2c2210; --card:#382c15; --card2:#46371c; --ink:#fff6e4; --dim:#d6bd8e; --bamboo:#ffc93c; --gold:#ffe89a; --red:#ff7a45; --blue:#7cc7ff; --purple:#e8a0ff; --line:#54431f;}
+body.theme-duck{background:radial-gradient(1200px 600px at 50% -10%, #4a3208 0%, var(--bg) 60%);}
+@media (max-width:600px){
+  .bubble{font-size:18px;}
+  main{padding:16px 12px 60px;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🥋 Snap Back <em>Dojo</em> <span id="miniPet" title="your dojo pet">🐱</span></div>
+  <span class="chip" id="beltChip">🤍 White Rope</span>
+  <span class="chip coins" id="coinChip" title="Treasure Grotto">🪙 0</span>
+  <span class="chip" id="streakChip">🔥 <b>0</b></span>
+  <span class="chip" id="userChip" title="ninjas">👤</span>
+  <div class="spacer"></div>
+  <span class="chip" id="aiChip">…</span>
+  <button class="ghost" id="gearBtn" title="Grown-up settings">⚙</button>
+</header>
+<main>
+  <section class="screen" id="s-home">
+    <h1>Welcome back to the dojo</h1>
+    <p class="sub" id="homeSub">Train a little most days. Reflexes beat overthinking.</p>
+    <div class="beltbar">
+      <span id="beltName">White Rope</span>
+      <div class="track"><div class="fill" id="xpFill"></div></div>
+      <span class="chip" id="xpChip">0 XP</span>
+    </div>
+    <div id="petStrip"></div>
+    <div class="grid" id="homeTiles"></div>
+  </section>
+  <section class="screen" id="s-learn"></section>
+  <section class="screen" id="s-drill"></section>
+  <section class="screen" id="s-rapid"></section>
+  <section class="screen" id="s-boss"></section>
+  <section class="screen" id="s-book"></section>
+  <section class="screen" id="s-loot"></section>
+</main>
+<div class="modal" id="parentModal"><div class="inner" id="parentInner"></div></div>
+<div id="bubbles"><div class="hud">Pop the nonsense — <b id="bubScore">0</b> · <b id="bubTime">60</b>s</div></div>
+<div id="confetti"></div>
+<div id="hype"></div>
+<div id="acctPick"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   SNAP BACK DOJO — all content + logic.
+   Curriculum: 4 Shields, 6 Fangs. Scenarios: best/ok/wrong.
+   ============================================================ */
+
+const FORMS = {
+  reporter:{name:"The Reporter", track:"shield", emoji:"🎙️", use:"situational",
+    why:"Use ONLY when what she said already sounded weird out loud — loud public cruelties, vague 'everybody hates you' stuff. Ask once, slow, like a judge inspecting something stupid, then let the silence verdict her. <b>Never ask out of curiosity</b> — a curious 'why?' invites her to explain the insult in more detail, and she'll enjoy that. If her line is simple and mean ('ugly jumper'), don't interview her. Flip it, yawn, or dismiss it.",
+    how:["Check first: did what she said ALREADY sound dumb? Yes → this move works. No → use a Fang.",
+         "One question only, slow and flat: <b>who exactly</b>, <b>why would you say that out loud</b>.",
+         "Then stop. Silence is the verdict. Never let it become a conversation — answer or not, deliver a line and leave."],
+    lines:["“Why would you say that out loud?” (slow, judge-voice — then just look at her)","“Who exactly said that?” (flat — vagueness dies under specifics)","“What did you just say?” (flat, eyebrow up — making her repeat it kills it)","“Are you okay?” (gentle — only when the cruelty itself is the weird part)"],
+    tip:"Delivery: curious like a judge, never hurt like a student. One question, then the verdict or the walk — the moment you two are having a chat, she's won the floor.","hint":"ONE rhetorical judge-question — only if what she said already sounds dumb out loud. Never curious."},
+  fog:{name:"The Fog Wall", track:"shield", emoji:"🌫️",
+    why:"An insult is a ball thrown at you. Agreeing + being bored means there is nothing for it to bounce off. She came for a reaction and got fog.",
+    how:["Agree with the true part of it (or all of it).",
+         "Add something bored or silly.",
+         "Then move on with your day — visibly unbothered."],
+    lines:["Yeah, windy. Wild day. Anyway—","Guilty. I actually try. It's a whole thing.","Mm, probably. I'm a listener.","Tell me something I don't know. Tragic, I know."],
+    tip:"Delivery: like she told you it was Tuesday. Bored beats angry every time.","hint":"Agree with the true part, bored. Give the insult nothing to grab, then move on."},
+  loop:{name:"The Loop", track:"shield", emoji:"🔁",
+    why:"When they PRESS you (demand things, dare you, push you to say stuff), every new sentence gives them something to grab. One word, repeated, has nothing to grab.",
+    how:["Say one word: <b>No.</b>",
+         "She pushes? Same word. Same flat voice.",
+         "No reasons, no excuses, no new sentences. People give up on walls."],
+    lines:["No.","I said no.","Nope. No.","Not happening."],
+    tip:"Delivery: same words, same tone, like a broken record. Do NOT add a second sentence.","hint":"One flat word: No. No reasons, no second sentence."},
+  exit:{name:"The Exit", track:"shield", emoji:"🚪",
+    why:"The black-belt move. Some things are not comeback problems — they are pattern problems (daily targeting, group chats, threats). Evidence + grown-ups beats any burn. Exiting is not losing. It is escalating properly, first.",
+    how:["In the moment: stay calm, say little, get somewhere safe.",
+         "After: write down or screenshot EXACTLY what happened, with dates.",
+         "Show a grown-up specifics: <i>the same thing, third time, here are three examples.</i>"],
+    lines:["Pass. (keep walking)","No thanks. (flat face, back away)","It's this again, every day — I'm getting a teacher."],
+    tip:"Rule of three: same thing happens 3 times = it's a pattern. Patterns get reported.","hint":"This isn't a comeback problem, it's an evidence problem. What's the move that actually wins?"},
+  parrot:{name:"The Parrot", track:"fang", emoji:"🦜",
+    why:"You repeat her OWN words back, slow and bored. You said nothing new — so you can never be 'mean' — but she now has to hear how weird she sounds. She must explain or retreat. Both are awkward for her.",
+    how:["Repeat her exact words, slooow, slightly confused.",
+         "Then ask her to say it again, like it's a bit you missed.",
+         "Face: curious and unimpressed. Never mean."],
+    lines:["“Nobody likes you?” …Whoa. Say it slower.","“'Stop copying me, copycat.'” …Say it again. It sounded weird.","“Ac…tu…al…ly… cringey?” Do that bit again, I missed it."],
+    tip:"Delivery: like you're a judge at a talent show and she just bombed.","hint":"Borrow her exact words and hand them back slowly. Which word in what she said is the weird one?"},
+  rewrite:{name:"The Rewrite", track:"fang", emoji:"✏️",
+    why:"You treat her insult like a bad comedy act you're coaching. You are no longer the target — you're the judge. And her 'burn' becomes a rough draft.",
+    how:["Call it weak — as a JOKE, not as a fight.",
+         "Ask for another version, better, while you wait.",
+         "If she tries again and it's worse: 'That was worse. Sit down.'"],
+    lines:["Do it again but funnier. That was your rough draft.","Workshop it. You were close to funny. Close.","Insult me again but actually funny this time. Go on, I'll wait.","Auditions for funny are tomorrow. You can prepare."],
+    tip:"Delivery: playful, patient, like a teacher watching a very slow attempt. Do NOT laugh at her — smirk at the bit.","hint":"You're the comedy coach now; she's the amateur. Ask for another version, better."},
+  pity:{name:"The Pity", track:"fang", emoji:"🥺",
+    why:"When she's loud and ranting and you respond with soft sympathy in front of people, the whole audience sees a girl losing it and a girl who's fine. Instant status flip. She cannot stay furious being cooed at.",
+    how:["Soft 'Awww.' Head tilt. Eyes gentle.",
+         "Ask if she's okay. MEAN it. Weirdly, mean it.",
+         "If she rants more: 'You can keep going if you need to. I'm fine.'"],
+    lines:["Awww. Are you okay though? Really?","That sounds exhausting for you — caring about me all day.","Awww, you think about me loads. It's sweet, really.","Okay but… are YOU okay? This is a lot of energy for a Tuesday."],
+    tip:"Delivery: genuinely gentle, not sarcastic. The audience reads the tone, so the tone must be real.","hint":"She's trying very hard; you're perfectly fine. Concern beats cruelty in front of a crowd."},
+  yawn:{name:"The Yawn", track:"fang", emoji:"🥱",
+    why:"Her attack is supposed to be a big deal. You treat it as underwhelming — a mild nothing she's making a whole thing about. Attacks that get a yawn stop coming.",
+    how:["React like she read out the shopping list.",
+         "Short. Flat. Unbothered. Then turn back to your friend.",
+         "Best when she's trying HARD to upset you."],
+    lines:["Tell me when it gets interesting. Wait — is this the part?","That's it? I expected more.","Cool. Done?","Good for you. (slow single clap) Was that the bit?","That's a whole plan about MY Friday. Busy you."],
+    tip:"Delivery: half-lidded eyes, tiny shrug, then actually go back to what you were doing. That last bit is the punchline.","hint":"She came for drama. Give her underwhelmed. What's the most unbothered reply?"},
+  flip:{name:"The Flip", track:"fang", emoji:"🪃",
+    why:"Take the frame of her joke and bend it back at her — about the JOKE, never about her body, family or real life. A flip says: your words bounced back. A cruel counter-insult says: your words HURT.",
+    how:["Find the angle in her own words and aim it back gently.",
+         "Keep it short — one line, then stop.",
+         "Hard rule: never body, family, or actual cruel facts. That's not a flip, that's a confession she got to you."],
+    lines:["“Nice jumper, lose a fight?” → Yeah. Yours lost the same one.","“What are you looking at?” → You, mostly. It's a hobby now.","“You talk way too much.” → And you listen way too little. We all have flaws."],
+    tip:"Delivery: dry, quick, no grin. Then let it sit. Do not stick around to explain the joke.","hint":"Take the frame of her own joke and bend it back — at the joke, not the person."},
+  dismissal:{name:"The Dismissal", track:"fang", emoji:"👋",
+    why:"The fight is over when YOU say it's over. You end the scene and walk — which means SHE lost, because she didn't even get a second round. The walk IS the comeback.",
+    how:["One line that ends the 'show'.",
+         "Turn away. Actually walk. Get back to your person or place.",
+         "If she shouts 'don't ignore me' — that's the sound of it working."],
+    lines:["Come back when you've thought of something good. Door's open.","You'll get another go tomorrow. Practice tonight.","It was good enough for you. Time's up.","Nah — once was plenty. Work on yours.","Watch me. (keep walking)"],
+    tip:"Delivery: kind-ish, final, like ending a conversation with a little kid. Walk immediately after.","hint":"One line that ends the scene — delivered by you, on your timing. Then walk."},
+};
+const FORM_ORDER = ["parrot","fog","flip","rewrite","yawn","pity","dismissal","loop","reporter","exit"];
+
+const VILLAINS = {
+  copycat:{name:"The Copycat", emoji:"🦝", blurb:"Copies you, then accuses YOU of copying HER. Obsessed with what you wear, say and do."},
+  announcer:{name:"The Announcer", emoji:"📣", blurb:"Performs FOR an audience. Louder when people are watching. Needs eyes on her."},
+  gossip:{name:"The Gossip", emoji:"🐍", blurb:"Works sideways: 'everyone agrees', group chats, birthday invitations. Never says it to your face."},
+};
+
+/* id, form, villain, setup, taunt, best[], ok[], wrong[], why */
+const SCENARIOS = [
+{id:"rep1",form:"reporter",villain:"announcer",setup:"Cafeteria. She makes sure the next table can hear:",taunt:"Ugh, why does she ALWAYS sit near us? It's like she doesn't know she isn't invited.",
+ best:["\"'Invited'? Since when is the cafeteria a party? Do you have a guest list for lunch?\"", "\"Let me get this straight: you're complaining about proximity in an open room. Is that your big plan?\"", "\"You’re announcing it to the whole table? Bold strategy. Did you rehearse that in the mirror?\""],
+ ok:["I didn't ask."],
+ wrong:["At least I don't need to announce my presence because nobody cares!", "Why are you so obsessed with where I sit?"],
+ why:"Calm curiosity hands the awkwardness straight back to her — then the silence finishes her sentence. Insulting back tells the audience her words landed."},
+{id:"rep2",form:"parrot",villain:"copycat",setup:"At break, loudly, holding up her pencil case:",taunt:"Ew, stop copying me! You literally got the same pencil case as me.",
+ best:["(Slow, bored tone) \"'Stop copying me?'\" … Then: \"You watched me pick a pencil case that closely. Say that part again for the class?\"", "(Flatly) \"'Ew.'\" … Then: \"That's it? That's your big accusation? Repeat 'ew' one more time so I can hear how hard you're trying.\""],
+ ok:["Bold of you to admit you study my stuff that hard."],
+ wrong:["Well YOU copied my hair tie first!", "I don't even WANT your stupid pencil case—"],
+ why:"Parrot with a trap inside it: her own line, played back slow, plus the one true fact — she watches you harder than you watch her. Let the audience do the maths. Then walk."},
+{id:"rep3",form:"reporter",villain:"gossip",setup:"She corners you quietly, smiling:",taunt:"Just so you know, nobody actually wants you at their birthday. Everyone agrees.",
+ best:["(Stops, looks at her like she's reporting a weather forecast) \"Quote source? Name and date.\"", "\"Is that a verified fact or just your opinion wearing a disguise?\"", "\"So you're the press release for loneliness? Noted.\""],
+ ok:["Cool story.", "I'll check my inbox."],
+ wrong:["You’re the one with no friends, not me!", "Please stop saying that, it’s not true!"],
+ why:"Gossip runs on vagueness. Specific questions make it very uncomfortable for her and very safe for you. 'Why are you telling me?' exposes that she came FOR a reaction."},
+{id:"rep4",form:"yawn",villain:"announcer",setup:"After maths, to her friends but facing you:",taunt:"Everyone saw her answer on the board. It was WRONG. Everyone saw.",
+ best:["(Yawns loudly, checking nails) Wrong? Okay. Did you get a medal for spotting it?", "Everyone saw? Cool. I didn't see anyone clapping. Next."],
+ ok:["Mmhmm.", "Okay."],
+ wrong:["Well at least I was brave enough to try, you coward!", "It wasn't that wrong! I just made a small mistake, please stop shouting!"],
+ why:"Her whole bit needs a wound. A bored 'and?' deflates the big reveal — the wrong answer was already on the board; your shrug is the second, better one."},
+{id:"rep5",form:"flip",villain:"copycat",setup:"Blocky face, to anyone who'll listen:",taunt:"You're literally trying to be me. It's creepy.",
+ best:["“If I copied you, that’s a downgrade. Nobody’s THAT desperate.”", "“You’re so obsessed with me thinking about copying you? That’s the creepy bit.”"],
+ ok:["Sure, Jan.", "Okay."],
+ wrong:["ME? You've been wearing what I wear for MONTHS!", "Well at least nobody thinks I'M creepy!"],
+ why:"Flip rule: take her premise, test it in public daylight, conclusion = absurd. She wrote the joke; you wrote the ending, which is the part everyone remembers."},
+
+{id:"fog1",form:"fog",villain:"announcer",setup:"She spots you at the register and grins:",taunt:"Your hair is a disaster today.",
+ best:["Yeah, it's got volume. You should try it sometime.", "True. I woke up like this. Did you wake up boring?", "Yep. It’s called 'windy'. Try looking outside."],
+ ok:["Okay.", "Right."],
+ wrong:["At least my hair isn't as fake as your personality.", "Please stop, I'm trying to buy my lunch!"],
+ why:"Agree + bored = nothing to bounce off. Arguing about your hair means she picked the topic and you joined in."},
+{id:"fog2",form:"fog",villain:"gossip",setup:"Said loudly, like it's a fun fact about you:",taunt:"She's SO quiet, it's actually weird.",
+ best:["Yeah, I’m conserving my energy for when it actually matters. You’re wasting yours.", "True. Silence is golden. You seem to be going for the tin-can look.", "Mm, probably. Less noise means less chance of saying something boring like that."],
+ ok:["I like being quiet.", "That’s a choice I made."],
+ wrong:["At least I don’t have to shout to get anyone’s attention!", "Please stop saying things about me, it’s really rude."],
+ why:"Owning the 'flaw' before she can use it makes the insult evaporate. Defending it proves it stings."},
+{id:"fog3",form:"fog",villain:"copycat",setup:"Rolling her eyes for the group:",taunt:"You're such a try-hard.",
+ best:["Guilty. I actually try. It’s a whole thing.", "Yeah, trying beats losing. It’s great."],
+ ok:["Maybe I just care about stuff, wild concept."],
+ wrong:["You never try anything because you're scared!", "At least I'm GOOD at it!"],
+ why:"She needs 'try-hard' to be an insult. You agreeing turns it into a lifestyle she wasn't invited to."},
+{id:"fog4",form:"fog",villain:"announcer",setup:"Loud, delighted, pointing, corridor full of people:",taunt:"She FELL OVER in the corridor! Everyone saw it!",
+ best:["True. Gravity is undefeated. I’m just the victim of physics.", "Yep, the floor attacked me first. I tried to negotiate but it won."],
+ ok:["I fell. It happens. You’re still talking about it though?"],
+ wrong:["Well at least I don’t trip over my own face!", "Please stop pointing, you’re being really weird right now."],
+ why:"A fall is funny for ten seconds. A big reaction makes it a story that follows her. Bored kills the story."},
+{id:"fog5",form:"fog",villain:"gossip",setup:"Mocking-sweet voice:",taunt:"You talk like a baby.",
+ best:["Yeah, I’m still in the gurgling phase. Don’t worry, I’ll grow out of it eventually.", "Babies are great listeners. You should try being one so you can actually hear yourself."],
+ ok:["Right. Moving on."],
+ wrong:["At least I don’t sound like a dying seal when I speak!", "I do not! I talk just like everyone else!"],
+ why:"Agreeing + absurd keeps you in on the joke. Defending the insult puts you in the dock."},
+
+{id:"loop1",form:"loop",villain:"copycat",setup:"Holding out her hand, bossy, two friends watching:",taunt:"Give me your glitter pen. Now. I said GIVE it.",
+ best:["No.","I said no.","Nope. No."],
+ ok:["Not giving it to you."],
+ wrong:["Why should I give you MY pen? You always take things and never—","Fine, take it, happy now?"],
+ why:"One word. Every reason you add is a door she walks through ('but...but...'). Walls don't explain themselves."},
+{id:"loop2",form:"loop",villain:"gossip",setup:"Pressure smile, friends behind her:",taunt:"Say it back to her — tell her she's annoying. Everyone agrees, just say it.",
+ best:["No.","No, I'm not saying that.","Not happening."],
+ ok:["No, I don't do that."],
+ wrong:["She IS a bit annoying actually—","Why would you even ASK me that? That's so mean, asking—"],
+ why:"Say the thing and you belong to them. Repeat 'no' flatly and the moment passes with your friends AND your dignity."},
+{id:"loop3",form:"loop",villain:"announcer",setup:"Audience gathered, dare delivered:",taunt:"Do the funny voice. Everyone wants it. Go ON.",
+ best:["No.","No, I won't.","No."],
+ ok:["Not doing it."],
+ wrong:["Why would I do a funny voice for you? That's such a weird thing to ask—","I'm NOT doing it, you do it then!"],
+ why:"Dares run on your reaction. A flat 'no' repeated is the most boring possible outcome — which is the point."},
+{id:"loop4",form:"loop",villain:"copycat",setup:"At lunch, sliding into your table's space:",taunt:"Leave her. Sit with us today instead. It's obvious you'd rather.",
+ best:["(Keep eating. Don't look up.) No."],
+ ok:["Not today."],
+ wrong:["You're just jealous because nobody wants you!", "Why are you doing this? We don't want to hurt your feelings..."],
+ why:"Her 'invitation' is a trap: say yes and you lose a friend and learn you can be ordered around. 'No, I'm sitting here' answers everything."},
+{id:"loop5",form:"loop",villain:"gossip",setup:"Phone out, everyone waiting:",taunt:"Just send one text saying sorry. They all want it. Don't be rude. Say you're sorry.",
+ best:["No.","I said no.","I'm not sending it. No."],
+ ok:["That's not happening."],
+ wrong:["Why would I apologise? I didn't even DO anything! I would never—","Fine. Whatever. (typing)"],
+ why:"If you write the reasons, you're negotiating — negotiating means it's already half true. One word keeps it false."},
+
+{id:"ext1",form:"exit",villain:"gossip",setup:"You get added to a group chat called “her fan club 😂”. You read the first ten messages:",taunt:"nobody in here actually likes her lmao we all just have to pretend 😂😂😂",
+ best:["Do not type. Screenshot the chat header and these messages immediately to keep the evidence.", "Leave the group quietly, then show your parent or teacher the screenshots with today's date."],
+ ok:["Exit the chat without replying and tell a trusted adult later that day."],
+ wrong:["Reply: 'You're all losers for faking it.'", "Type: 'Please don't do this, I'm really upset.'"],
+ why:"This is not a comeback problem — it's an evidence problem. Screenshots win fights comebacks can't. Anything you type can be shown around; her chat can't fight back when grown-ups see it."},
+{id:"ext2",form:"exit",villain:"announcer",setup:"It's the same taunt, same time, every day for two weeks. Today she says:",taunt:"There she is. The whole school knows you're the weird one now.",
+ best:["Tell a grown-up with specifics: “The same thing keeps happening — here are three times, with dates.”","Say it out loud in the moment, calmly: “It's this again. Every day. Let's go to a teacher now.”"],
+ ok:["Start writing each day down in your notes app, ready to show someone."],
+ wrong:["Keep taking it — reporting would make it worse.","Threaten her back so she stops."],
+ why:"Third time isn't an incident, it's a pattern — and patterns get reported with dates and examples. 'She's just mean' does nothing at school. Three dated examples do."},
+{id:"ext3",form:"exit",villain:"gossip",setup:"By the bike sheds, voice low for the first time:",taunt:"If you tell ANYONE about any of this, it gets so much worse for you. Understood?",
+ best:["Don't answer. Walk straight to a teacher and say: 'She threatened me at the bike sheds today.'", "Say nothing. Go tell an adult exactly what she said, including the words 'gets so much worse'."],
+ ok:["Walk away silently. Tell your parents or a teacher tonight with the date and time."],
+ wrong:["“You can’t make it worse than you already are.”", "“Please don’t hurt me, I won’t say anything.”"],
+ why:"A threat is the moment comebacks stop being enough. Telling isn't tattling — it's escalating first, properly. Promising silence is exactly what she wants."},
+{id:"ext4",form:"exit",villain:"announcer",setup:"Two older girls step into your path, the others gather and laugh:",taunt:"Go on then. Say something brave. We dare you. Impress us.",
+ best:["Walk straight through the gap they left, eyes fixed on a teacher. Do not look at their faces.", "Go to the nearest adult and say: 'Two girls blocked my path demanding I perform for them.' Give names if you know them."],
+ ok:["Keep walking without stopping or making eye contact.", "Walk toward the office door immediately."],
+ wrong:["Say something witty to prove you are brave enough to talk back.", "Stand still and explain that you don't want to play their game."],
+ why:"The audience IS the trap. A comeback performed on their stage still means you danced for them. Refusing the stage is the only move they hate."},
+{id:"ext5",form:"exit",villain:"gossip",setup:"It's been a full week: note in your bag, drawing on your chair, seats 'taken' at lunch. Tired now. She notices:",taunt:"What's wrong? Cat got your tongue? Everyone's STILL talking about you.",
+ best:["To a grown-up: “This has happened every day this week — here it is.” (show your notes)","Write down each day's incident first, then show someone. Exit with a plan, not a comeback."],
+ ok:["Tell a friend's parent if school seems slow to act."],
+ wrong:["Nothing — grown-ups won't understand, keep it to yourself.","Reply to every incident yourself, one by one."],
+ why:"A campaign isn't one moment with one right answer — it's many moments, and the move that wins is a dated list in front of an adult who has to act on evidence."},
+
+{id:"par1",form:"parrot",villain:"copycat",setup:"Shrieking across the playground for maximum attention:",taunt:"Stop copying me, COPYCAT!",
+ best:["(Deadpan, slow) “'Stop copying me, COPYCAT.'” …Pause. “Say it again. I want to hear the bit where you admit you have no original thoughts.”", "(Flat stare) “'Stop copying me, copycat.'” Tilt head. “Was that supposed to be clever? It sounded like a broken record.”"],
+ ok:["“Copycat? That’s the best you’ve got?”", "“Okay. Now go find your own words.”"],
+ wrong:["Well stop copying ME then, copycat!", "I don't even look like you, you wish!"],
+ why:"You added nothing — you held up a mirror. Now she must explain herself (weird) or retreat (loss). Both are hers to carry, not yours."},
+{id:"par2",form:"parrot",villain:"announcer",setup:"Announcing to the whole dinner hall, arms wide:",taunt:"NOBODY LIKES YOU!",
+ best:["Repeat it slow and puzzled: “'Nobody likes you?'” Pause. “Whoa. Say it slower.”","“'Nobody likes me?'” tilt head. “Say that bit again, I want to enjoy it.”"],
+ ok:["“Bold thing to shout. Interesting.”"],
+ wrong:["“They DO too!”","“I bet nobody likes YOU.”"],
+ why:"Shouting needs a gasp. A slow replay turns her big moment into an awkward one — hers, not yours."},
+{id:"par3",form:"parrot",villain:"gossip",setup:"To her friends, just loud enough for you:",taunt:"She's, like, actually cringey.",
+ best:["(slow) 'Actually cringey?' Say it again.", "(bored) 'Actually cringey?' That's it?", "(flat) 'Actually cringey?' Okay. (walks away)"],
+ ok:["Cringey. Okay.", "Right."],
+ wrong:["You're the cringey one!", "Please don't say that."],
+ why:"Hearing her own words served back is like reading your own text out loud — instant second-hand embarrassment, and it's hers."},
+{id:"par4",form:"parrot",villain:"copycat",setup:"Pinching her nose dramatically:",taunt:"Why are you breathing so LOUD? It's so annoying.",
+ best:["\"'Breathing so loud?'\" (Stare blankly, wait two seconds). \"...Is that the whole script?\"", "\"'Why are you breathing so LOUD?'\" (Tilt head, bored). \"Okay. You can stop now.\""],
+ ok:["\"'Loud.' Got it. Moving on.\""],
+ wrong:["At least I'm not annoying enough to need a nose-pinching act!", "I'm just existing! It's not my fault you have sensitive ears!"],
+ why:"Repeating an unreasonable complaint makes it more unreasonable. The audience notices before she does."},
+{id:"par5",form:"parrot",villain:"announcer",setup:"Trying hard for laughs in class:",taunt:"You're so basic it HURTS.",
+ best:["Slowly: \"'So basic it HURTS?'\" …tilt head. \"Did you just rhyme? That’s actually kinda cute.\"", "\"'Basic… it hurts?'\" …blink once. \"Say it again, but try to sound like you mean it this time.\""],
+ ok:["“Wow. Rhyming. Very original.”"],
+ wrong:["You’re so loud it gives me a headache!", "I’m not basic, I just don’t care about your stupid jokes!"],
+ why:"You can't 'basic' someone who's calmly directing their rerun. Find the cute detail in THEIR line and the audience laughs with you."},
+
+{id:"rew1",form:"rewrite",villain:"announcer",setup:"Holding up your drawing so everyone sees:",taunt:"Your drawing looks like GARBAGE.",
+ best:["\"Garbage? That’s a lazy punchline. Try again with better adjectives.\"", "\"I’m coaching you, not insulting you. 'Garbage' is cliché. Workshop it.\""],
+ ok:["\"That joke needs more work. Next.\""],
+ wrong:["\"At least I can draw! You’re just loud and stupid!\"", "\"Please don’t say that, it hurts my feelings!\""],
+ why:"Her burn becomes a performance you're judging. Now she's on stage again, doing homework, and you're in the seats with popcorn."},
+{id:"rew2",form:"rewrite",villain:"copycat",setup:"Singing it mockingly around friends:",taunt:"Her DANCE is EVIL! It's actually horrible!",
+ best:["“'Evil'? That’s not a critique, that’s just noise. Try again with an actual joke.”", "“Horrible? Please. You’re describing the vibe of your own outfit, not my moves. Workshop it.”"],
+ ok:["“Noted. I’ll add ‘lacks creativity’ to the feedback form.”"],
+ wrong:["At least I can dance without looking like a broken robot!", "I’m not trying to be evil, I’m just having fun!"],
+ why:"'Try again, funnier' is teacher-energy at someone pretending to be a comedian. The bit dies and she has to explain why, which kills it twice."},
+{id:"rew3",form:"rewrite",villain:"announcer",setup:"To the group, gesturing at your hair:",taunt:"She's got a bit sticking up — she looks like a BIRD.",
+ best:["(Squint at her) 'Bird'? That’s not an insult, that’s a fact. Rewrite it to be meaner.", "Boring. If I’m a bird, where’s the joke? Add a punchline or stop talking."],
+ ok:["Try harder next time.", "Okay, moving on."],
+ wrong:["Well at least my hair isn't as messy as your brain!", "Please don't say things like that, it's rude."],
+ why:"You just turned her 'burn' into an assignment she failed. Class is in session and she's not prepared."},
+{id:"rew4",form:"rewrite",villain:"gossip",setup:"During the game, to make sure the team hears:",taunt:"You're so bad at this game, you're holding us back.",
+ best:["“‘Holding us back’? That’s a plot hole. Try a rewrite that actually lands.”", "“Bad delivery. If you’re going to critique my gameplay, work on your script first.”"],
+ ok:["Noted. I’ll let the scoreboard do the editing.", "Cool review. Did you rehearse that?"],
+ wrong:["At least I’m not the reason we lost last time!", "Please don’t say stuff like that in front of everyone."],
+ why:"Even a fair criticism can be answered with comedy coaching — it drops you out of the被告 box and into the judge's chair."},
+{id:"rew5",form:"rewrite",villain:"announcer",setup:"Setting the trap for the whole table:",taunt:"Say something funny then — we all know you can't.",
+ best:["“Backwards. You're warming UP for me. Go again.”","“Auditions for funny are tomorrow. You can prepare.”"],
+ ok:["“The show's free, but you're still not booked.”"],
+ wrong:["“I'm FUNNY, you just don't get jokes!”","“You're the unfunny one here!”"],
+ why:"Refusing her setup by redirecting it back at her ('you're warming up for me') flips who's performing — without you having to be a comedian."},
+
+{id:"pit1",form:"pity",villain:"announcer",setup:"Mid-rant, working herself up over nothing, building an audience:",taunt:"And ANOTHER thing — she thinks she's SO special, walking around like— all of you, LOOK at this—",
+ best:["Awww. (gentle head tilt) Are you okay though? Really?", "You can keep going if you need to. I'm fine."],
+ ok:["Okay."],
+ wrong:["Nobody cares, so shut up.", "Please stop, I didn't do anything."],
+ why:"Sympathy + audience = instant status flip. Nobody can stay furious being cooed at kindly. She either apologises for her own meltdown or looks worse continuing it."},
+{id:"pit2",form:"pity",villain:"gossip",setup:"Almost bouncing, needing you to be upset:",taunt:"Everyone IS talking about you right now, in the GROUP, right NOW!",
+ best:["That sounds exhausting for you.", "Awww, you think about me loads. It's sweet, really. Are you okay?"],
+ ok:["They can talk. Whatever."],
+ wrong:["Who?! Who's talking?! Tell me!", "You're OBSESSED with me, that's creepy!"],
+ why:"She came for panic. You gave her concern — FOR HER. Now the group sees who's calm and who's performing, and it's not close."},
+{id:"pit3",form:"pity",villain:"copycat",setup:"Fuming, genuinely confused why you're fine:",taunt:"Why does EVERYTHING I have, you WANT?!",
+ best:["(Soft head tilt) “Awww. You’re actually worried I’m copying you? That’s… sweet.”", "(Pat her shoulder gently) “It must be exhausting, being that scared of your own stuff.”"],
+ ok:["“I’ve got my own things.”", "(Shrug and look away)"],
+ wrong:["“Maybe if yours weren’t so boring, I wouldn’t need to copy them!”", "“I don’t want anything! Please just stop accusing me!”"],
+ why:"Silence plus soft eyes is a full sentence in front of an audience. The more she yells, the gentler you look."},
+{id:"pit4",form:"pity",villain:"announcer",setup:"Trying a serious wound, testing if it works:",taunt:"You're actually embarrassing. It's not even funny anymore.",
+ best:["(tilt head, soft voice) Aww. You’re trying so hard to be mean. It’s actually kind of sad.", "You look stressed. Do you need a glass of water? I’m worried about you."],
+ ok:["Okay. If saying that makes you feel better, go ahead.", "I hear you. That must be exhausting for you."],
+ wrong:["Well, at least I have friends who aren't miserable!", "Why are you always so obsessed with me? Just leave me alone!"],
+ why:"Serious cruelty answered with genuine concern makes her cruelty look like pain. The audience notices every time."},
+{id:"pit5",form:"pity",villain:"gossip",setup:"Keeping score, desperate for tears:",taunt:"You know they're all laughing at you in the dinner hall right now, right? RIGHT?",
+ best:["(Soft, gentle voice) \"Aww. You’re really desperate for me to cry, aren't you? It’s okay if I don’t.\"", "\"You sound like you're having a hard day. Do you need a drink of water?\""],
+ ok:["\"Okay. Hope the dinner hall is fun without me.\""],
+ wrong:["\"Well, at least I have friends who laugh WITH me, unlike you!\"", "\"That's not true! Please stop lying about them!\""],
+ why:"Naming the move while being kind to the mover is the strongest position there is: informed, calm, and unbothered."},
+
+{id:"yaw1",form:"yawn",villain:"gossip",setup:"Dramatic sigh for your benefit:",taunt:"You're so boring it's actually painful.",
+ best:["“Tell me when it gets interesting. Wait — is this the part?”","“That's it? I expected more.”"],
+ ok:["“Boring and peaceful. Great combo.”"],
+ wrong:["“I'm NOT boring, I do loads of things!”","“You're the boring one, you just copy ME!”"],
+ why:"A yawn refuses the premise without fighting it. Fighting it makes her comment the most important thing about you."},
+{id:"yaw2",form:"yawn",villain:"copycat",setup:"After a whole speech about you, satisfied with herself:",taunt:"…and THAT'S why everyone avoids you. Anyway. That's the list.",
+ best:["“Cool. Done?” then turn back to your friend.","“Mm. Was that the whole bit? Okay.”"],
+ ok:["“Thanks for the update.”"],
+ wrong:["“That list is COMPLETELY wrong, let me explain—”","“Well I made a list about you too—”"],
+ why:"A whole performance answered with 'cool, done?' is the fastest way to tell a performer her show closed twenty minutes ago."},
+{id:"yaw3",form:"yawn",villain:"announcer",setup:"Spotting your phone case, gathering witnesses:",taunt:"Look at her phone case. So lame.",
+ best:["(Yawn) 'Lame'? I thought it was *vintage*. Anyway, my battery’s dying.", "'So lame.' Cool. Did you rehearse that in the mirror? Because it landed like a wet sock."],
+ ok:["It’s sturdy. That’s all I need.", "Okay. Moving on."],
+ wrong:["At least I don’t have your personality!", "Why do you even care what my case looks like?"],
+ why:"Agree and schedule her outrage for later like it's a meeting. Then visibly return to your actual life."},
+{id:"yaw4",form:"yawn",villain:"copycat",setup:"Waving a paper, needing applause:",taunt:"I got a higher score than you. AGAIN. Say it. Say I'm smarter.",
+ best:["“Good for you.” (slow single clap) “Was that the bit?”","“Great. Do you want a sticker as well?”"],
+ ok:["“Nice. I got what I needed.”"],
+ wrong:["“My mark was BETTER, yours was easy!”","“Being smart doesn't make people like you, you know.”"],
+ why:"Refusing to compete means she can't win — which was the entire point of her announcement."},
+{id:"yaw5",form:"yawn",villain:"gossip",setup:"Sweet delivery, poison underneath:",taunt:"You weren't invited to the sleepover. Everyone agreed it'd be weird.",
+ best:["(Yawns wide, eyes watering) “Sleepover? Sounds exhausting. I’ve got a book to finish.”", "“Weird? Sure. I’m busy being normal now. Bye.”"],
+ ok:["“Mm. Okay.” (Turns back to friend)"],
+ wrong:["“Well, YOUR sleepovers are always boring anyway!”", "“Please don’t say that, it really hurts my feelings.”"],
+ why:"Big news delivered small — 'a whole plan about my Friday' — turns her bomb into a mild administrative error in someone else's diary."},
+
+{id:"flip1",form:"flip",villain:"announcer",setup:"Classic setup, fishing for tears in front of everyone:",taunt:"Nice jumper. Did you lose a fight?",
+ best:["“Yeah. Yours lost the same one.”","“We both lost. Let's talk about something else.”"],
+ ok:["“The jumper lost. I'm fine.”"],
+ wrong:["At least people WEAR me by choice!","Your jumper's even uglier, shut up!"],
+ why:"You took her joke's own logic and turned it around without going for her body or her family. A flip bounces. A cruel counter admits the hit."},
+{id:"flip2",form:"flip",villain:"copycat",setup:"In your face, performing for friends:",taunt:"What are you looking at?",
+ best:["“Your acting. It’s very… intense. Do it again.”", "“My shoes. You’re blocking the view of my cool trainers.”"],
+ ok:["“The ceiling. Checking for leaks.”", "“Nothing. Just waiting for you to finish your bit.”"],
+ wrong:["“I’m looking at a loser!”", "“I wasn’t looking at you, stop being so obsessed with me!”"],
+ why:"Her threat becomes evidence of her obsession. Calm and one line — then turn away before she recovers."},
+{id:"flip3",form:"flip",villain:"gossip",setup:"Loud stage whisper to the table:",taunt:"She talks WAY too much.",
+ best:["“Careful. If you stop listening to my chatter, you’ll have nothing left to say.”", "“I talk to fill the silence. You just let it sit there. We all cope differently.”"],
+ ok:["“Noise is just energy with nowhere to go.”", "“Talking is a skill. Listening is a choice. Guess which one you’re skipping.”"],
+ wrong:["“At least I’m not boring enough to need an audience for my own thoughts!”", "“Please don’t tell people that, it’s actually really mean and I didn’t do anything wrong.”"],
+ why:"Her complaint is the raw material of your comeback. Using her own frame is always stronger than inventing a new attack."},
+{id:"flip4",form:"flip",villain:"announcer",setup:"Inspection voice, audience forming:",taunt:"Did you pick that outfit in the DARK?",
+ best:["“Yeah — and I still out-dressed you somehow.”","“Dark, bright… somehow you're still the costume.”"],
+ ok:["“And it worked, didn't it. You're staring.”"],
+ wrong:["Yours is the worst outfit in this school!","I'd dress better than you in the dark, the light, AND underwater."],
+ why:"Same joke, better ending — that's a flip. Going for her clothes and her face is a different sport, and it's the one adults punish."},
+{id:"flip5",form:"flip",villain:"copycat",setup:"To a friend, loudly, pointed at you:",taunt:"She's such a teacher's pet.",
+ best:["“Pet? I’m the whole zoo. Enjoy the exhibit.”", "“Teacher’s pet? Bold claim for someone with no treats to offer.”"],
+ ok:["“Being good at school — bold accusation in 2026.”"],
+ wrong:["“You're the teacher's favourite, everyone hates you for it!”", "“I'm NOT a pet, I just answer questions!”"],
+ why:"Take the frame, inflate it to absurdity, invite the audience to watch HER process it. Nobody insults a person who's laughing harder about their own label."},
+
+{id:"dis1",form:"dismissal",villain:"copycat",setup:"Frustrated that you're not wrecked, demanding a battle:",taunt:"Go on then, say something back! You've got NOTHING!",
+ best:["No. I'm not doing this. (walk)", "Mm. Come back when you've got something better. (turn away)", "That's all? Bye. (walk)"],
+ ok:["Not today. Another time."],
+ wrong:["I've got lots to say, you just don't listen!", "You're the one with nothing to say!"],
+ why:"She needs the scene. Ending it on YOUR line, on YOUR timing, means she didn't get a second round — and the audience saw who ended it."},
+{id:"dis2",form:"dismissal",villain:"announcer",setup:"Chasing you, genuinely shocked someone can ignore her:",taunt:"Wait — are you IGNOREING me?",
+ best:["“Nope. You’re too loud for my Tuesday.” (walk away)", "“Busy. Try again when you’ve got a better plot.”"],
+ ok:["“Not today.”", "“Can’t hear you over my walking.”"],
+ wrong:["“Well, maybe if you weren't so annoying I would listen!”", "“I’m not ignoring you, I just didn't see you there!”"],
+ why:"'Don't ignore me' is the sound of the move working. Answering the question restarts the scene; a goodbye line ends it twice."},
+{id:"dis3",form:"dismissal",villain:"gossip",setup:"Refusing to accept how it went:",taunt:"That's not even a comeback! You didn't even ANSWER me!",
+ best:["“Not answering is the answer. Bye.” (walk)", "“Silence is loud enough for me. You can stop now.”"],
+ ok:["“I’m done with this conversation.”", "“Nope.”"],
+ wrong:["“Your insults are actually really boring and stupid.”", "“Please just leave me alone, I don’t want to fight you!”"],
+ why:"Never explain the joke, never explain the exit. Explaining is re-opening a scene you already won."},
+{id:"dis4",form:"dismissal",villain:"copycat",setup:"Pouting, wanting her moment back:",taunt:"Say it again then! Say your little thing again!",
+ best:["“Nah. You heard it once, you’re stuck with it.” (walk)", "“I don’t do encores for bad audiences.”"],
+ ok:["“Nope.”", "“Not happening.”"],
+ wrong:["“At least I have original thoughts, unlike you!”", "“Please stop shouting at me, I’m trying to walk away!”"],
+ why:"Encore energy. Treat the comeback like a show she has to buy a ticket for — and the ticket is being funnier, which she isn't."},
+{id:"dis5",form:"dismissal",villain:"announcer",setup:"The audience still watching. Last shot, rising panic:",taunt:"You can't just WALK AWAY from me!",
+ best:["“Watch the feet.” (keep walking)", "“You’re talking to my back now. Bye.”"],
+ ok:["(Silent walk toward a teacher)"],
+ wrong:["“Maybe if you weren’t so annoying I’d stay!”", "“Please stop shouting, it’s embarrassing for everyone!”"],
+ why:"The walk IS the comeback. She loses the audience the second you leave it. One tiny line if you must — then gone, and don't look back."},
+];
+
+/* Sparring Rules — nuclear-target judgment quiz (unlocked at brown belt) */
+const NUCLEAR_QUIZ = [
+{q:"Marco roasts your new trainers at break. Everyone in his group roasts each other and he roasts BACK, laughing.",
+ opts:[{t:"Full roast back — this is his sport too", ok:true, note:"Fair spar: mutual, friendly, both can take it. Go wild (tastefully)."},
+       {t:"Ignore him completely", ok:false, note:"Fine, but with friendly roasters, playing defence makes a friend think you're annoyed with them."},
+       {t:"Refuse and tell a teacher", ok:false, note:"Way over the line — you'd be reporting a game of tag."}],
+ teach:"Rule 1: a roast is only a weapon if it isn't mutual. Same-circle, laughing-each-other roasting = sparring. Join it."},
+{q:"The Announcer is insulting you loudly and her friends are egging her on. You finally thought of the perfect NUCLEAR line.",
+ opts:[{t:"Deploy it — she deserves it", ok:false, note:"This is exactly what she came for: a war, on camera, with proof you're 'both being mean'. She has the audience. You just joined her stage."},
+       {t:"Fang move or Exit — Rewrite, Pity, or walk", ok:true, note:"On HER stage, the move that wins is the one that ends the scene without a war: Rewrite, Parrot, or Dismissal."}],
+ teach:"Rule 2: nuclear lines are for sparring partners, not mid-attack bullies. Against them they give the exact reaction + escalation the bully wants — and teachers see both girls as guilty."},
+{q:"Your little brother says something annoying at breakfast.",
+ opts:[{t:"Full nuclear — he had it coming", ok:false, note:"He's tiny, he'll tell, and you'll be the scary one in the story. Audience rules again."},
+       {t:"Light spar — silly, absurd roast, instantly over", ok:true, note:"Family sparring is how little siblings learn the game. Keep it light and laugh WITH him."},
+       {t:"Cold silent treatment", ok:false, note:"Brothers never notice silence; they notice energy. Waste."}],
+ teach:"Rule 3: size of the target decides the size of the weapon. Always."},
+{q:"Someone insulted your best friend and you're FURIOUS right now.",
+ opts:[{t:"Go nuclear immediately — she hurt my friend", ok:false, note:"Anger makes every weapon bigger than you planned, and bigger looks worse. You're now the one shouting."},
+       {t:"Use Reporter/Fog FOR her: “Why would you say that?” then get her away", ok:true, note:"Defending a friend calmly is stronger AND safer. Talk to her after, together, cool-headed."}],
+ teach:"Rule 4: never fight angry. Furious-you has worse aim and gets in more trouble. Cool-down first, then the move."},
+{q:"A teacher is telling you off in front of the class and you have a PERFECT savage line ready.",
+ opts:[{t:"Say it — it's a PERFECT line", ok:false, note:"The entire class will love it and remember it forever, and so will the teacher, in detention form. The line was too good for the room it was in."},
+       {t:"Swallow it, deal with it privately later", ok:true, note:"No audience means no win for anyone. In private, calm words work; in public, any line escalates."}],
+ teach:"Rule 5: some rooms have no winning move, only expensive ones. Power imbalance = private channel, always."},
+{q:"The Copycat has targeted you EVERY day for two weeks. You've finally thought of the absolutely perfect line.",
+ opts:[{t:"Finally deploy it — game over for her", ok:false, note:"A perfect line fixes a perfect day. Tomorrow she's back, and now she's 'both of you'. Two weeks of daily targeting is a pattern — patterns are reported, with dates."},
+       {t:"Save it for the notebook. Report the pattern with 3 dated examples", ok:true, note:"The Exit move. Comebacks win moments; evidence wins patterns. She's been giving you evidence for two weeks — bank it."}],
+ teach:"Rule 6: comebacks end scenes. Evidence ends campaigns. If it's daily, it was never a comeback problem."},
+];
+
+const BELTS = [
+  {n:"White Rope", xp:0, c:"🤍"}, {n:"Yellow Rope", xp:120, c:"💛"},
+  {n:"Orange Rope", xp:300, c:"🧡"}, {n:"Green Rope", xp:560, c:"💚"},
+  {n:"Blue Rope", xp:900, c:"💙"}, {n:"Purple Rope", xp:1350, c:"🟣"},
+  {n:"Brown Rope", xp:1900, c:"🟤"}, {n:"BLACK BELT", xp:2500, c:"🖤"},
+];
+const FUN_WORDS = ["wiggle","soggy","bananas","flibbertigibbet","nonsense","toots","kerfuffle","silly goose","bonkers","wobble","squish","rumpy","doink","nincompoop","splunge","whoopsie","bumble","gloop","fuzzle","skedaddle","flapdoodle","goober","wampum","snoodle"];
+
+/* ============================================================ state */
+const DEFAULTS = {
+  xp:0, formsLearned:[], bossWins:[], seen:{}, streak:{n:0, last:""},
+  settings:{ai:true, qwenTts:"off", voiceBully:"", voiceSensei:"", rateBully:0.95, pitchBully:0.95, rateSensei:1.0, pitchSensei:0.85},
+  custom:[], overrides:{},
+  coins:0, owned:[], title:"", theme:"", achv:[], petName:"Noodle",
+  counters:{best:0, earned:0, bestCombo:0, books:0},
+};
+let S = JSON.parse(JSON.stringify(DEFAULTS));
+/* DB = the whole dojo: every ninja's account + who's signed in.
+   S always points at the signed-in ninja's state. Old single-account
+   data files are migrated into a "Ninja" account on first load. */
+let DB = {accounts:{}, active:""};
+const AVATARS = ["🦊","🐸","🐼","🦄","🐧","🐹","🦖","🐝","🐨","🦋","🐙","🌟"];
+let CAPS = {chat:false, tts:false, stt:false};
+let saveTimer = null;
+
+function deepMerge(base, over){
+  const out = JSON.parse(JSON.stringify(base));
+  for (const k in over){
+    if (over[k] && typeof over[k]==="object" && !Array.isArray(over[k]) && typeof out[k]==="object" && out[k]!==null && !Array.isArray(out[k]))
+      out[k] = deepMerge(out[k], over[k]);
+    else if (over[k] !== undefined) out[k] = over[k];
+  }
+  return out;
+}
+function adoptStore(d){
+  if (d && d.accounts) {
+    DB.accounts = d.accounts;
+    DB.active = (d.active && d.accounts[d.active]) ? d.active : "";
+  } else if (d && Object.keys(d).length) {
+    DB.accounts = { "Ninja": { emoji:"🦊", state: d } };  // legacy blob → first ninja
+    DB.active = "Ninja";
+  }
+  if (DB.active) S = deepMerge(JSON.parse(JSON.stringify(DEFAULTS)), DB.accounts[DB.active].state || {});
+}
+function loadState(){
+  try { const ls = localStorage.getItem("snapback"); if (ls) adoptStore(JSON.parse(ls)); } catch(e){}
+  return fetch("/api/data").then(r=>r.json()).then(d=>{ adoptStore(d); render(); return d; }).catch(()=>{});
+}
+function save(){
+  if (DB.active && DB.accounts[DB.active]) DB.accounts[DB.active].state = S;
+  try { localStorage.setItem("snapback", JSON.stringify(DB)); } catch(e){}
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>fetch("/api/data",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(DB)}).catch(()=>{}), 600);
+}
+/* Effective pack = built-ins (with any parent overrides layered on) + custom cards.
+   Overrides never touch SCENARIOS, so "revert" and pack-export stay honest. */
+const allScenarios = () => SCENARIOS.map(s => S.overrides && S.overrides[s.id] ? Object.assign({}, s, S.overrides[s.id]) : s)
+  .concat(S.custom.map(c=>Object.assign({}, c, {custom:true})));
+const okLine = s => (s.ok && s.ok[0]) || "Okay, sure.";
+const wrongLines = s => {
+  const w = (s.wrong||[]).filter(Boolean);
+  while (w.length < 2) w.push(w.length===0 ? "Shut up!" : "Please just stop!");
+  return w;
+};
+
+function beltIdx(){ let i=0; BELTS.forEach((b,j)=>{ if (S.xp>=b.xp) i=j; }); return i; }
+function addXp(n, ev){
+  const before = beltIdx();
+  S.xp = Math.max(0, S.xp + n);
+  const after = beltIdx();
+  if (ev && n>0){
+    const f = document.createElement("div");
+    f.className = "floatxp"; f.textContent = "+"+n+" XP";
+    f.style.left = ev.clientX+"px"; f.style.top = ev.clientY+"px";
+    document.body.appendChild(f); setTimeout(()=>f.remove(), 1200);
+  }
+  if (after > before){
+    const b = BELTS[after], p = PET_STAGES[after];
+    const bonus = 30*(after-before);
+    setTimeout(()=>{
+      addCoins(bonus);
+      hypeShow({emoji:p.emoji, head:b.c+" "+b.n+" — and " + petNm() + " evolved!",
+        line:(RANK_LINES[after]||"Something big just happened.")+"<br><b>"+petNm()+" is now "+p.emoji+" "+p.name+"</b><br>"+p.line,
+        prize:"belt bonus: +🪙 "+bonus});
+    }, 350);
+  }
+  save(); renderHeader();
+}
+function touchStreak(){
+  const today = new Date().toISOString().slice(0,10);
+  if (S.streak.last === today) return;
+  const y = new Date(Date.now()-864e5).toISOString().slice(0,10);
+  S.streak.n = (S.streak.last === y) ? S.streak.n+1 : 1;
+  S.streak.last = today; save();
+}
+
+/* ============================================================ coins, hype & treasure
+   None of this is serious. That's the point. Wrong answers get comedy,
+   right answers get confetti, and there is always a shiny thing nearby. */
+const SHOP = [
+  {id:"t_hamster",  kind:"title",  emoji:"🐹", name:"Hamster of Patience", cost:60,  desc:"Chills like it's storing snacks for winter."},
+  {id:"t_bubble",   kind:"title",  emoji:"🫧", name:"Bubble Wrangler",     cost:90,  desc:"Pops nonsense for a living."},
+  {id:"t_eyebrow",  kind:"title",  emoji:"🤨", name:"Queen of the Eyebrow",cost:120, desc:"One eyebrow. Entire conversation over."},
+  {id:"t_unboth",   kind:"title",  emoji:"😮‍💨", name:"The Unbothered",     cost:150, desc:"The insult hit fog. You were the fog."},
+  {id:"t_dragon",   kind:"title",  emoji:"🐲", name:"Word Dragon",         cost:200, desc:"Rare. Sleepy. Occasionally roars."},
+  {id:"th_duck",    kind:"theme",  emoji:"🛁", name:"Rubber Ducky Hour",   cost:140, cls:"theme-duck",  desc:"The dojo, but bath time."},
+  {id:"th_toad",    kind:"theme",  emoji:"🐸", name:"Toad Kingdom",        cost:160, cls:"theme-toad",  desc:"Ribbit. That's the whole move."},
+  {id:"th_candy",   kind:"theme",  emoji:"🍬", name:"Candy Dojo",          cost:180, cls:"theme-candy", desc:"Training, but strawberry-flavoured."},
+  {id:"th_space",   kind:"theme",  emoji:"🪐", name:"Deep Space Ninja",    cost:220, cls:"theme-space", desc:"Nobody can insult you in space. Also no sound."},
+  {id:"st_uni",     kind:"sticker", emoji:"🦄", name:"Golden Uni",          cost:40, desc:"Exists. Rare as hens' teeth."},
+  {id:"st_avo",     kind:"sticker", emoji:"🥑", name:"Avocado of Steel",    cost:40, desc:"Soft inside. Still wins."},
+  {id:"st_toad",    kind:"sticker", emoji:"🐸", name:"Sir Croaks",          cost:45, desc:"Knight of the Puddle."},
+  {id:"st_tac0",    kind:"sticker", emoji:"🌮", name:"Taco of Truth",       cost:45, desc:"Fills the silence. Loudly."},
+  {id:"st_ufo",     kind:"sticker", emoji:"🛸", name:"Abduction Alibi",     cost:50, desc:"'Sorry, the aliens took me.' Undeniable."},
+  {id:"st_sock",    kind:"sticker", emoji:"🧦", name:"The Lost Sock",       cost:35, desc:"Finally found. Behind the dryer."},
+  {id:"st_shroom",  kind:"sticker", emoji:"🍄", name:"Mushroom Mode",       cost:40, desc:"Sit still. Appear to be a fungus."},
+  {id:"st_snail",   kind:"sticker", emoji:"🐌", name:"Speed of Snail",      cost:35, desc:"Slow is a power level."},
+  {id:"st_chair",   kind:"sticker", emoji:"🪑", name:"Chair Escape",        cost:45, desc:"Walk away, take the seat first."},
+  {id:"st_bubble",  kind:"sticker", emoji:"🫧", name:"Bubble Shield",       cost:40, desc:"Insults bounce. Squeaky sound included."},
+  {id:"st_banana",  kind:"sticker", emoji:"🍌", name:"Banana Peel",         cost:55, desc:"Classic. Never used on anyone. Just stored."},
+  {id:"st_penguin", kind:"sticker", emoji:"🐧", name:"Penguin Exit",        cost:45, desc:"Leave in a tuxedo waddle."},
+];
+const RANK_LINES = [
+  "", // white
+  "The sun itself has noticed you. Rude of it, really.",
+  "Like a traffic cone of confidence. Impossible to ignore.",
+  "Growing on the scenery like a very sharp weed.",
+  "Cool, calm, occasionally lethal. Like a fridge that wins arguments.",
+  "Wizard hours. The robes almost fit.",
+  "This is the 'she thinks twice before opening her mouth at you' rope.",
+  "BLACK BELT. You could defeat a bully with your eyebrows now. Legally tested.",
+];
+const OOPS = [
+  "Plot twist: that one backfired 🙃",
+  "Brb, rewinding that moment 🎬",
+  "She didn't even have to try and you did her whole job for her. Go again!",
+  "Classic 'why did I say that' moment. Every ninja has one. Or ten.",
+  "Oof. The dojo has seen worse. Barely. Run it back.",
+];
+function confetti(n){
+  n = n || 80;
+  const w = document.getElementById("confetti");
+  const cols = ["#e8b64c","#7ac74f","#e5604d","#5aa7d6","#a78bda","#ff8ac2"];
+  for (let i=0; i<n; i++){
+    const d = document.createElement("i");
+    d.className = "cfy";
+    d.style.left = (Math.random()*100)+"vw";
+    d.style.animationDuration = (2.1+Math.random()*1.9)+"s";
+    d.style.animationDelay = (Math.random()*.45)+"s";
+    if (i%7===0){ d.style.background="none"; d.textContent = ["🥋","⭐","🪙","✨"][i%4]; }
+    else d.style.background = cols[i%cols.length];
+    w.appendChild(d);
+  }
+  setTimeout(()=>{ w.innerHTML = ""; }, 4400);
+}
+function hypeShow(o){
+  const h = document.getElementById("hype");
+  h.innerHTML = `<div class="hypebox"><span class="huge">${o.emoji}</span><h2>${o.head}</h2>
+    <p>${o.line||""}</p>${o.prize?`<div class="prize">${o.prize}</div>`:""}<p class="go">tap anywhere</p></div>`;
+  h.classList.add("on");
+  confetti();
+  h.onclick = ()=>{ h.classList.remove("on"); h.onclick=null; h.innerHTML=""; if (o.onClose) o.onClose(); };
+}
+function addCoins(n, label){
+  if (!n) return;
+  S.coins = (S.coins||0) + n;
+  S.counters = S.counters || {best:0, earned:0, bestCombo:0, books:0};
+  S.counters.earned = (S.counters.earned||0) + Math.max(0,n);
+  save(); renderHeader();
+  const chip = document.getElementById("coinChip");
+  if (chip){
+    chip.classList.remove("bump"); void chip.offsetWidth; chip.classList.add("bump");
+    const r = chip.getBoundingClientRect();
+    const f = document.createElement("div");
+    f.className = "floatcoin"; f.textContent = "+"+n+" 🪙";
+    f.style.left = Math.max(8, r.left + r.width/2 - 24)+"px";
+    f.style.top = (r.bottom+4)+"px";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(), 1150);
+  }
+  if (label) toast(label);
+}
+function applyTheme(){
+  const t = SHOP.find(i=>i.id===S.theme);
+  document.body.className = (t && t.cls) || "";
+}
+const ACHV = [
+  {id:"snap1",    emoji:"🐣", name:"First Snap",       desc:"Your very first best answer",           coins:15, test:c=>c.best>=1},
+  {id:"snap10",   emoji:"🔥", name:"Snap Machine",     desc:"10 best answers",                       coins:20, test:c=>c.best>=10},
+  {id:"snap50",   emoji:"🌪", name:"Tornado Licence",  desc:"50 best answers — an official weather event", coins:50, test:c=>c.best>=50},
+  {id:"combo5",   emoji:"⚡", name:"Lightning Tongue", desc:"5 correct in a row in Rapid Fire",       coins:25, test:c=>c.bestCombo>=5},
+  {id:"boss1",    emoji:"👹", name:"Giant Slayer",     desc:"Beat any boss spar",                    coins:30, test:()=>S.bossWins.length>=1},
+  {id:"streak3",  emoji:"📅", name:"Not Just One Day", desc:"3-day training streak",                 coins:20, test:()=>S.streak.n>=3},
+  {id:"streak7",  emoji:"🧘", name:"Ninja Monk",       desc:"7-day training streak",                 coins:40, test:()=>S.streak.n>=7},
+  {id:"moves10",  emoji:"🥋", name:"Full Arsenal",     desc:"All 10 moves trained",                  coins:40, test:()=>S.formsLearned.length>=10},
+  {id:"coins100", emoji:"🐉", name:"Coin Dragon",      desc:"100 coins earned in total",             coins:25, test:c=>c.earned>=100},
+  {id:"book3",    emoji:"📕", name:"Bookwise",         desc:"Closed the book 3 times",               coins:20, test:c=>c.books>=3},
+];
+function checkAchv(){
+  const got = S.achv || (S.achv = []);
+  const fresh = ACHV.filter(a=>!got.includes(a.id) && a.test(S.counters||{}));
+  if (!fresh.length) return;
+  fresh.forEach((a,i)=>{
+    got.push(a.id); addCoins(a.coins);
+    setTimeout(()=>hypeShow({emoji:a.emoji, head:a.name, line:a.desc+" — unlocked!", prize:"+🪙 "+a.coins}), 300+i*1200);
+  });
+  save();
+}
+/* surprise egg — appears after real effort, never as homework */
+function maybeLoot(chance, delay){ if (Math.random() < (chance===undefined?1:chance)) setTimeout(lootEgg, delay||1400); }
+function lootEgg(){
+  const h = document.getElementById("hype");
+  h.innerHTML = `<div class="hypebox"><span class="egg">🥚</span><h2>Prize egg!</h2><p>tap it before it gets shy</p></div>`;
+  h.classList.add("on");
+  let opened = false;
+  h.onclick = ()=>{
+    if (!opened){
+      opened = true; confetti(70);
+      const p = eggPrize();
+      h.querySelector(".hypebox").innerHTML = `<span class="huge">${p.emoji}</span><h2>${p.head}</h2><p>${p.line}</p><p class="go">tap anywhere</p>`;
+    } else { h.classList.remove("on"); h.onclick=null; h.innerHTML=""; checkAchv(); }
+  };
+}
+function eggPrize(){
+  const unS = SHOP.filter(i=>i.kind==="sticker" && !S.owned.includes(i.id));
+  const unT = SHOP.filter(i=>i.kind==="title" && !S.owned.includes(i.id));
+  const r = Math.random();
+  if (unS.length && r < .40){ const s = unS[Math.floor(Math.random()*unS.length)]; S.owned.push(s.id); save();
+    return {emoji:s.emoji, head:"Sticker!", line:s.name+" — it goes on your wall"}; }
+  if (unT.length && r < .52){ const t = unT[Math.floor(Math.random()*unT.length)]; S.owned.push(t.id); save();
+    return {emoji:t.emoji, head:"New title unlocked", line:"“"+t.name+"” — equip it in the Treasure Grotto"}; }
+  if (unS.length > 1 && r < .58){ const two = unS.slice(0,2); two.forEach(s=>S.owned.push(s.id)); save();
+    return {emoji:"🎆", head:"Twin stickers!", line:two[0].name+" AND "+two[1].name+" — two for one"}; }
+  const n = 15 + Math.floor(Math.random()*26); addCoins(n);
+  return {emoji:"🪙", head:"Coin shower!", line:"+"+n+" coins for general awesomeness"};
+}
+
+/* ============================================================ the dojo pet
+   A kitten arrives on day one. A tiger is what leaves. Every belt = one stage. */
+const PET_STAGES = [
+  {emoji:"🐱",   name:"the Kitten",             line:"Sleeps 23 hours a day. The other hour is pure strategising."},
+  {emoji:"😺",   acc:"🎀", name:"the Cheeky",   line:"First real smirk. Somebody definitely noticed."},
+  {emoji:"😼",   acc:"🧣", name:"the Sass",     line:"One eyebrow operational. Devastating in empty corridors."},
+  {emoji:"😸",   acc:"🥋", name:"the Grin",     line:"Grins before the comeback has even landed. Natural talent."},
+  {emoji:"😼",   acc:"🕶️", name:"the Cool",     line:"Unbothered as policy. The sunglasses stay on indoors. Permanently."},
+  {emoji:"🐈‍⬛", name:"the Shadow",            line:"Mysterious now. Does mysterious things. Asks no questions."},
+  {emoji:"🐯",   acc:"🎖️", name:"the Tiger-in-Training", line:"Stripes incoming. The roar is still being workshopped."},
+  {emoji:"🐅",   acc:"👑", aura:"aura-fire", name:"THE TIGER", line:"Fully, officially, certified badass. The whole corridor respects this cat."},
+];
+const petNm = () => S.petName || "Noodle";
+const petStage = () => beltIdx();
+function petWrapHtml(i, size){
+  const s = PET_STAGES[i];
+  return `<span class="petwrap ${s.aura||""}" style="font-size:${size||54}px;"><span class="petbody">${s.emoji}</span>${s.acc?`<span class="acc">${s.acc}</span>`:""}</span>`;
+}
+function renderPetStrip(){
+  const i = petStage();
+  const s = PET_STAGES[i];
+  const next = PET_STAGES[i+1], nextBelt = BELTS[i+1];
+  document.getElementById("petStrip").innerHTML = `
+    <button class="card petcard" id="petCard">
+      ${petWrapHtml(i)}
+      <div class="petinfo">
+        <b>${petNm()} · ${s.name}</b>
+        <div style="color:var(--dim);font-size:14.5px;">${s.line}</div>
+        <div class="petnext">${next ? `Next evolution: ${next.emoji} ${next.name} at ${nextBelt.c} ${nextBelt.n} · tap to visit` : "Final form reached. Feral. Glorious."}</div>
+      </div>
+    </button>`;
+  document.getElementById("petCard").onclick = openPetView;
+}
+function openPetView(){
+  const h = document.getElementById("hype");
+  const close = ()=>{ h.classList.remove("on"); h.onclick=null; h.innerHTML=""; };
+  const paint = ()=>{
+    const i = petStage(), s = PET_STAGES[i];
+    h.innerHTML = `<div class="hypebox" style="max-width:560px;">
+      <div style="display:flex;justify-content:center;">${petWrapHtml(i, 84)}</div>
+      <h2>${petNm()} — ${s.name}</h2>
+      <p>${s.line}</p>
+      <div class="ladder">${PET_STAGES.map((p,j)=>`<span class="st ${j===i?"now":""} ${j>i?"locked":""}" title="${p.name}">${p.emoji}</span>`).join("")}</div>
+      <p style="font-size:13px;">${i<PET_STAGES.length-1 ? "Every new belt evolves "+petNm()+". All eight forms await." : "All eight forms mastered. Somewhere a golden uni is jealous."}</p>
+      <div class="petactions">
+        <button class="btn" id="petBoop">🐾 pet the ${i>=6?"tiger":"cat"}</button>
+        <button class="ghost" id="petRename">✏ rename</button>
+        <button class="ghost" id="petClose">close</button>
+      </div>
+      <p class="go">tap the edges to close</p></div>`;
+    document.getElementById("petBoop").onclick = boopPet;
+    document.getElementById("petRename").onclick = ()=>{
+      const n = prompt("New name for your dojo pet:", petNm());
+      if (n && n.trim()){ S.petName = n.trim().slice(0,24); save(); paint(); toast("💫 "+S.petName+" it is"); }
+    };
+    document.getElementById("petClose").onclick = close;
+  };
+  paint();
+  h.classList.add("on");
+  h.onclick = e=>{ if (!e.target.closest(".hypebox")) close(); };
+}
+function boopPet(){
+  const high = petStage() >= 5;
+  const lines = high
+    ? ["A low, rumbling purr. The windows shake slightly.","A massive headbonk. You have been claimed.","The tail thumps twice. This is royal approval.","Yawns, showing the entire terrifying toolkit.","Sits on your lap. You may never leave. This is law now."]
+    : ["Prrr. 😻","Bap. Tiny paw, maximum opinion.","Kneads your jumper. The kneading stays with you.","Zoomies! Straight into the wall. Worth it.","Knocks a glass off the table. Maintains eye contact."];
+  if (Math.random() < .18){ addCoins(2, petNm()+" digs something up… +2 🪙 (it's a button. But it counts.)"); }
+  else toast(lines[Math.floor(Math.random()*lines.length)]);
+}
+
+
+/* ============================================================ header / caps */
+async function checkCaps(force){
+  const chip = document.getElementById("aiChip");
+  try {
+    const r = await fetch("/api/capabilities"+(force?"?x=refresh":""));
+    CAPS = await r.json();
+    const bits = [];
+    bits.push(CAPS.chat ? "🤖 Sensei online" : "🤫 Practice mode");
+    if (CAPS.tts) bits.push("🎙️ Qwen voice");
+    if (CAPS.stt) bits.push("🎤 Mic ready");
+    chip.textContent = bits.join(" · ");
+    chip.classList.toggle("warn", !CAPS.chat);
+  } catch(e){
+    CAPS = {chat:false,tts:false,stt:false};
+    chip.textContent = "🤫 Practice mode (offline)";
+    chip.classList.add("warn");
+  }
+}
+function toast(msg){
+  const t = document.createElement("div");
+  t.style.cssText = "position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#243039;border:1px solid var(--bamboo);color:var(--ink);padding:12px 22px;border-radius:14px;z-index:50;font-weight:700;box-shadow:0 6px 30px rgba(0,0,0,.5);";
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity = "0"; t.style.transition="opacity .4s"; setTimeout(()=>t.remove(),450); }, 2600);
+}
+
+/* ============================================================ TTS */
+let VOICES = [];
+function loadVoices(){ if ("speechSynthesis" in window) VOICES = speechSynthesis.getVoices(); }
+if ("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function pickDefaultVoice(){
+  const gb = VOICES.filter(v=>/^en-GB/i.test(v.lang));
+  const fem = gb.find(v=>/serena|sonia|libby|ava|zira|kate|susan/i.test(v.name));
+  return (fem||gb[0]||VOICES[0]||{}).name || "";
+}
+let pendingAudio = null;
+let speakCB = null;
+async function speak(text, persona, onDone){
+  text = String(text||"").replace(/[“”]/g,'"');
+  speakCB = onDone || null;
+  const myCb = speakCB;
+  const fire = ()=>{ if (myCb && speakCB===myCb){ speakCB=null; myCb(); } };
+  // safety: if the voice never reports "end", start anyway after a reading-time estimate
+  if (myCb) setTimeout(()=>{ if (speakCB===myCb){ speakCB=null; myCb(); } }, 1500 + text.length*150);
+  if (pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
+  const canBrowser = "speechSynthesis" in window;
+  if (!canBrowser && !(S.settings.qwenTts === "on" && CAPS.tts)){ fire(); return; }
+  if (canBrowser) speechSynthesis.cancel();
+  if (S.settings.qwenTts === "on" && CAPS.tts){
+    try {
+      const r = await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, voice:persona})});
+      if (r.ok){
+        const j = await r.json();
+        const ar = await fetch("/api/tts/audio/"+j.key);
+        if (ar.ok){
+          const blob = await ar.blob();
+          pendingAudio = new Audio(URL.createObjectURL(blob));
+          pendingAudio.onended = fire;
+          pendingAudio.onerror = fire;
+          pendingAudio.play().catch(fire);
+          return;
+        }
+      }
+    } catch(e){ /* fall through to browser */ }
+  }
+  browserSpeak(text, persona, fire);
+}
+function browserSpeak(text, persona, onEnd){
+  const stt = new SpeechSynthesisUtterance(text);
+  const name = persona==="sensei" ? (S.settings.voiceSensei || S.settings.voiceBully) : S.settings.voiceBully;
+  const v = VOICES.find(x=>x.name===name) || VOICES.find(x=>/^en-GB/i.test(x.lang)) || VOICES[0];
+  if (v) stt.voice = v;
+  if (persona==="sensei"){ stt.rate=S.settings.rateSensei; stt.pitch=S.settings.pitchSensei; }
+  else { stt.rate=S.settings.rateBully; stt.pitch=S.settings.pitchBully; }
+  if (onEnd){ stt.onend = onEnd; stt.onerror = onEnd; }
+  speechSynthesis.speak(stt);
+}
+
+/* ============================================================ STT (mic) */
+function micButtonSafe(){ return '<button class="btn secondary" id="micBtn">🎤 speak</button>'; }
+async function startMic(btn, textarea){
+  btn.disabled = true; btn.textContent = "🔴 listening…";
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const rec = new MediaRecorder(stream, {mimeType: "audio/webm"});
+    const chunks = [];
+    rec.ondataavailable = e=>chunks.push(e.data);
+    rec.onstop = async ()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      btn.textContent = "⏳…";
+      try {
+        const fd = new FormData();
+        fd.append("file", new Blob(chunks, {type:"audio/webm"}), "a.webm");
+        fd.append("model", "qwen3-asr");
+        const r = await fetch("/api/stt", {method:"POST", body:fd});
+        const j = await r.json();
+        const txt = (j.text||"").trim();
+        if (txt) textarea.value = (textarea.value ? textarea.value+" " : "") + txt;
+        else toast("Didn't catch that — try again");
+      } catch(e){ toast("Mic service unavailable"); }
+      textarea.focus(); btn.disabled=false; btn.textContent="🎤 speak";
+    };
+    rec.start();
+    btn.onclick = ()=>rec.state==="recording" && rec.stop();
+  } catch(e){
+    btn.disabled=false; btn.textContent="🎤 speak";
+    toast("Mic blocked — type or press Win+H in the box");
+  }
+}
+
+/* ============================================================ scoring */
+const INSULTS = ["shut up","shut it","ugly","stupid","idiot","dumb","loser","fat","shut your","your mum","ur mum","your mom","bitch","stfu","hate you","dumbass","smelly","worthless","nobody likes","trash","garbage face"];
+const DEFENSIVE = /\b(i didn't|i did not|i wasn't|it's not my fault|i promise|not fair|it isn't fair|i never|i swear|why are you like this)\b/i;
+function norm(s){ return s.toLowerCase().replace(/[’']/g,"'").replace(/[^\w\s?!.,—-]/g,"").trim(); }
+
+/* The dojo's grading philosophy: a reply WINS when it ends the scene and makes
+   the attack visibly fall flat. A question only wins when it's a judge, not a
+   student — a curious "why did you say that?" hands the bully round two. */
+function ruleGrade(scn, reply){
+  const n = norm(reply), words = n.split(/\s+/).filter(Boolean), len = words.length;
+  const bestHit = scn.best.some(b=>{ const bn = norm(b); return bn && (n===bn || (bn.split(/\s+/).length>=3 && bn.split(/\s+/).slice(0,3).join(" ")===words.slice(0,3).join(" "))); });
+  const wrongHit = scn.wrong.some(w=>norm(w)===n);
+  const insulted = INSULTS.some(w=>n.includes(w));
+  const plead = /\b(please|stop it|i'm telling|i am telling|tell the teacher)\b/.test(n) || DEFENSIVE.test(n);
+  const whyQ = /\?\s*$/.test(n) && /\b(why (did|do|would|are|do you)|what did you mean|explain( yourself)?|what's your problem)\b/.test(n);
+  const replay = /\b(say (that|it|this) (again|slower)|say it slower|again but|one more time|run that by me|heard (that|it) out loud|do (that|it) again)\b/.test(n);
+  const dismiss = /\b(come back when|practice (tonight|at home|first)|time's up|watch me|i'?ll (still )?be here|cool\.? done|done\??$|work on yours|encore|door'?s open|that's (all|it)\b.*bye|bye\.?$|anyway)\b/.test(n);
+  const verdict = /\b(weak|rough draft|punchline|that'?s the best|really\??|ooh you rhymed|bold|interesting|noted|and\??$|so\??$|mm\b|expected (more|better)|auditions|workshop)\b/.test(n);
+  const agree = /\b(yeah|yep|yup|guilty|true|i know right|tell me something i don'?t know|probably|maybe i am|mystery|fair enough)\b/.test(n);
+
+  if (insulted || wrongHit)
+    return {quality:"wrong", coach:"There's the counter-insult — it feels strong, but it PROVES her words hit, turns one scene into a war where you both get blame, and gives her the sequel she came for.", better:pickBetter(scn, n)};
+  if (plead)
+    return {quality:"wrong", coach:"That pleads or protests — pleading is the one thing a bully feeds on. Never ask it to stop; end it instead.", better:pickBetter(scn, n)};
+  if (bestHit)
+    return {quality:"best", coach:"Yes — that's exactly the move. Clean, short, the moment ended with YOUR line.", better:""};
+  if (whyQ && scn.form !== "reporter")
+    return {quality:"okish", coach:"Careful — asking her WHY invites her to explain the insult in more detail, on her terms, with an audience. A question only works as a judge, never as a student.", better:pickBetter(scn, n)};
+  if (whyQ && len <= 9)
+    return {quality:"best", coach:"Short, slow, judge-voice — she has to hear how dumb it sounded. Now deliver the verdict or walk; don't let it become a chat.", better:""};
+  if (whyQ)
+    return {quality:"okish", coach:"A question, and a long one — the interviewer role belongs to whoever talks more. Ask once like a judge, then leave.", better:pickBetter(scn, n)};
+  if (replay)
+    return {quality:"best", coach:"You made HER hear herself — funniest move available and you never said a mean word. Unbeatable maths.", better:""};
+  if (dismiss)
+    return {quality:"best", coach:"That closed the scene on your time, not hers. She lost the audience AND the ending.", better:""};
+  if (verdict && len <= 12)
+    return {quality:"best", coach:"A bored verdict — you graded her joke instead of defending yourself. Completely different power position.", better:""};
+  if (agree && len <= 14)
+    return {quality:"best", coach:"You agreed and yawned — an insult with nothing to land on just hits the floor.", better:""};
+  if (len > 14)
+    return {quality:"okish", coach:"Good instinct, wrong length: a paragraph where a sentence ends it. Long replies leak — they look like the insult is still working on you.", better:pickBetter(scn, n)};
+  return {quality:"okish", coach:"Calm and safe, but it doesn't close the door — she'll try again in five minutes. Aim for a verdict, a flip, or an exit with your line in it.", better:pickBetter(scn, n)};
+}
+/* scenario-specific suggestion: pick their own best line that's short and unlike what she said */
+function pickBetter(scn, n){
+  const words = new Set(norm(n).split(/\s+/));
+  const cands = (scn.best||[]).filter(b=>b);
+  if (!cands.length) return "";
+  const scored = cands.map(b=>{
+    const bw = norm(b).split(/\s+/);
+    const overlap = bw.filter(w=>words.has(w)).length / Math.max(1,bw.length);
+    return {b, s: overlap - bw.length*0.03};
+  }).sort((a,b)=>b.s-a.s);
+  return scored[0].b;
+}
+
+function extractJson(text){
+  const i = text.indexOf("{");
+  if (i < 0) return null;
+  for (let j = text.length; j > i; j--){
+    try { return JSON.parse(text.slice(i, j)); } catch(e){}
+  }
+  return null;
+}
+async function aiGrade(scn, reply){
+  const sys = "You are Sensei — a sharp, dry, brutally funny ninja-dojo coach teaching a 10-year-old girl to end school-bully moments with one line. Voice: concise, witty, a little savage, entirely on her side. Praise like a coach, not a cheerleader. NEVER therapist voice, never lectures, never 'that must have been hard'. WINNING means the moment ENDS: the bully's attack lies flat on the floor and the girl looks completely unbothered in front of whoever is watching. Grade her reply to one taunt. Reply with ONLY a JSON object (no markdown) exactly like: {\"quality\":\"best|okish|wrong\",\"coach\":\"one sharp kid-voice sentence about what her reply DID to the bully — specific, witty\",\"better\":\"one line that ENDS it, or empty string if hers was great\"}. GRADING: (1) Replies that grab the bully's own words and turn them back on her are best — even spicy ones; if it's genuinely mean, still praise the turn and note the cost in one clause ('that starts a roast war — deliver it and walk, don't wait around'). (2) Bored verdicts, slow-replays, agree-and-blow-up-to-absurd, dismissals that close the scene, a flat 'No' under pressure: best. (3) Fresh attacks on her body or family that aren't flipping the bully's own frame: wrong — the cost, not the morality: it proves the first insult landed and makes the teachers blame both girls. (4) Pleading, protesting, defending, over-explaining: wrong. (5) A curious 'why did you say that?' inviting elaboration: okish; rhetorical judge-voiced questions: best. (6) A reply that ACCEPTS, concedes or thanks for the insult ('thanks, I'll practise more') is WRONG, and you must NEVER suggest anything like it as 'better' — never suggest fog/self-deprecation as a fix when the taunt was genuinely cruel; match the mean level of the moment: after a harsh taunt the fix usually has teeth. 'better' lines must end the moment, turn her own words if possible, never open a topic, never mum-jokes or body parts. If her reply already ended it: empty string.";
+  const user = JSON.stringify({
+    taunt: scn.taunt, scene: scn.setup,
+    move_being_trained: FORMS[scn.form] ? FORMS[scn.form].name : "any",
+    good_examples: scn.best.slice(0,2), bad_examples: scn.wrong.slice(0,2),
+    her_reply: reply,
+  });
+  const ctl = new AbortController();
+  const t = setTimeout(()=>ctl.abort(), 8000);
+  try {
+    const r = await fetch("/api/chat", {method:"POST", headers:{"Content-Type":"application/json"},
+      signal: ctl.signal,
+      body: JSON.stringify({messages:[{role:"system",content:sys},{role:"user",content:user}], max_tokens:350, temperature:0.6})});
+    clearTimeout(t);
+    if (!r.ok) return null;
+    const j = await r.json();
+    const content = (((j.choices||[])[0]||{}).message||{}).content || "";
+    const parsed = extractJson(content);
+    if (!parsed || !parsed.quality) return null;
+    if (!["best","okish","wrong"].includes(parsed.quality)) parsed.quality = "okish";
+    return parsed;
+  } catch(e){ clearTimeout(t); return null; }
+}
+
+/* ============================================================ router */
+let timers = [];
+function clearTimers(){
+  timers.forEach(t=>{ clearTimeout(t); clearInterval(t); });
+  timers = [];
+  if (rf) rf.done = true;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if (pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
+  speakCB = null;
+}
+const screens = ["home","learn","drill","rapid","boss","book","loot"];
+function go(name){
+  clearTimers();
+  screens.forEach(s=>document.getElementById("s-"+s).classList.toggle("on", s===name));
+  window.scrollTo(0,0);
+  if (name==="home") renderHome();
+  if (name==="learn") renderLearn();
+  if (name==="loot") renderLoot();
+}
+
+/* ============================================================ home */
+function renderHeader(){
+  const b = BELTS[beltIdx()];
+  document.getElementById("beltChip").textContent = b.c+" "+b.n;
+  document.getElementById("streakChip").innerHTML = "🔥 <b>"+S.streak.n+"</b>";
+  const cc = document.getElementById("coinChip");
+  cc.textContent = "🪙 "+(S.coins||0);
+  cc.onclick = ()=>go("loot");
+  const mp = document.getElementById("miniPet");
+  mp.textContent = PET_STAGES[petStage()].emoji;
+  mp.onclick = ()=>{ go("home"); openPetView(); };
+  const uc = document.getElementById("userChip");
+  const acc = DB.active && DB.accounts[DB.active];
+  uc.textContent = acc ? acc.emoji+" "+DB.active : "👤";
+  uc.onclick = showPicker;
+}
+function render(){ renderHeader(); applyTheme(); }
+function renderHome(){
+  renderHeader();
+  renderPetStrip();
+  const bi = beltIdx(), next = BELTS[bi+1];
+  const prevXp = BELTS[bi].xp;
+  const pct = next ? Math.min(100, 100*(S.xp-prevXp)/(next.xp-prevXp)) : 100;
+  document.getElementById("beltName").textContent = BELTS[bi].c+" "+BELTS[bi].n + (SHOP.find(i=>i.id===S.title) ? " · "+SHOP.find(i=>i.id===S.title).emoji+" "+SHOP.find(i=>i.id===S.title).name : "");
+  document.getElementById("xpFill").style.width = pct+"%";
+  document.getElementById("xpChip").textContent = S.xp+" XP"+(next? " / "+next.xp : " 🏆");
+  const due = nextDue();
+  const tiles = [
+    {e:"📜", h:"Learn the Moves", p:"Forms of the Shield and the Fang. One at a time, out loud.", a:()=>go("learn"), sub: S.formsLearned.length+"/10 trained"},
+    {e:"🎯", h:"Daily Drill", p:"Real scenes. Pick or type your line. Sensei grades it.", a:()=>startDrill(), sub: due+" scenario"+(due===1?"":"s")+" due"},
+    {e:"⚡", h:"Rapid Fire", p:"Taunt hits you out loud. 3 seconds. Reflex wins. This is the secret.", a:()=>startRapid(), sub:"12 rounds · combos"},
+    {e:"👹", h:"Boss Spars", p:"Beat the Copycat, the Announcer, the Gossip in a gauntlet.", a:()=>{ renderBossPick(); go("boss"); }, sub: S.bossWins.length+"/3 defeated"},
+    {e:"📕", h:"Close the Book", p:"End-of-day ritual: what happened, what you'd say, then nonsense bubbles.", a:()=>startBook()},
+    {e:"🪙", h:"Treasure Grotto", p:"Coins, stickers, silly titles, trophies. Spend shamelessly.", a:()=>go("loot"), sub:(S.coins||0)+" coins to spend"},
+  ];
+  document.getElementById("homeTiles").innerHTML = tiles.map(t=>
+    `<button class="card"><span class="big">${t.e}</span><h3>${t.h}</h3><p>${t.p}</p>${t.sub?`<p style="color:var(--gold);font-size:13px;margin-top:6px;">${t.sub}</p>`:""}</button>`).join("");
+  document.querySelectorAll("#homeTiles .card").forEach((el,i)=>el.onclick=tiles[i].a);
+  document.getElementById("homeSub").textContent = S.formsLearned.length===0
+    ? "Start with Learn the Moves — The Parrot is the easiest teeth there are."
+    : (CAPS.chat ? "Sensei is online. No pressure — five silly minutes counts as training." : "Practice mode: Sensei is resting, the dojo still works.");
+}
+function nextDue(){
+  const seen = S.seen;
+  return Math.max(1, allScenarios().filter(s=>!seen[s.id] || (seen[s.id].wrong||0)>=(seen[s.id].correct||0)).length);
+}
+
+/* ============================================================ learn */
+function renderLearn(){
+  clearTimers();
+  const el = document.getElementById("s-learn");
+  const locked = beltIdx() < 6; // brown
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">← dojo</button>
+    <h1>The Moves</h1>
+    <p class="sub">Fangs end moments — start there. Shields hold ground when she presses or it gets serious. Say every line OUT LOUD — the mouth learns faster than the eyes.</p>
+    <div class="grid" id="learnGrid"></div>`;
+  const g = document.getElementById("learnGrid");
+  const cards = FORM_ORDER.map(f=>{
+    const F = FORMS[f], done = S.formsLearned.includes(f);
+    return `<button class="card" data-f="${f}"><span class="big">${F.emoji}</span><br>
+      <span class="tag ${F.track}">${F.track==="shield"?"🛡 Shield":"🦷 Fang"}</span>${F.use?`<span class="tag locked">situational</span>`:""}
+      <h3>${F.name}</h3><p>${F.why.replace(/<[^>]+>/g,"").slice(0,90)}…</p>${done?'<p style="color:var(--bamboo);font-size:13px;">✓ trained</p>':""}</button>`;
+  });
+  cards.push(`<button class="card" data-f="quiz" ${locked?"disabled style='opacity:.55'":""}><span class="big">☢️</span><br>
+    <span class="tag locked">${locked?"🔒 until Brown Rope":"sparring rules"}</span>
+    <h3>The Nuclear Question</h3><p>When the strongest lines are the WRONG lines. Fair target or foul target?</p></button>`);
+  g.innerHTML = cards.join("");
+  g.querySelectorAll(".card").forEach(c=>c.onclick=()=>{
+    const f = c.dataset.f;
+    if (f==="quiz") return renderQuiz();
+    renderFormCard(f);
+  });
+}
+function renderFormCard(f){
+  clearTimers();
+  const F = FORMS[f];
+  const el = document.getElementById("s-learn");
+  const done = S.formsLearned.includes(f);
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="renderLearn()">← all moves</button>
+    <div class="card movecard stage">
+      <span class="big">${F.emoji}</span> <span class="tag ${F.track}">${F.track==="shield"?"🛡 Shield":"🦷 Fang"}</span>
+      <h2 style="margin-top:6px;">${F.name}</h2>
+      <p>${F.why}</p><br>
+      <h3>How it works</h3><ul class="how">${F.how.map(h=>`<li>${h}</li>`).join("")}</ul>
+      <h3>Say it like you mean it</h3>
+      ${F.lines.map(l=>`<div class="ex">${l}</div>`).join("")}
+      <p class="hintchip">🗣 ${F.tip}</p>
+      <h3>Rehearsal checklist</h3>
+      ${F.lines.map((l,i)=>`<div class="say"><input type="checkbox" style="width:auto" id="chk${i}"> I said “${l.slice(0,52)}${l.length>52?"…":""}” out loud</div>`).join("")}
+      <br>
+      <button class="btn" id="trainedBtn">${done?"Practised again 🥋":"Mark as trained 🥋"}</button>
+      <button class="btn secondary" id="exReadBtn">🔊 Hear the examples</button>
+    </div>`;
+  document.getElementById("trainedBtn").onclick = (e)=>{
+    const checks = [...el.querySelectorAll(".say input")].filter(c=>c.checked).length;
+    if (checks < 3){ toast("Say at least 3 lines out loud first — the mouth has to be in on it 🗣"); return; }
+    if (!done){ S.formsLearned.push(f); addXp(20, e); addCoins(10); } else { addXp(5, e); addCoins(3); }
+    checkAchv();
+    save(); toast(done?"Nice — reps keep it sharp!":"🥋 "+F.name+" trained! Try it in Daily Drill.");
+    renderLearn();
+  };
+  document.getElementById("exReadBtn").onclick = ()=>{
+    F.lines.forEach((l,i)=>timers.push(setTimeout(()=>speak(l.replace(/\s*\([^)]*\)/g,""),"sensei"), i*3800)));
+  };
+}
+function renderQuiz(){
+  clearTimers();
+  const el = document.getElementById("s-learn");
+  let i = 0, score = 0;
+  function draw(){
+    const Q = NUCLEAR_QUIZ[i];
+    el.innerHTML = `
+      <button class="ghost backbtn" onclick="renderLearn()">← all moves</button>
+      <div class="card stage">
+        <span class="tag locked">☢️ sparring rules</span>
+        <h2>${i+1} / ${NUCLEAR_QUIZ.length}</h2>
+        <p class="bubble">${Q.q}</p>
+        <div id="qOpts">${Q.opts.map((o,j)=>`<button class="opt" data-j="${j}">${o.t}</button>`).join("")}</div>
+        <div id="qFb"></div>
+      </div>`;
+    document.querySelectorAll("#qOpts .opt").forEach(b=>b.onclick=(e)=>{
+      const o = Q.opts[+b.dataset.j];
+      document.querySelectorAll("#qOpts .opt").forEach(x=>x.disabled=true);
+      b.classList.add(o.ok?"correct":"wrongpick");
+      score += o.ok?1:0;
+      document.getElementById("qFb").innerHTML = `<div class="fb ${o.ok?"best":"wrong"}" style="margin-top:14px;">
+        <div class="verdict">${o.ok?"✅ Correct":"❌ Not this one"}</div>
+        <div class="coach">${o.note}</div><div class="why">${Q.teach}</div><br>
+        <button class="btn" id="qNext">${i+1<NUCLEAR_QUIZ.length?"Next →":"Finish"}</button></div>`;
+      document.getElementById("qNext").onclick=()=>{
+        i++;
+        if (i<NUCLEAR_QUIZ.length) draw();
+        else { addXp(30, e); addCoins(15); checkAchv(); el.innerHTML = `<button class="ghost backbtn" onclick="renderLearn()">← all moves</button><div class="card stage"><h2>Spar-ring rules 🥋</h2><p>You got ${score}/${NUCLEAR_QUIZ.length}. The one-line version:</p><br><p class="bubble">Roast only people who roast back. Never mid-attack. Never angry. Never in front of power (teachers). Daily targeting = evidence, not an audience.</p><br><button class="btn" onclick="renderLearn()">Back to dojo</button></div>`; }
+      };
+    });
+  }
+  draw();
+}
+
+/* ============================================================ scenario picking */
+function pickScenarios(n){
+  const pool = allScenarios();
+  const stuck = pool.filter(s=>(S.seen[s.id] && (S.seen[s.id].wrong||0)>(S.seen[s.id].correct||0)));
+  const fresh = pool.filter(s=>!(s.id in S.seen));
+  const rest = pool.filter(s=>!stuck.includes(s) && !fresh.includes(s));
+  const out = stuck.slice(0, Math.ceil(n/2));
+  const add = fresh.concat(rest).sort(()=>Math.random()-0.5);
+  for (const s of add){ if (out.length>=n) break; if (!out.includes(s)) out.push(s); }
+  return out.slice(0,n).sort(()=>Math.random()-0.5);
+}
+
+/* ============================================================ drill */
+let drill = null;
+function startDrill(){
+  drill = {list: pickScenarios(8), i:0, right:0, answered:false, typedMode:false};
+  go("drill"); drawDrill();
+}
+function drawDrill(){
+  const el = document.getElementById("s-drill");
+  if (drill.i >= drill.list.length){
+    const done = drill.right;
+    if (!drill.rewarded){ drill.rewarded = true; addCoins(10); confetti(); checkAchv(); maybeLoot(1, 2200); }
+    el.innerHTML = `<div class="card stage"><h2>Drill complete 🎯</h2>
+      <p>${done}/${drill.list.length} best answers. ${done>=6?"Sensei nods slowly. 'You are ready for the ones who are watching.'":done>=3?"Good reps. The stuck ones are queued for tomorrow.":"Slow start — try the Learn moves first, then come back."}</p><br>
+      <button class="btn" id="dBook">📕 Close the Book</button>
+      <button class="btn secondary" id="dHome">Back to dojo</button></div>`;
+    document.getElementById("dBook").onclick = ()=>startBook();
+    document.getElementById("dHome").onclick = ()=>go("home");
+    return;
+  }
+  const s = drill.list[drill.i], V = VILLAINS[s.villain]||VILLAINS.gossip, F = FORMS[s.form];
+  drill.answered = false;
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">✕ quit drill</button>
+    <p class="sub" style="margin-bottom:8px;">Scenario ${drill.i+1} of ${drill.list.length}${F?` · trained move: <b>${F.emoji} ${F.name}</b>`:""}</p>
+    <div class="stage">
+      <div class="scene"><div class="avatar">${V.emoji}</div><div class="setup">${V.name} · ${s.setup}</div></div>
+      <div class="bubble">${s.taunt}</div>
+      <button class="replay" id="repBtn">🔊 hear it again</button>
+      <div class="modebtns">
+        <button class="btn secondary" id="toType">${drill.typedMode?"🎲 pick an option":"⌨️ type your own"}</button>
+        <button class="ghost" id="hintBtn">💡 hint</button>
+      </div>
+      <div id="answerArea"></div>
+      <div id="fbArea"></div>
+    </div>`;
+  document.getElementById("repBtn").onclick = ()=>speak(s.taunt,"bully");
+  document.getElementById("toType").onclick = ()=>{ drill.typedMode = !drill.typedMode; drillAnswerArea(); };
+  document.getElementById("hintBtn").onclick = ()=>toast(F?("Move: "+F.emoji+" "+F.name+". "+(F.hint||"Short, calm, and it must END it.")):"Keep it short and calm");
+  speak(s.taunt,"bully");
+  drillAnswerArea();
+}
+function drillAnswerArea(){
+  if (drill.typedMode) drawTyped(); else drawChoice();
+}
+function drawChoice(){
+  const s = drill.list[drill.i];
+  const opts = [
+    {t:s.best[0]||"Say it again — slower.", g:"best"},
+    {t:okLine(s), g:"ok"},
+    {t:wrongLines(s)[0], g:"wrong"},
+    {t:wrongLines(s)[1], g:"wrong"},
+  ].sort(()=>Math.random()-0.5);
+  const area = document.getElementById("answerArea");
+  area.innerHTML = `<p class="hintchip" style="margin-bottom:10px;">🎯 Pick the line that <b>ends it</b> — one closes the scene, one just holds the wall, two hand her the show.</p>` +
+    opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join("");
+  area.querySelectorAll(".opt").forEach(b=>b.onclick=(e)=>{
+    if (drill.answered) return;
+    drill.answered = true;
+    const o = opts[+b.dataset.i];
+    area.querySelectorAll(".opt").forEach(x=>{
+      x.disabled = true;
+      const og = opts[+x.dataset.i].g;
+      if (og==="best") x.classList.add("correct");
+      else if (x===b && o.g==="ok") x.classList.add("okish");
+      else if (x===b) x.classList.add("wrongpick");
+    });
+    finishAnswer(s, o.g, o.t, e);
+  });
+}
+function drawTyped(){
+  const s = drill.list[drill.i];
+  const area = document.getElementById("answerArea");
+  area.innerHTML = `
+    <div class="answerbox"><textarea id="typed" placeholder="Your comeback, out loud in your head…"></textarea></div>
+    <div class="hintchip">🎤 press <b>Win + H</b> in this box to dictate — or speak it out loud then type.</div>
+    ${CAPS.stt ? micButtonSafe() : ""}
+    <button class="btn" id="sendBtn">Send it 🥋</button>`;
+  const ta = document.getElementById("typed");
+  if (CAPS.stt){
+    const mic = document.getElementById("micBtn");
+    if (mic) mic.onclick = ()=>startMic(mic, ta);
+  }
+  document.getElementById("sendBtn").onclick = async (e)=>{
+    const v = ta.value.trim();
+    if (!v){ toast("Say something — anything beats silence in the dojo"); return; }
+    drill.answered = true;
+    document.getElementById("sendBtn").disabled = true;
+    ta.disabled = true;
+    const fb = document.getElementById("fbArea");
+    let g = null;
+    if (S.settings.ai && CAPS.chat){
+      fb.innerHTML = `<p class="thinking">🦉 Sensei is sizing it up…</p>`;
+      g = await aiGrade(s, v);
+    }
+    if (!g){
+      try { g = ruleGrade(s, v); }
+      catch(err){ g = {quality:"okish", coach:"Sensei tripped over that one — it counts!", better:""}; }
+    }
+    finishAnswer(s, g.quality, v, e, g);
+  };
+}
+function scoreAdjust(s, delta){ /* small xp tweak from AI disagreement, no float animation */ S.xp = Math.max(0, S.xp+delta); save(); }
+
+function finishAnswer(s, quality, text, ev, ruleResult){
+  touchStreak();
+  const seen = S.seen[s.id] = S.seen[s.id] || {correct:0, wrong:0};
+  if (quality==="best"){ seen.correct++; drill.right++; addXp(10, ev); addCoins(12); S.counters.best++; }
+  else if (quality==="okish"){ seen.correct++; drill.right += 0.5; addXp(5, ev); addCoins(6); }
+  else { seen.wrong++; addCoins(2, OOPS[Math.floor(Math.random()*OOPS.length)]); }
+  save(); checkAchv();
+  const V = VILLAINS[s.villain]||VILLAINS.gossip;
+  const coach = ruleResult ? "🦉 "+ruleResult.coach :
+    quality==="best" ? "🦉 Her attack, on the floor. Moment over. That's the move." :
+    quality==="okish" ? "🦉 Safe landing — but that answer doesn't close the door. She'll be back in five minutes." :
+    "🦉 That hands her exactly what she came for. Judge replies by what they DO to her, not by how good they feel.";
+  const better = ruleResult && ruleResult.better ? "Or try: “"+ruleResult.better+"”" :
+    (quality!=="best" && s.best[0] ? "Sensei's version: “"+s.best[0]+"”" : "");
+  document.getElementById("fbArea").innerHTML = `
+    <div class="fb ${quality==="best"?"best":quality==="okish"?"okish":"wrong"}">
+      <div class="verdict">${quality==="best"?"💥 SNAP BACK!":quality==="okish"?"🛡 held the wall":"🌪 swept off balance"}</div>
+      <div class="coach">${coach}</div>
+      <div class="better">${better}</div>
+      <div class="why"><b>Why:</b> ${s.why}</div><br>
+      <button class="btn" id="nextBtn">${drill.i+1>=drill.list.length?"Finish →":"Next scene →"}</button>
+    </div>`;
+  if (quality==="best") speak(pickQuote(), "sensei");
+  document.getElementById("nextBtn").onclick = ()=>{ drill.i++; drawDrill(); };
+  document.getElementById("fbArea").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+const QUOTES = ["Cold.","That's how you close a door.","She'll replay that one at bedtime. You won't.","Delivered and gone. Textbook.","The room noticed.","Effortless. Do it again tomorrow."];
+function pickQuote(){ return QUOTES[Math.floor(Math.random()*QUOTES.length)]; }
+
+/* ============================================================ rapid fire */
+let rf = null;
+function startRapid(){
+  const list = pickScenarios(12);
+  go("rapid"); // go() aborts any previous rf — assign fresh AFTER navigating
+  rf = {list, i:0, streakCombo:0, hits:0, xpEarned:0, t0:0, done:false, rid:0, listening:true};
+  rfRound();
+}
+function rfRound(){
+  const el = document.getElementById("s-rapid");
+  if (!rf || rf.done) return;
+  if (rf.i >= rf.list.length){ rfFinish(); return; }
+  const myId = ++rf.rid;
+  const s = rf.list[rf.i];
+  rf.listening = true;
+  const opts = [
+    {t:s.best[0]||"Say it again — slower.", g:"best"},{t:okLine(s), g:"ok"},
+    {t:wrongLines(s)[0], g:"wrong"},{t:wrongLines(s)[1], g:"wrong"},
+  ].sort(()=>Math.random()-0.5);
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">✕</button>
+    <div class="combo">${rf.streakCombo>1?"🔥 COMBO x"+rf.streakCombo:""}</div>
+    <div class="rfbar"><div class="rffill" id="rfFill" style="animation:pulse 1s infinite"></div></div>
+    <p class="setup">${(VILLAINS[s.villain]||VILLAINS.gossip).emoji} ${s.taunt}</p>
+    <div id="rfOpts">${opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join("")}</div>
+    <p class="hintchip" id="rfChip">👂 listening… you can answer already if you know it · Round ${rf.i+1}/12 · ${rf.hits} snapped</p>`;
+  const fill = document.getElementById("rfFill");
+  const startTimer = ()=>{
+    if (!rf || rf.rid !== myId || rf.done) return;
+    rf.listening = false;
+    if (fill) fill.style.animation = "";
+    const chip = document.getElementById("rfChip");
+    if (chip) chip.textContent = "⚡ NOW — snap! · Round "+(rf.i+1)+"/12 · "+rf.hits+" snapped";
+    const DUR = 3200;
+    rf.t0 = performance.now();
+    const tick = ()=>{
+      if (!rf || rf.rid !== myId || rf.done) return;
+      const left = 1 - (performance.now()-rf.t0)/DUR;
+      if (left<=0){ rfAnswer(null, opts, myId); return; }
+      if (fill) fill.style.width = (left*100)+"%";
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  // the bar only starts when the taunt has finished being read aloud (safety timeout inside speak covers silent voices)
+  speak(s.taunt, "bully", startTimer);
+  el.querySelectorAll(".opt").forEach(b=>b.onclick=()=>rfAnswer(+b.dataset.i, opts, myId));
+}
+function rfAnswer(picked, opts, myId){
+  if (!rf || rf.rid !== myId) return;
+  rf.rid = -1; // consume the round, stops the rAF timer and any pending startTimer
+  document.querySelectorAll("#rfOpts .opt").forEach(x=>x.disabled=true);
+  let good=false;
+  if (picked!==null){
+    const g = opts[picked].g;
+    good = g==="best";
+    const b = document.querySelectorAll("#rfOpts .opt")[picked];
+    b.classList.add(g==="best"?"correct":g==="ok"?"okish":"wrongpick");
+  }
+  const correctBtn = [...document.querySelectorAll("#rfOpts .opt")].find(x=>opts[+x.dataset.i].g==="best");
+  if (correctBtn && !good) correctBtn.classList.add("correct");
+  if (good){
+    rf.streakCombo++;
+    rf.hits++;
+    S.counters.bestCombo = Math.max(S.counters.bestCombo||0, rf.streakCombo);
+    const gain = 8 + Math.min(rf.streakCombo,5)*2;
+    rf.xpEarned += gain;
+    const seen = S.seen[rf.list[rf.i].id] = S.seen[rf.list[rf.i].id]||{correct:0,wrong:0};
+    seen.correct++;
+  } else {
+    if (picked===null) toast("⌛ too slow — she said it and you were still buffering!");
+    rf.streakCombo = 0;
+    const seen = S.seen[rf.list[rf.i].id] = S.seen[rf.list[rf.i].id]||{correct:0,wrong:0};
+    seen.wrong++;
+  }
+  rf.done = false;
+  rf.i++;
+  timers.push(setTimeout(rfRound, good?600:1100));
+}
+function rfFinish(){
+  rf.done = true;
+  touchStreak();
+  const xp = rf.xpEarned;
+  addXp(xp);
+  addCoins(rf.hits*3);
+  save(); checkAchv();
+  if (rf.hits>=12){ addCoins(20); hypeShow({emoji:"🌟", head:"12 for 12", line:"Flawless. Somewhere a bully is re-reading her own diary, confused.", prize:"perfect-run bonus: +🪙 20"}); }
+  else maybeLoot(.55);
+  const acc = Math.round(100*rf.hits/12);
+  const el = document.getElementById("s-rapid");
+  el.innerHTML = `<div class="card stage"><h2>Rapid fire: ${rf.hits}/12 ⚡</h2>
+    <p>${acc>=80?"Reflex level: scary. She will say something and instantly regret starting.":acc>=50?"Reflexes building. This is exactly how it becomes automatic — do two rounds a day.":"Reflexes are made here, not born. Tomorrow's round will be faster."}</p>
+    <p class="done-quote">+${xp} XP</p>
+    <button class="btn" onclick="startRapid()">Again ⚡ (best way to get sharp)</button>
+    <button class="btn secondary" onclick="go('home')">Dojo</button></div>`;
+}
+
+/* ============================================================ boss spars */
+const BOSSES = ["copycat","announcer","gossip"];
+function go_boss(){ go("boss"); }
+function renderBossPick(){
+  const el = document.getElementById("s-boss");
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">← dojo</button>
+    <h1>Boss Spars</h1>
+    <p class="sub">Five rounds. You can use any move you know. Defeat each one, then face them again faster.</p>
+    <div class="grid">${BOSSES.map(b=>{
+      const V = VILLAINS[b], win = S.bossWins.includes(b);
+      return `<button class="card" data-b="${b}"><span class="big">${V.emoji}</span><h3>${V.name}</h3><p>${V.blurb}</p><p style="color:${win?"var(--bamboo)":"var(--red)"};font-size:13px;margin-top:6px;">${win?"✓ defeated — sparring again":"⚔ undefeated"}</p></button>`;
+    }).join("")}</div>`;
+  el.querySelectorAll(".card").forEach(c=>c.onclick=()=>startBoss(c.dataset.b));
+}
+function startBoss(boss){
+  const pool = allScenarios().filter(s=>s.villain===boss && s.form!=="exit");
+  const exitPool = allScenarios().filter(s=>s.villain===boss && s.form==="exit");
+  const chosen = pool.sort(()=>Math.random()-0.5).slice(0,4).concat(exitPool.sort(()=>Math.random()-0.5).slice(0,1));
+  bossRun = {boss, list:chosen, i:0, hp:100, typed:false};
+  go("boss"); drawBoss();
+}
+let bossRun = null;
+function drawBoss(){
+  const el = document.getElementById("s-boss");
+  const V = VILLAINS[bossRun.boss];
+  if (bossRun.hp <= 0) return bossResult(true);
+  if (bossRun.i >= bossRun.list.length) return bossResult(bossRun.hp <= 34);
+  const s = bossRun.list[bossRun.i];
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="renderBossPick()">✕ forfeit (it counts as a loss)</button>
+    <div class="hpwrap"><span>${V.emoji}</span><div class="hp"><div class="in" id="hpIn" style="width:${bossRun.hp}%"></div></div><span>${bossRun.hp}</span></div>
+    <div class="scene"><div class="avatar">${V.emoji}</div><div class="setup">${V.name} · ${s.setup}</div></div>
+    <div class="bubble">${s.taunt}</div>
+    <button class="replay" id="bRep">🔊 hear it again</button>
+    <div class="modebtns"><button class="btn secondary" id="bToType">${bossRun.typed?"🎲 pick":"⌨️ type your own"}</button></div>
+    <div id="answerArea"></div><div id="fbArea"></div>`;
+  document.getElementById("bRep").onclick=()=>speak(s.taunt,"bully");
+  document.getElementById("bToType").onclick=()=>{ bossRun.typed=!bossRun.typed; bossAnswerArea(); };
+  speak(s.taunt,"bully");
+  bossRun.answered = false;
+  bossAnswerArea();
+}
+function bossAnswerArea(){
+  const s = bossRun.list[bossRun.i];
+  if (bossRun.typed){
+    const area = document.getElementById("answerArea");
+    area.innerHTML = `<div class="answerbox"><textarea id="bTyped" placeholder="Your line…"></textarea></div>
+      ${CAPS.stt?micButtonSafe():""}
+      <button class="btn" id="bSend">Use it 🥋</button>`;
+    if (CAPS.stt){ const m=document.getElementById("micBtn"); if(m) m.onclick=()=>startMic(m, document.getElementById("bTyped")); }
+    document.getElementById("bSend").onclick = async ()=>{
+      const v = document.getElementById("bTyped").value.trim();
+      if (!v) return;
+      bossRun.answered = true;
+      document.getElementById("bSend").disabled = true;
+      document.getElementById("bTyped").disabled = true;
+      let g = null;
+      if (S.settings.ai && CAPS.chat){
+        document.getElementById("fbArea").innerHTML = `<p class="thinking">🦉 Sensei is sizing it up…</p>`;
+        g = await aiGrade(s, v);
+      }
+      if (!g){
+        try { g = ruleGrade(s, v); }
+        catch(err){ g = {quality:"okish", coach:"Sensei tripped — it counts!", better:""}; }
+      }
+      bossJudge(s, g.quality, g, true);
+    };
+  } else {
+    const opts = [{t:s.best[0]||"Say it again — slower.",g:"best"},{t:okLine(s),g:"ok"},{t:wrongLines(s)[0],g:"wrong"},{t:wrongLines(s)[1],g:"wrong"}].sort(()=>Math.random()-0.5);
+    const area = document.getElementById("answerArea");
+    area.innerHTML = opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join("");
+    area.querySelectorAll(".opt").forEach(b2=>b2.onclick=(e)=>{
+      if (bossRun.answered) return;
+      bossRun.answered = true;
+      area.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+      b2.classList.add(opts[+b2.dataset.i].g==="best"?"correct":"wrongpick");
+      bossJudge(s, opts[+b2.dataset.i].g, {coach:"", better:""}, false);
+    });
+  }
+}
+function bossJudge(s, quality, g, typed, isCorrection){
+  const V = VILLAINS[bossRun.boss];
+  const dmg = quality==="best"?40:quality==="okish"?18:0;
+  bossRun.hp = Math.max(0, bossRun.hp - dmg + (isCorrection ? (bossRun.lastDmg||0) : 0));
+  bossRun.lastDmg = dmg;
+  if (!isCorrection){
+    const seen = S.seen[s.id] = S.seen[s.id]||{correct:0,wrong:0};
+    if (quality==="best"){ seen.correct++; addXp(14); addCoins(5); }
+    else if (quality==="okish"){ seen.correct++; addXp(7); addCoins(3); }
+    else { seen.wrong++; addCoins(1); }
+    touchStreak(); save();
+    if (quality==="best") speak(pickQuote(),"sensei");
+  }
+  const self = quality==="wrong"?20:0;
+  document.getElementById("fbArea").innerHTML = `
+    <div class="fb ${quality==="best"?"best":quality==="okish"?"okish":"wrong"}">
+      <div class="verdict">${quality==="best"?"💥 "+V.name+" staggers (-"+dmg+")":quality==="okish"?"🛡 graze (-"+dmg+")":"🩸 she bites back (-"+self+" to YOU)"}</div>
+      <div class="coach">${g.coach?("🦉 "+g.coach):""}</div>
+      <div class="better">${g.better?("Or: “"+g.better+"”"):""}</div>
+      <div class="why"><b>Why:</b> ${s.why}</div><br>
+      <button class="btn" id="bNext">${bossRun.hp<=0?"See result →":"Next round →"}</button></div>`;
+  const hpEl = document.getElementById("hpIn"); if (hpEl) hpEl.style.width = bossRun.hp+"%";
+  document.getElementById("bNext").onclick = ()=>{ bossRun.i++; drawBoss(); };
+}
+function bossResult(win){
+  const V = VILLAINS[bossRun.boss];
+  if (win){
+    addCoins(25); confetti(110); checkAchv(); maybeLoot(1, 2600);
+    if (!S.bossWins.includes(bossRun.boss)){ S.bossWins.push(bossRun.boss); addXp(60); }
+    else addXp(15);
+  } else addCoins(8, "8 coins for surviving. That genuinely counts.");
+  save();
+  document.getElementById("s-boss").innerHTML = `<div class="card stage">
+    <span class="big">${win?"🏆":"💫"}</span><h2>${win?V.name+" defeated!":"You held out — "+V.name+" escapes for now."}</h2>
+    <p>${win?(beltIdx()>=3?"You didn't lose your temper once. THAT is the real victory.":"You stayed calm while she performed. That's the whole secret."):"She got under it — that's fine, bosses take practice. The stuck scenes are queued for your next drill."}</p><br>
+    <button class="btn" onclick="renderBossPick()">Bosses</button>
+    <button class="btn secondary" onclick="go('home')">Dojo</button></div>`;
+}
+
+/* ============================================================ close the book */
+function startBook(){
+  go("book");
+  const el = document.getElementById("s-book");
+  el.innerHTML = `<div class="card stage">
+    <h2>📕 Close the Book</h2>
+    <p class="sub">The training ends when you say it ends. Three short lines, then 60 seconds of pure nonsense to pop, then you're <b>done</b> for today — the day stays closed.</p>
+    <div class="field"><label>1. What happened today (one line, if anything did)</label><textarea id="bk1" placeholder="…"></textarea></div>
+    <div class="field"><label>2. If it happens again, I say:</label><textarea id="bk2" placeholder="“…”"></textarea></div>
+    <div class="field"><label>3. And after that —</label><textarea id="bk3" placeholder="it's done / I walk / I tell dad"></textarea></div>
+    <button class="btn" id="bkGo">Close the book 📕 → nonsense bubbles</button></div>`;
+  document.getElementById("bkGo").onclick = ()=>{
+    speak("You said it. So it is true. Go and be a kid now.","sensei");
+    startBubbles();
+  };
+}
+let bubInt = null, bubTimer = null;
+function startBubbles(){
+  const wrap = document.getElementById("bubbles");
+  wrap.innerHTML = `<div class="hud">🫧 Pop the nonsense — <b id="bubScore">0</b> popped · <b id="bubTime">60</b>s left
+    <br><button class="ghost" id="bubSkip" style="margin-top:10px;">⏭ done — close the book now</button></div>`;
+  wrap.classList.add("on");
+  let score = 0, time = 60;
+  const finish = ()=>{
+    clearInterval(bubInt); clearInterval(bubTimer); bubInt=null; bubTimer=null;
+    addXp(10); addCoins(10);
+    S.counters.books = (S.counters.books||0)+1;
+    checkAchv(); confetti(60); maybeLoot(1, 2400);
+    wrap.innerHTML = `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;">
+      <div style="font-size:52px;">🌙</div><div class="done-quote">Session closed. It's over.<br>Go do something fun.</div>
+      <p style="color:var(--dim);">You popped ${score} pieces of nonsense. Book: closed. Tomorrow is a different day.</p><br>
+      <button class="btn" id="bkHome">Back to dojo</button></div>`;
+    document.getElementById("bkHome").onclick = ()=>{
+      wrap.classList.remove("on");
+      go("home");
+    };
+  };
+  document.getElementById("bubSkip").onclick = finish;
+  const spawn = ()=>{
+    const d = document.createElement("div");
+    d.className = "bub";
+    const size = 60 + Math.random()*80;
+    d.style.width = d.style.height = size+"px";
+    d.style.left = Math.random()*Math.max(50,(innerWidth-size))+"px";
+    d.style.top = (innerHeight+size)+"px";
+    d.textContent = FUN_WORDS[Math.floor(Math.random()*FUN_WORDS.length)];
+    const dur = 5000+Math.random()*4000;
+    d.style.transition = "transform "+dur+"ms linear";
+    wrap.appendChild(d);
+    requestAnimationFrame(()=>{ d.style.transform = "translateY(-"+(innerHeight+size*2)+"px)"; });
+    d.onclick = ()=>{ score++; document.getElementById("bubScore").textContent = score; speak(FUN_WORDS[Math.floor(Math.random()*FUN_WORDS.length)],"sensei"); d.remove(); };
+    setTimeout(()=>d.remove(), dur);
+  };
+  bubInt = setInterval(spawn, 500);
+  bubTimer = setInterval(()=>{
+    time--; const tEl = document.getElementById("bubTime"); if (tEl) tEl.textContent = time;
+    if (time<=0) finish();
+  }, 1000);
+  timers.push(bubInt, bubTimer);
+}
+
+/* ============================================================ treasure grotto */
+let lootTab = "shop";
+function renderLoot(){
+  const el = document.getElementById("s-loot");
+  const titleIt = SHOP.find(i=>i.id===S.title);
+  const stickers = SHOP.filter(i=>i.kind==="sticker");
+  const gotStickers = stickers.filter(i=>S.owned.includes(i.id));
+  const tab = (id,label)=>`<button class="${lootTab===id?"on":""}" data-tab="${id}">${label}</button>`;
+  let body = "";
+  if (lootTab==="shop"){
+    const groups = [["title","👑 Silly titles (shown next to your belt)"],["theme","🎨 Dojo skins"],["sticker","🪧 Stickers for the wall"]];
+    body = groups.map(([kind,label])=>{
+      const items = SHOP.filter(i=>i.kind===kind);
+      return `<h3 style="margin:18px 0 10px;">${label}</h3><div class="shopgrid">${items.map(it=>{
+        const owned = S.owned.includes(it.id);
+        const on = (kind==="title" && S.title===it.id) || (kind==="theme" && S.theme===it.id);
+        let act;
+        if (owned) act = kind==="sticker" ? `<span class="cost">on your wall ✓</span>`
+          : on ? `<button class="ghost" data-off="${it.id}">take off</button>`
+               : `<button class="btn" data-use="${it.id}" style="padding:8px 16px;">use it</button>`;
+        else act = S.coins>=it.cost ? `<button class="btn" data-buy="${it.id}" style="padding:8px 16px;">🪙 ${it.cost}</button>`
+          : `<span class="cost short">🪙 ${it.cost}<br>need ${it.cost-S.coins} more</span>`;
+        return `<div class="shopitem"><span class="ic">${it.emoji}</span><div><h4>${it.name}${on?" · on":""}</h4><div class="cd">${it.desc}</div></div><span class="act">${act}</span></div>`;
+      }).join("")}</div>`;
+    }).join("");
+  } else if (lootTab==="wall"){
+    body = `<p style="color:var(--dim);margin-bottom:14px;">${gotStickers.length} of ${stickers.length} stickers. They come from prize eggs — or straight off the shop shelf.</p>
+      <div class="wallgrid">${stickers.map(i=>S.owned.includes(i.id)
+        ? `<div class="cell">${i.emoji}<small>${i.name}</small></div>`
+        : `<div class="cell empty">?</div>`).join("")}</div>`;
+  } else {
+    body = `<p style="color:var(--dim);margin-bottom:14px;">Trophies for things that matter. Nobody picks a fight with a trophy shelf.</p>
+      ${ACHV.map(a=>{ const got=(S.achv||[]).includes(a.id);
+        return `<div class="trophy ${got?"":"locked"}"><span class="ic">${got?a.emoji:"🔒"}</span>
+          <div><b>${a.name}</b><div style="color:var(--dim);font-size:14px;">${a.desc}</div></div>
+          <span class="coins-tag">${got?"earned ✓":"+"+a.coins+" 🪙"}</span></div>`;
+      }).join("")}`;
+  }
+  el.innerHTML = `
+    <button class="ghost backbtn" onclick="go('home')">← dojo</button>
+    <h1>🪙 Treasure Grotto</h1>
+    <div class="coinbank">🪙 ${S.coins||0} coins</div>
+    <p class="sub">${titleIt?`Currently showing off: ${titleIt.emoji} <b>${titleIt.name}</b>`:"No title equipped. The shelf is judging you."} · ${gotStickers.length} stickers · ${(S.achv||[]).length}/${ACHV.length} trophies</p>
+    <div class="tabs">${tab("shop","🏪 Shop")}${tab("wall","🖼 Sticker wall")}${tab("trophies","🏅 Trophies")}</div>
+    ${body}`;
+  const $ = id=>document.getElementById(id);
+  el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ lootTab=b.dataset.tab; renderLoot(); });
+  el.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>buyItem(b.dataset.buy));
+  el.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>useItem(b.dataset.use));
+  el.querySelectorAll("[data-off]").forEach(b=>b.onclick=()=>useItem(b.dataset.off));
+}
+function buyItem(id){
+  const it = SHOP.find(i=>i.id===id);
+  if (!it || S.owned.includes(id)) return;
+  if (S.coins < it.cost){ toast("Not yet — "+(it.cost-S.coins)+" coins to go"); return; }
+  S.coins -= it.cost; S.owned.push(id); save(); renderHeader();
+  if (it.kind==="sticker") hypeShow({emoji:it.emoji, head:it.name, line:"sticker acquired — fresh on the wall", prize:"🪧 sticker wall: "+S.owned.filter(x=>x.startsWith("st_")).length});
+  else if (it.kind==="title") hypeShow({emoji:it.emoji, head:"New title!", line:"“"+it.name+"” — press use it, obviously"});
+  else hypeShow({emoji:it.emoji, head:"New dojo skin!", line:it.name+" — press use it and watch the walls change"});
+  renderLoot();
+}
+function useItem(id){
+  const it = SHOP.find(i=>i.id===id);
+  if (!it || !S.owned.includes(id)) return;
+  if (it.kind==="title") S.title = (S.title===id ? "" : id);
+  if (it.kind==="theme"){ S.theme = (S.theme===id ? "" : id); applyTheme(); }
+  save(); renderLoot();
+}
+
+/* ============================================================ ninjas (accounts)
+   Super simple: a face, a name, and progress that's yours. No passwords,
+   no internet — the dojo file just knows who's who. */
+const beltIdxOf = st => { let i=0; BELTS.forEach((b,j)=>{ if ((st.xp||0)>=b.xp) i=j; }); return i; };
+let pkAvatar = AVATARS[0];
+function showPicker(){
+  const w = document.getElementById("acctPick");
+  w.innerHTML = `<div class="pkbox">
+    <h1>🥋 ${DB.active ? "Swap ninjas" : "Welcome to the dojo"}</h1>
+    <p class="sub">${DB.active ? "Whose turn is it? Or head back." : "Who's training today?"}</p>
+    <div class="pkgrid">${Object.keys(DB.accounts).map(n=>{
+      const acc = DB.accounts[n], b = BELTS[beltIdxOf(acc.state||{})];
+      return `<div class="pkcard" data-pick="${n}"><button class="pkdel" data-delacc="${n}" title="delete (grown-ups only)">✕</button>
+        <span class="pkface">${acc.emoji}</span><b>${n}</b>
+        <span class="pkbelt">${b.c} ${b.n}${n===DB.active?" · here now":""}</span></div>`;
+    }).join("")}
+      <div class="pkcard newpk" id="pkNew">＋<b style="font-size:14px;">new ninja</b></div>
+    </div>
+    <div id="pkCreate">
+      <div class="field"><label>Ninja name</label><input id="pkName" maxlength="16" placeholder="e.g. Mia"></div>
+      <label style="font-size:14px;color:var(--dim);">Pick a face</label>
+      <div class="avpick">${AVATARS.map(e=>`<button data-av="${e}" class="${e===pkAvatar?"sel":""}">${e}</button>`).join("")}</div>
+      <div class="row"><button class="btn" id="pkGo">Enter the dojo 🥋</button><button class="ghost" id="pkCancel">cancel</button></div>
+    </div>
+    ${DB.active ? `<button class="ghost" id="pkBack" style="margin-top:18px;">← back to training</button>` : ""}
+  </div>`;
+  w.classList.add("on");
+  const $ = id=>document.getElementById(id);
+  w.querySelectorAll("[data-pick]").forEach(c=>c.onclick=()=>switchTo(c.dataset.pick));
+  w.querySelectorAll("[data-delacc]").forEach(b2=>b2.onclick=(e)=>{
+    e.stopPropagation();
+    const n = b2.dataset.delacc;
+    if (confirm("🧓 Grown-ups only — really delete "+n+"'s account?\n\nBelt, coins, trophies, streak and pet are gone for good. There's no undo (but the ⚙ panel's export can save you).")){
+      deleteAccount(n); renderHeader(); showPicker(); toast(n+" deleted");
+    }
+  });
+  $("pkNew").onclick = ()=>$("pkCreate").classList.add("on");
+  w.querySelectorAll("[data-av]").forEach(b2=>b2.onclick=()=>{ pkAvatar=b2.dataset.av;
+    w.querySelectorAll("[data-av]").forEach(x=>x.classList.toggle("sel", x.dataset.av===pkAvatar)); });
+  $("pkGo").onclick = ()=>{
+    const name = ($("pkName").value.trim()||"Ninja").slice(0,16);
+    if (DB.accounts[name]){ toast("Already got a "+name+" in this dojo"); return; }
+    addAccount(name, pkAvatar);
+  };
+  const cancel=$("pkCancel"); if (cancel) cancel.onclick = ()=>$("pkCreate").classList.remove("on");
+  const back=$("pkBack"); if (back) back.onclick = hidePicker;
+}
+function hidePicker(){ const w=document.getElementById("acctPick"); w.classList.remove("on"); w.innerHTML=""; }
+function addAccount(name, emoji){
+  save(); // tuck the current ninja's progress away first
+  DB.accounts[name] = {emoji: emoji||"🦊", state: JSON.parse(JSON.stringify(DEFAULTS))};
+  DB.active = name;
+  S = DB.accounts[name].state;
+  save(); applyTheme(); hidePicker(); renderHome(); go("home");
+  toast("Welcome, "+name+" 🥋");
+}
+function switchTo(name){
+  if (!DB.accounts[name]) return;
+  save();
+  DB.active = name;
+  S = deepMerge(JSON.parse(JSON.stringify(DEFAULTS)), DB.accounts[name].state || {});
+  DB.accounts[name].state = S;
+  save(); applyTheme(); hidePicker(); renderHome(); go("home");
+}
+function deleteAccount(name){
+  delete DB.accounts[name];
+  if (DB.active === name){
+    DB.active = ""; S = JSON.parse(JSON.stringify(DEFAULTS));
+    save(); applyTheme(); renderHome(); showPicker();
+  } else save();
+}
+function renameAccount(oldN, raw){
+  const newN = (raw||"").trim().slice(0,16);
+  if (!newN || newN === oldN) return false;
+  if (DB.accounts[newN]){ toast("Already got one called "+newN); return false; }
+  DB.accounts[newN] = DB.accounts[oldN]; delete DB.accounts[oldN];
+  if (DB.active === oldN) DB.active = newN;
+  save(); return true;
+}
+function resetProgress(){
+  if (!DB.active) return;
+  if (!confirm("Reset "+DB.active+"'s progress?\n\nBelt, XP, coins, shop, trophies, streak and the pet go back to day one.\nThe scenario pack, your settings and the AI stay exactly as they are.")) return;
+  const keep = {settings:S.settings, custom:S.custom, overrides:S.overrides, petName:S.petName};
+  S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep);
+  save(); render(); toast("Fresh white rope for "+DB.active+" 🤍 — pack and settings kept");
+  renderParent();
+}
+
+/* ============================================================ parent panel */
+/* ---------- card editor + pack export/import ---------- */
+let parentEditing = null;
+function scenRows(f){
+  const q=(f||"").toLowerCase();
+  const list=allScenarios().filter(s=>((s.taunt+" "+(s.setup||"")).toLowerCase().includes(q)));
+  if(!list.length) return `<p style="color:var(--dim);font-size:14px;">no match</p>`;
+  return list.map(s=>{
+    const v=VILLAINS[s.villain]||VILLAINS.gossip;
+    const tags=(S.overrides[s.id]?`<span style="color:var(--gold);font-size:11px;"> ✎edited</span>`:"")+(s.custom?`<span style="color:var(--bamboo);font-size:11px;"> ✚custom</span>`:"");
+    return `<div class="listrow"><span style="flex:1;min-width:0;overflow:hidden;">${v.emoji} ${(s.taunt||"").slice(0,52)}${(s.taunt||"").length>52?"…":""}${tags}</span><button class="ghost" data-edit="${s.id}">✏</button></div>`;
+  }).join("");
+}
+function renderScenarioEditor(P){
+  const s = allScenarios().find(x=>x.id===parentEditing);
+  if(!s){ parentEditing=null; return renderParent(); }
+  P.innerHTML = `
+    <h2>✏ Card editor</h2>
+    <button class="ghost" id="edBack">← back to panel</button>
+    <div class="field" style="margin-top:14px;"><label>Setup (scene text)</label><input id="ed_setup"></div>
+    <div class="field"><label>The taunt</label><textarea id="ed_taunt" rows="2"></textarea></div>
+    <div class="row">
+      <div class="field"><label>Move practised</label><select id="ed_form">${FORM_ORDER.map(f=>`<option value="${f}">${FORMS[f].emoji} ${FORMS[f].name}</option>`).join("")}</select></div>
+      <div class="field"><label>Villain type</label><select id="ed_villain">${Object.keys(VILLAINS).map(k=>`<option value="${k}">${VILLAINS[k].emoji} ${VILLAINS[k].name}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label>💥 Best lines — the closers (one per line)</label><textarea id="ed_best" rows="4"></textarea></div>
+    <div class="field"><label>🛡 OK lines — safe but doesn't close (one per line)</label><textarea id="ed_ok" rows="3"></textarea></div>
+    <div class="field"><label>🩸 Wrong traps (one per line — 1st cruel, 2nd defensive)</label><textarea id="ed_wrong" rows="3"></textarea></div>
+    <div class="field"><label>Why (the lesson shown after answering)</label><textarea id="ed_why" rows="3"></textarea></div>
+    <button class="btn" id="edSave">Save card</button>
+    ${S.overrides[s.id]?`<button class="btn secondary" id="edRevert">↩ revert to original</button>`:""}
+    ${s.custom?`<button class="btn danger" id="edDel">delete card</button>`:""}`;
+  const $=id=>document.getElementById(id);
+  $("ed_setup").value=s.setup||""; $("ed_taunt").value=s.taunt;
+  if(FORMS[s.form]) $("ed_form").value=s.form;
+  if(VILLAINS[s.villain]) $("ed_villain").value=s.villain;
+  $("ed_best").value=(s.best||[]).join("\n"); $("ed_ok").value=(s.ok||[]).join("\n");
+  $("ed_wrong").value=(s.wrong||[]).join("\n"); $("ed_why").value=s.why||"";
+  $("edBack").onclick=()=>{ parentEditing=null; renderParent(); };
+  $("edSave").onclick=()=>{
+    const rows=id=>$(id).value.split("\n").map(x=>x.trim()).filter(Boolean);
+    const best=rows("ed_best"), ok=rows("ed_ok"), wrong=rows("ed_wrong");
+    const taunt=$("ed_taunt").value.trim();
+    if(!taunt){ toast("The card needs a taunt"); return; }
+    if(!best.length){ toast("Keep at least one closer line"); return; }
+    const patch={ setup:$("ed_setup").value.trim()||"She makes sure someone is watching:", taunt,
+      form:$("ed_form").value, villain:$("ed_villain").value,
+      best, ok:ok.length?ok:["Okay."], wrong:wrong.length?wrong:["Shut up!","Please just stop!"],
+      why:$("ed_why").value.trim()||"Real words, real scene — calm and closing beats frozen or fiery." };
+    if(s.custom){ const i=S.custom.findIndex(c=>c.id===s.id); S.custom[i]=Object.assign({},S.custom[i],patch); }
+    else S.overrides[s.id]=patch;
+    save(); toast("card saved 🥋"); parentEditing=null; renderParent();
+  };
+  const rv=$("edRevert"); if(rv) rv.onclick=()=>{ delete S.overrides[s.id]; save(); toast("reverted to original"); parentEditing=null; renderParent(); };
+  const dl=$("edDel"); if(dl) dl.onclick=()=>{ if(confirm("Delete this custom card?")){ S.custom=S.custom.filter(c=>c.id!==s.id); save(); parentEditing=null; renderParent(); } };
+}
+function exportPack(){
+  const pack = { version:1, exported:new Date().toISOString(),
+    scenarios: allScenarios().map(s=>({id:s.id,form:s.form,villain:s.villain,setup:s.setup,taunt:s.taunt,best:s.best,ok:s.ok,wrong:s.wrong,why:s.why})) };
+  const blob=new Blob([JSON.stringify(pack,null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="snapback-pack.json"; a.click();
+}
+function importPackJson(txt){
+  let data; try { data = JSON.parse(txt); } catch(e){ toast("That wasn't valid JSON"); return; }
+  const items = Array.isArray(data) ? data : (data && Array.isArray(data.scenarios) ? data.scenarios : null);
+  if(!items){ toast("Need a list, or {\"scenarios\":[…]}"); return; }
+  const str=v=>typeof v==="string"?v.trim():"";
+  const arr=v=>Array.isArray(v)?v.map(str).filter(Boolean):[];
+  let n=0, added=0;
+  for(const it of items){
+    const id=str(it.id); const taunt=str(it.taunt);
+    if(!id || !taunt) continue;
+    const wrong=arr(it.wrong); while(wrong.length<2) wrong.push(wrong.length?"Please just stop!":"Shut up!");
+    const patch={ form:FORMS[str(it.form)]?str(it.form):"flip", villain:VILLAINS[str(it.villain)]?str(it.villain):"gossip",
+      setup:str(it.setup)||"She makes sure someone is watching:", taunt,
+      best:arr(it.best).length?arr(it.best):["Say it again — slower."],
+      ok:arr(it.ok).length?arr(it.ok):["Okay."], wrong,
+      why:str(it.why)||"Real words, real scene — calm and closing beats frozen or fiery." };
+    const ci=S.custom.findIndex(c=>c.id===id);
+    if(ci>=0) S.custom[ci]=Object.assign({},S.custom[ci],patch);
+    else if(SCENARIOS.some(sc=>sc.id===id)) S.overrides[id]=patch;
+    else { S.custom.push(Object.assign({id},patch)); added++; }
+    n++;
+  }
+  if(!n){ toast("No valid cards found (each needs id + taunt)"); return; }
+  save(); toast(`imported ${n} card${n===1?"":"s"}${added?` — ${added} new`:''}`); renderParent();
+}
+
+function renderParent(){
+  const P = document.getElementById("parentInner");
+  if (parentEditing){ renderScenarioEditor(P); document.getElementById("parentModal").classList.add("on"); return; }
+  const cust = allScenarios().filter(s=>s.custom);
+  const stuck = allScenarios().filter(s=>S.seen[s.id] && S.seen[s.id].wrong>(S.seen[s.id].correct||0));
+  if (!VOICES.length) loadVoices();
+  const voiceOpts = ["<option value=''>— browser default —</option>"].concat(
+    VOICES.filter(v=>/^en/i.test(v.lang)).map(v=>`<option value="${v.name}">${v.name} (${v.lang})</option>`)
+  ).join("");
+  P.innerHTML = `
+  <h2>⚙ Grown-ups only</h2>
+  <div class="field"><label>Connection</label>
+    <p style="font-size:14px;color:var(--dim);">Sensei AI: ${CAPS.chat?"✅ online":"⚪ offline (rules-based fallback)"} · Qwen TTS: ${CAPS.tts?"✅ configured":"not configured — browser voice in use"} · STT: ${CAPS.stt?"✅ configured":"not configured — Win+H dictation works meanwhile"}
+    <br><button class="ghost" id="capRefresh" style="margin-top:6px;">re-check</button></p></div>
+  <hr>
+  <h3>🗣 Voice</h3>
+  <div class="field"><label>Bully voice (browser)</label><select id="vb">${voiceOpts}</select></div>
+  <div class="row">
+    <div class="field"><label>Speed ${S.settings.rateBully}</label><input type="range" id="rb" min="0.6" max="1.4" step="0.05" value="${S.settings.rateBully}"></div>
+    <div class="field"><label>Style ${S.settings.pitchBully}</label><input type="range" id="pb" min="0.6" max="1.4" step="0.05" value="${S.settings.pitchBully}"></div>
+  </div>
+  <button class="ghost" id="tryVoice">🔊 try it</button>
+  <div class="field" style="margin-top:10px;"><label><input type="checkbox" id="qt" ${S.settings.qwenTts==="on"?"checked":""} style="width:auto"> Use Qwen TTS when configured (once you wire up /v1/audio/speech)</label></div>
+  <div class="field"><label><input type="checkbox" id="aiOn" ${S.settings.ai?"checked":""} style="width:auto"> AI Sensei grading of typed answers</label></div>
+  <hr>
+  <h3>🧾 Add a real phrase</h3>
+  <p style="font-size:14px;color:var(--dim);margin-bottom:10px;">Paste what's actually being said (approximate is fine). It goes straight into drills. She won't see this panel.</p>
+  <div class="field"><label>The phrase / taunt</label><textarea id="nc_taunt" placeholder="What she actually says…"></textarea></div>
+  <div class="field"><label>Context (optional)</label><input id="nc_setup" placeholder="In the corridor, loud, audience forming…"></div>
+  <div class="row">
+    <div class="field"><label>Villain pattern</label><select id="nc_villain"><option value="announcer">Announcer (loud, audience)</option><option value="copycat">Copycat</option><option value="gossip">Gossip (indirect)</option></select></div>
+    <div class="field"><label>Move to practise</label><select id="nc_form"><option value="reporter">Reporter</option><option value="fog">Fog Wall</option><option value="parrot">Parrot</option><option value="rewrite">Rewrite</option><option value="pity">Pity</option><option value="yawn">Yawn</option><option value="flip">Flip</option><option value="dismissal">Dismissal</option><option value="loop">Loop</option><option value="exit">Exit</option></select></div>
+  </div>
+  <div class="field"><label>Good answer (what worked / would work)</label><input id="nc_best" placeholder="“…”"></div>
+  <button class="btn" id="ncAdd">Add to drills</button>
+  <hr>
+  <h3>🧒 Ninjas (accounts)</h3>
+  <p style="font-size:14px;color:var(--dim);margin-bottom:10px;">Each ninja gets their own belt, coins, trophies, streak and pet name. Switch with the 👤 chip up top. New ninjas are added from there too.</p>
+  ${Object.keys(DB.accounts).length ? Object.keys(DB.accounts).map(n=>{
+      const acc=DB.accounts[n], st=acc.state||{}, b=BELTS[beltIdxOf(st)];
+      return `<div class="listrow"><span>${acc.emoji} <b>${n}</b> <span style="color:var(--dim);font-size:13px;">${b.c} ${b.n} · ${st.xp||0} XP · ${st.coins||0} 🪙${n===DB.active?" · signed in":""}</span></span><span class="spacer"></span><button class="ghost" data-accrn="${n}">✏️</button><button class="ghost" data-accdel="${n}" title="delete this ninja">✕</button></div>`;
+    }).join("") : `<p style="color:var(--dim);font-size:14px;">no ninjas yet — one appears the moment someone picks a name</p>`}
+  <div class="row" style="margin-top:12px;">
+    <div><button class="btn secondary" id="resetProg">🔄 reset this ninja's progress</button></div>
+  </div>
+  <p style="font-size:12.5px;color:var(--dim);margin-top:6px;">Keeps the scenario pack, card edits and settings — only belt, XP, coins, shop, trophies, streak and the pet reset.</p>
+  <hr>
+  <h3>📚 Card editor — every card</h3>
+  <p style="font-size:14px;color:var(--dim);margin-bottom:10px;">Your edits sit on top as an overlay — nothing built-in is ever lost, edited cards can be reverted. Search, then ✏ to edit. Or export the whole pack, edit/add in any text editor, and import it back.</p>
+  <div class="row" style="margin-bottom:12px;">
+    <button class="btn secondary" id="packExport">⬇ export pack (JSON)</button>
+    <button class="btn secondary" id="packImportBtn">⬆ import pack file</button>
+  </div>
+  <input type="file" id="packFile" accept=".json" style="display:none;">
+  <div class="field"><label>…or paste pack JSON — a bare list or {"scenarios":[…]}. Matching id = edits that card; new id = adds a card.</label><textarea id="packPaste" rows="3" placeholder='[{"id":"lunch_1","form":"flip","villain":"announcer","setup":"At lunch, loudly:","taunt":"…","best":["…"],"ok":["…"],"wrong":["…","…"],"why":"…"}]'></textarea></div>
+  <button class="ghost" id="packPasteBtn">import pasted JSON</button>
+  <div class="row" style="margin-top:8px;margin-bottom:14px;">
+    <button class="btn secondary" id="packDefault">↩ restore default cards</button>
+    <span style="font-size:12px;color:var(--dim);align-self:center;">${Object.keys(S.overrides).length + cust.length
+      ? `undoes ${Object.keys(S.overrides).length} edit${Object.keys(S.overrides).length===1?"":"s"} and removes ${cust.length} custom card${cust.length===1?"":"s"} — progress and belts untouched`
+      : "pack is already at the starter lines"}</span>
+  </div>
+  <div class="field"><label>Search the pack (${allScenarios().length} cards)</label><input id="scSearch" placeholder="search taunts…"></div>
+  <div id="scList" style="max-height:320px;overflow-y:auto;"></div>
+  <hr>
+  <h3>Stuck scenes (conversation starters for you two)</h3>
+  ${stuck.length?stuck.map(s=>`<div class="listrow">${VILLAINS[s.villain].emoji} “${s.taunt.slice(0,55)}…” <span style="color:var(--red);font-size:12px;">${S.seen[s.id].wrong}✗/${S.seen[s.id].correct||0}✓</span></div>`).join(""):`<p style="color:var(--dim);font-size:14px;">nothing stuck yet 🎉</p>`}
+  <hr>
+  <div class="row">
+    <div><button class="ghost" id="expData">⬇ export dojo (all ninjas)</button></div>
+    <div><button class="ghost" id="impData">⬆ import (paste JSON)</button></div>
+    <div><button class="ghost" id="coinGift">🎁 hand out 50 coins</button></div>
+    <div><button class="danger" id="resetAll">reset everything</button></div>
+  </div>
+  <br><button class="btn secondary" id="closeP">close</button>`;
+  document.getElementById("parentModal").classList.add("on");
+  const $ = id=>document.getElementById(id);
+  $("vb").value = S.settings.voiceBully || "";
+  $("tryVoice").onclick = ()=>{ S.settings.voiceBully = $("vb").value; save(); speak("Ugh, why does she always sit near us?","bully"); };
+  $("rb").oninput = e=>{ S.settings.rateBully=+e.target.value; save(); };
+  $("pb").oninput = e=>{ S.settings.pitchBully=+e.target.value; save(); };
+  $("qt").onchange = e=>{ S.settings.qwenTts = e.target.checked?"on":"off"; save(); };
+  $("aiOn").onchange = e=>{ S.settings.ai = e.target.checked; save(); };
+  $("capRefresh").onclick = async ()=>{ await checkCaps(true); renderParent(); };
+  $("ncAdd").onclick = ()=>{
+    const taunt = $("nc_taunt").value.trim();
+    if (!taunt){ toast("Add the phrase first"); return; }
+    const best = $("nc_best").value.trim() || "Why would you say that out loud?";
+    S.custom.push({
+      id:"c"+Date.now(), form:$("nc_form").value, villain:$("nc_villain").value,
+      setup:$("nc_setup").value.trim()||"She makes sure someone is watching:",
+      taunt, best:[best], ok:["Okay."], wrong:["Shut up!","They DON'T! You're the worst one!"],
+      why:"This one is real, so it matters most. Any calm line beats a panicked one.",
+    });
+    save(); toast("Added — it's in the rotation 🥋"); renderParent();
+  };
+  $("scList").innerHTML = scenRows("");
+  $("scSearch").oninput = e=>{ $("scList").innerHTML = scenRows(e.target.value); bindScEdits(); };
+  function bindScEdits(){ document.querySelectorAll("#scList [data-edit]").forEach(b=>b.onclick=()=>{ parentEditing=b.dataset.edit; renderParent(); }); }
+  bindScEdits();
+  $("packExport").onclick = exportPack;
+  $("packImportBtn").onclick = ()=>$("packFile").click();
+  $("packFile").onchange = e=>{ const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader(); r.onload=()=>importPackJson(String(r.result)); r.readAsText(f); };
+  $("packPasteBtn").onclick = ()=>importPackJson($("packPaste").value);
+  $("packDefault").onclick = ()=>{
+    const nEd = Object.keys(S.overrides).length, nCu = S.custom.length;
+    if(!nEd && !nCu){ toast("Already on the starter cards"); return; }
+    if(!confirm(`Restore the starter pack?\n\nThis undoes ${nEd} edited card${nEd===1?"":"s"} and removes ${nCu} custom card${nCu===1?"":"s"}.\nBelts, XP, streaks and settings are not touched.`)) return;
+    S.overrides = {}; S.custom = [];
+    if(parentEditing) parentEditing = null;
+    save(); toast("starter pack restored 🥋"); renderParent();
+  };
+  $("coinGift").onclick = ()=>{ addCoins(50, "🎁 Dad tax, refunded. Balance: "+(S.coins)+" coins"); checkAchv(); };
+  $("resetProg").onclick = resetProgress;
+  P.querySelectorAll("[data-accrn]").forEach(b=>b.onclick=()=>{
+    if (renameAccount(b.dataset.accrn, prompt("New name for this ninja:", b.dataset.accrn))){ toast("renamed ✏️"); renderParent(); render(); }
+  });
+  P.querySelectorAll("[data-accdel]").forEach(b=>b.onclick=()=>{
+    if (confirm("Delete "+b.dataset.accdel+"'s account? Their belt, coins and trophies go too.")){
+      deleteAccount(b.dataset.accdel); renderParent(); render();
+    }
+  });
+  $("expData").onclick = ()=>{
+    save();
+    const blob = new Blob([JSON.stringify(DB,null,1)],{type:"application/json"});
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="snapback-dojo.json"; a.click();
+  };
+  $("impData").onclick = ()=>{
+    const txt = prompt("Paste exported JSON:");
+    if (!txt) return;
+    try {
+      const data = JSON.parse(txt);
+      if (data && data.accounts){ adoptStore(data); save(); render(); if (!DB.active) showPicker(); toast("Whole dojo imported 🥋"); }
+      else { S = deepMerge(JSON.parse(JSON.stringify(DEFAULTS)), data); save(); render(); toast("Imported into "+(DB.active||"the dojo")); }
+    } catch(e){ toast("That wasn't valid JSON"); }
+  };
+  $("resetAll").onclick = ()=>{
+    if (confirm("Erase EVERY ninja, all progress, custom phrases and settings? The dojo goes back to an empty room.")){
+      DB = {accounts:{}, active:""}; S = JSON.parse(JSON.stringify(DEFAULTS));
+      save(); applyTheme(); document.getElementById("parentModal").classList.remove("on");
+      render(); showPicker();
+    }
+  };
+  $("closeP").onclick = ()=>document.getElementById("parentModal").classList.remove("on");
+}
+
+/* ============================================================ boot */
+document.getElementById("gearBtn").onclick = renderParent;
+document.getElementById("parentModal").addEventListener("click", e=>{
+  if (e.target.id==="parentModal") e.currentTarget.classList.remove("on");
+});
+// expose for inline onclicks
+window.go = go; window.renderLearn = renderLearn; window.startBook = startBook;
+window.renderBossPick = renderBossPick; window.startRapid = startRapid;
+(async function boot(){
+  await loadState();
+  save(); // writes the account-format file (finishes any legacy migration)
+  await checkCaps();
+  if (!S.settings.voiceBully){ S.settings.voiceBully = pickDefaultVoice(); save(); }
+  applyTheme();
+  renderHome(); go("home");
+  if (!DB.active) showPicker();
+})();
+</script>
+</body>
+</html>

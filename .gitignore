@@ -1,0 +1,11 @@
+# Personal data — NEVER commit
+snapback-data.json
+snapback-data.json.bak
+snapback-data.json.tmp
+
+# TTS audio cache
+audio/
+
+# misc
+*.log
+__pycache__/
