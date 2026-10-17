@@ -90,9 +90,12 @@ and `story-chapters-03-04.md`. The party is Wren, the cat, and (from Chapter 1's
 (Mirror Lake) teases on the map. (The earlier bellkeeper premise and the path-guide version of the opening
 remain recoverable in git history.)
 
-- **Every voice wears a nameplate and a face** — Narrator included. Bubbles carry a painted portrait
-  (`quest-art/avatar_*.png`, square, cropped into the circle; emoji fallback until painted). Nobody wonders
-  who's talking, and the read-aloud queues **every line** of a beat, not just the last.
+- **Every voice wears a nameplate, a face and a voice** — Narrator included. Bubbles carry a painted
+  portrait (`quest-art/avatar_*.png`, square, cropped into the circle; emoji fallback until painted), and
+  each speaker gets their **own browser voice** (`STORY_VOICES`: Wren high and young, the cat low and dry,
+  Toastbrig a rumble, Wisp quick and squeaky… chosen from installed en-GB voices by family, with pitch and
+  speed shaping the character even when the machine only has one voice). The read-aloud queues **every
+  line** of a beat, not just the last.
 - **VISUAL ONLY means visual only.** Signs, notices, badges, prop labels and maps (`story-visual-assets.md`)
   appear on screen — as painted plate when available, as a lettering card otherwise — and are **never**
   narrated or TTS'd; spoken lines merely refer to them ("a rather odd sign"). Branch-specific props and the

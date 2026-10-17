@@ -403,7 +403,7 @@ bubble circles.
 
 ### `home_lost_boot`
 
-**Content brief:** Morning by a family front door: a ten-year-old girl in pyjamas and one wellington boot searches among scattered shoes. Her other boot lies just out of reach — the cat is sitting on it. Ordinary kitchen light through a doorway, family shapes blurred moving at breakfast in the background. No text, no strangeness yet.
+**Content brief:** Ordinary morning hallway by a family front door, seen low toward the doormat. A pair of child's green wellington boots: one stands upright, the other lies tipped over — and the plump grey tabby cat sits squarely on top of it, eyes half-closed, refusing to move. Small shoes scattered around, a child's backpack and scarf slumped on the coat pegs, warm kitchen light from a doorway. No people in the scene at all. No text, no strangeness yet.
 
 ### `c1_door_cracked`
 
@@ -415,7 +415,7 @@ bubble circles.
 
 ### `c4_newspaper_clearing`
 
-**Content brief:** A woodland clearing where hundreds of folded newspapers hang from branches on strings like laundry, slowly turning in a wind that moves nothing else. A delivery cart stands in the middle with a glowing brass speaking funnel on its side. Pale gaslight from above the paper canopy. No text.
+**Content brief:** A woodland clearing where hundreds of folded newspapers hang from branches on strings like laundry, slowly turning in a wind that moves nothing else. A delivery cart stands in the middle with a glowing brass speaking funnel on its side. Pale gaslight from above the paper canopy. The newspaper pages show only blurred illegible print texture, and every surface is bare of labels — no readable letters, signs, placards or logos anywhere. No text.
 
 ### `avatar_wren`
 

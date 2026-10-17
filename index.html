@@ -1102,7 +1102,8 @@ async function speak(text, persona, onDone, queue){
   if (canBrowser && !queue) speechSynthesis.cancel();
   if (S.settings.qwenTts === "on" && CAPS.tts){
     try {
-      const r = await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, voice:persona})});
+      const tv = STORY_VOICES[persona] ? ((persona==="narr"||persona==="pet") ? "sensei" : "bully") : persona;
+      const r = await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, voice:tv})});
       if (r.ok){
         const j = await r.json();
         const ar = await fetch("/api/tts/audio/"+j.key);
@@ -1121,11 +1122,21 @@ async function speak(text, persona, onDone, queue){
 }
 function browserSpeak(text, persona, onEnd){
   const stt = new SpeechSynthesisUtterance(text);
+  const pr = STORY_VOICES[persona];
+  if (pr){
+    const pool = VOICES.filter(v=>/^en/i.test(v.lang||""));
+    const gb = pool.filter(v=>/^en-GB/i.test(v.lang));
+    const use = gb.length ? gb : pool;
+    const v = (pr.re && use.find(x=>pr.re.test(x.name||""))) || use[(pr.idx||0)%use.length] || VOICES[0];
+    if (v) stt.voice = v;
+    stt.pitch = pr.pitch; stt.rate = pr.rate;
+  } else {
   const name = persona==="sensei" ? (S.settings.voiceSensei || S.settings.voiceBully) : S.settings.voiceBully;
   const v = VOICES.find(x=>x.name===name) || VOICES.find(x=>/^en-GB/i.test(x.lang)) || VOICES[0];
   if (v) stt.voice = v;
   if (persona==="sensei"){ stt.rate=S.settings.rateSensei; stt.pitch=S.settings.pitchSensei; }
   else { stt.rate=S.settings.rateBully; stt.pitch=S.settings.pitchBully; }
+  }
   if (onEnd){ stt.onend = onEnd; stt.onerror = onEnd; }
   speechSynthesis.speak(stt);
 }
@@ -2598,7 +2609,24 @@ const QUESTS = [
 ];
 /* ---- v2 runner ---- */
 let QS = null;
-const SPK_VOICE = {echo:"bully", bat:"bully", tb:"bully", duch:"bully", vbush:"bully", troll:"bully", woman:"bully", duchess:"bully", wisp:"bully", courier:"bully", cvoice:"bully", rvoice:"bully", refl:"bully", unknown:"bully", pet:"sensei", narr:"sensei"};
+// Story voices: one profile per speaker code. re = preferred voice family,
+// idx = fallback slot in the English voice pool, pitch/rate shape the character
+// even on machines with only one installed voice. Wren finally gets a voice.
+const SPK_VOICE = {troll:"tb", woman:"duch", duchess:"duch", courier:"wisp", bat:"echo"}; // aliases
+const STORY_VOICES = {
+  narr:  {re:/daniel|arthur|george|ryan|male/i, idx:0, pitch:1.0,  rate:0.95},
+  wren:  {re:/serena|sonia|libby|ava|zira|kate|susan|female|hazel|linda/i, idx:1, pitch:1.5, rate:1.02},
+  pet:   {re:/daniel|george|ryan|fred|male/i, idx:2, pitch:0.6,  rate:0.92},
+  echo:  {re:/serena|libby|kate|female/i, idx:3, pitch:1.7,  rate:1.15},
+  tb:    {re:/daniel|george|ryan|male/i, idx:4, pitch:0.35, rate:0.78},
+  duch:  {re:/serena|sonia|zira|kate|female/i, idx:5, pitch:1.05, rate:0.82},
+  wisp:  {re:/serena|libby|female/i, idx:6, pitch:1.8,  rate:1.32},
+  queen: {re:/serena|sonia|zira|kate|female/i, idx:7, pitch:0.85, rate:0.82},
+  cvoice:{re:/daniel|george|male/i, idx:7, pitch:1.15, rate:1.05},
+  vbush: {re:/daniel|george|male/i, idx:8, pitch:1.45, rate:1.05},
+  refl:  {re:/serena|sonia|libby|female/i, idx:1, pitch:1.35, rate:0.9},
+  unknown:{idx:0, pitch:1.1, rate:0.95}
+};
 function effStoryPack(){
   const ov = S.questOv || {};
   return { version:2, exported:new Date().toISOString(),
@@ -2693,7 +2721,7 @@ function speakable(t){
   return pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
 }
 function speakSay(lines){
-  try{ let n=0; lines.forEach(l=>{ const v = SPK_VOICE[l[0]]; if (v){ speak(pp(l[1]), v, null, n>0); n++; } }); }catch(e){}
+  try{ let n=0; lines.forEach(l=>{ const code = SPK_VOICE[l[0]] || l[0]; if (STORY_VOICES[code]){ speak(pp(l[1]), code, null, n>0); n++; } }); }catch(e){}
 }
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
   source:"A real question. He had to go and find an answer.",
@@ -2712,7 +2740,7 @@ function fbHtml(f){
   if (f.helpLines) h += sayHtml(f.helpLines);
   if (f.segs) h += sayHtml(f.segs);
   if (f.stage) h += `<div class="qnarr">${NLAB}${pp(f.stage)}</div>`;
-  if (f.v) h += `<div class="qscene"><div class="qav">${QS.ch.emoji}</div><div class="qbub"><span class="who">${QS.ch.vill}</span>${pp(f.v)}</div></div>`;
+  if (f.v){ const vc = QS.beat && QS.beat.spk || ""; h += `<div class="qscene">${ava(vc, QS.ch.emoji)}<div class="qbub"><span class="who">${QS.ch.vill}</span>${pp(f.v)}</div></div>`; }
   if (f.wrn) h += `<div class="qscene">${ava("wren","🧤")}<div class="qbub wren"><span class="who">Wren</span>${pp(f.wrn)}</div></div>`;
   if (f.c) h += `<div class="qscene">${ava("pet","🐾")}<div class="qbub"><span class="who">${petNm()}</span>${pp(f.c)}${f.why?`<span class="qwhy">${pp(f.why)}</span>`:""}</div></div>`;
   if (f.vis) h += visHtml({vis:[f.vis]});
@@ -2751,7 +2779,7 @@ function drawQuestBeat(){
     if (b.setup && !QS.retried) view += `<div class="qnarr">${NLAB}${pp(b.setup)}</div>`;
     const av = {echo:ch.emoji, tb:"🌉", duch:"🎭", vbush:"🎺", troll:"🌉", unknown:"❔"}[b.spk] || ch.emoji;
     view += `<div class="qscene"><div class="qav">${av}</div><div class="qbub"><span class="who">${WHO[b.spk]||ch.vill}</span>${pp(b.line)}</div></div>`;
-    if (!QS.answered && b.line){ try{ speak(speakable(b.line), "bully"); }catch(e){} }
+    if (!QS.answered && b.line){ try{ speak(speakable(b.line), STORY_VOICES[SPK_VOICE[b.spk]||b.spk||""] ? (SPK_VOICE[b.spk]||b.spk) : "bully"); }catch(e){} }
     if (b.visNote) view += visHtml({vis:[{a:b.visNote}]});
     view += `<p class="qprompt">${pp(b.prompt||"")}</p>`;
     if (QS.helpView && !QS.answered) view += sayHtml(QS.helpView);
@@ -2781,8 +2809,9 @@ function drawQuestBeat(){
     ${questHeadHtml()}${view}<div id="qsAct">${act}</div>
     ${tappable ? `<p class="qtap" id="qsGo">${contLabel}</p>` : ""}
   </div>`;
-  if (beat.t==="narr" || beat.t==="sensei"){ try{ speak(speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "sensei"); }catch(e){} }
-  if (beat.t==="notice"){ try{ speak(speakable(beat.text), "bully"); }catch(e){} }
+  if (beat.t==="narr"){ try{ speak(speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "narr"); }catch(e){} }
+  if (beat.t==="sensei"){ try{ speak(speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "pet"); }catch(e){} }
+  if (beat.t==="notice"){ try{ speak(speakable(beat.text), "narr"); }catch(e){} }
   if (beat.t==="say") speakSay(beat.lines);
   const $ = id=>document.getElementById(id);
   $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; S.quest.pos=null; save(); renderQuest(); };

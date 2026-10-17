@@ -62,6 +62,25 @@ EXCLUDE = ("Only the characters named just above may appear in the scene. No oth
            "paint the object alone. Never duplicate a character: exactly one of each, unless the "
            "description explicitly asks for reflections or multiple views. ")
 
+# Avatar plates are single-character portraits: no Wren anchor, no exclusion
+# clause (both were smuggling Wren into every frame).
+AVA_DESC = {
+  "avatar_wren": "Wren: a Burton-style girl about ten, straight black bob, big round alert eyes with a "                 "small spark of nerves, composed closed mouth, slightly too-big ink-blue wool coat collar.",
+  "avatar_cat": "A plump unimpressed grey tabby HOUSE CAT: slightly hooded eyes, one ear tilted as if "                "permanently unimpressed; a real four-pawed cat head, not anthropomorphic.",
+  "avatar_echo": "Echo the Mimic Imp: a small crooked PATCHWORK RAG imp head, mismatched glass button "                 "eyes (one larger), stitched grin one stitch too wide, fraying seams, floppy cloth ears, "                 "no cat features.",
+  "avatar_toastbrig": "Toastbrig: an enormous plank-faced troll with a broad gentle bureaucratic "                      "expression and a whistling kettle as a helmet.",
+  "avatar_duchess": "The Duchess of HA: a tall porcelain-faced lady-doll head with a painted poised "                    "smile, jointed seams at the neck, a brass winding key rising behind one shoulder.",
+  "avatar_wisp": "Wisp: a small green-furred courier creature head, long ears, ink-stained smudges, "                 "nervous hopeful expression, waistcoat collar and satchel strap at the frame edge.",
+  "avatar_queen": "Queen Malvina the Magnificent: a tall imperious woman with an elaborate small crown, "                  "chin raised, holding a tiny key on a chain between two fingers; printed-poster quality.",
+  "avatar_bush": "A leafy woodland bush with a tiny brass trumpet poking out and one wide cartoon eye "                 "peeking between the leaves; humorous, not creepy.",
+}
+
+def prompt_for(art_id, text):
+    if art_id.startswith("avatar_"):
+        desc = AVA_DESC.get(art_id, "")
+        return STYLE + ("A single-character portrait, head and shoulders, the named subject's face and "                        "shoulders filling most of the frame, neutral dark background. No other "                        "characters, no girl, no child, no bystanders. ") + desc + " " + text
+    return STYLE + cast_for(text) + text
+
 def cast_for(text):
     tl = text.lower()
     extra = []
@@ -127,7 +146,7 @@ def workflow(art_id, text, seed, want_text=False):
       "1": {"class_type": "UNETLoader", "inputs": {"unet_name": UNET, "weight_dtype": "default"}},
       "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": CLIP, "type": "qwen_image"}},
       "3": {"class_type": "VAELoader",  "inputs": {"vae_name": VAE}},
-      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": STYLE + cast_for(text) + text +
+      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": prompt_for(art_id, text) +
             (LETTER if want_text else "")},
       },
       "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0],
