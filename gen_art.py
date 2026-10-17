@@ -233,6 +233,19 @@ EXTRA_PROMPTS = {
     "cloth patches stands on the next stone pointing at the map; a grey tabby cat follows along the "
     "stones. The still water carries each traveller's own reflection, matching them exactly. A dry "
     "path and an orchard track ahead, morning mist. No text.",
+  "c5_perfect_frames": "Three gilt picture frames hover at gentle, differing heights along the stone "
+    "route, tilted slightly. Each frame contains a full-length painted portrait of the human girl, "
+    "black bobbed hair, blue coat, green boots, at one quiet chore: polishing a boot with a brush; "
+    "sweeping drifting confetti with a broom; holding a compass ringed by contradictory arrows. All "
+    "three painted figures wear her blue coat and black bob. Below the frames the real girl views "
+    "them with her grey tabby cat and a rag doll sewn from brown cloth patches. Three frames total, "
+    "floating in a row. No text.",
+  "c6_mirror_welcome_hook": "A stone corridor through a misty archway. One tall crowned mirror on a "
+    "hinged base stands before the arriving party, its gilt frame leaning forward in a courtly bow. "
+    "The glass holds one calm picture: the girl in the blue coat facing it, her grey tabby cat and "
+    "the brown cloth rag doll, one of each, exactly as they stand. The remaining mirrors down the "
+    "wall wear loose dust covers of soft grey silk. The rag doll gazes up at the brass hinges; the "
+    "cat angles its ears sideways. Mist closes off the far end of the corridor. No text.",
   "c5_lake_wave": "Calm lakeside after the crossing. The girl stands at the water's edge waving at "
     "the water; her own ordinary reflection waves back. The grey tabby cat sits at her feet watching "
     "the ripples. Beyond, the far bank and a path of apple trees in early leaf. Mist soft on the lake, "
