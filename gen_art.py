@@ -240,12 +240,13 @@ EXTRA_PROMPTS = {
     "three painted figures wear her blue coat and black bob. Below the frames the real girl views "
     "them with her grey tabby cat and a rag doll sewn from brown cloth patches. Three frames total, "
     "floating in a row. No text.",
-  "c6_mirror_welcome_hook": "A stone corridor through a misty archway. One tall crowned mirror on a "
-    "hinged base stands before the arriving party, its gilt frame leaning forward in a courtly bow. "
-    "The glass holds one calm picture: the girl in the blue coat facing it, her grey tabby cat and "
-    "the brown cloth rag doll, one of each, exactly as they stand. The remaining mirrors down the "
-    "wall wear loose dust covers of soft grey silk. The rag doll gazes up at the brass hinges; the "
-    "cat angles its ears sideways. Mist closes off the far end of the corridor. No text.",
+  "c6_mirror_welcome_hook": "A stone corridor beneath a misty archway. One girl in a blue coat "
+    "and green boots stands still, seen from behind, facing a tall crowned mirror on a hinged "
+    "base; its gilt frame leans forward in a courtly bow. Her grey tabby cat sits at her heels and "
+    "a rag doll sewn from brown cloth patches stands at her side. The mirror glass holds their "
+    "reflection seen from the front: the girl and the rag doll, one of each. Further down the "
+    "wall, sister mirrors wear loose grey silk dust covers, opaque cloth from top to bottom. One "
+    "girl, one cat, one rag doll, all standing still. No text.",
   "c5_lake_wave": "Calm lakeside after the crossing. The girl stands at the water's edge waving at "
     "the water; her own ordinary reflection waves back. The grey tabby cat sits at her feet watching "
     "the ripples. Beyond, the far bank and a path of apple trees in early leaf. Mist soft on the lake, "
