@@ -2,6 +2,8 @@
 
 ## Chapters 3–4: complete playable script
 
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Continue with [Chapters 5–6](story-chapters-05-06.md), which retain the talking-cat cast and add slightly sharper authored pressure. Their existence as scripts does not mean the corresponding app chapters are implemented.
+
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Continues [Chapters 1–2](story-chapters-01-02-rewrite.md), using its latest portal opening. Wren's family and world are frozen at 8:17. She and her cat `{pet}` entered the Gloomwood through a new door in her house. The cat unexpectedly gained speech after crossing and now supplies the coaching dialogue under the player's actual pet name. Wren, the cat, and Echo are the entire travelling party. Echo is the patchwork imp who returned the cat's meow; speech was never stolen. No adult guide accompanies them. No character knows why Wren and the cat can move, why the cat now speaks, or who opened the door. Do not resolve those mysteries here. They learn the world together; the cat has no secret local knowledge.
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Queen Malvina used the Minute Key to stop the outside-world face of the Great Clock in her palace. Wren needs the key and must use it in that clock to release her world. People frozen at home are safe in their moment; there is no countdown. Gloomwood time still runs. Wren's purpose is to get her family back, not to impress, punish, or reform everyone she meets.

@@ -1,6 +1,6 @@
 # The Gloomwood and the Stolen Tomorrow — visual asset register
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Content briefs for Chapters 1–4. These are descriptions to give an image generator, not images already generated. No style, medium, artist, rendering, or model instructions are included. Use the established character references separately for continuity.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Content briefs for Chapters 1–6. These are descriptions to give an image generator, not images already generated. No style, medium, artist, rendering, or model instructions are included. Use the established character references separately for continuity.
 
 ## How these assets enter the story
 
@@ -255,6 +255,122 @@
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
 **Content brief:** Wren, her cat, and Echo arrive at a quiet lake. Wren stands on the bank; her reflection is already upright on the surface, looking impatient and a little too tidy. The cat and Echo have normal matching reflections. There is one real cat and one reflected cat, with no fourth traveller. No written insult, school detail, frightening duplicate, or explanation of the portal mystery. This is only the Chapter 5 hook.
+
+---
+
+## Chapter 5: Mirror Lake
+
+### `c5_reflection_intro`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Wren stands at a quiet lake with her cat and Echo. On a broad stone near the surface stands an imitation of Wren in an immaculate version of her coat, with polished boots and a thin silver outline. Real Wren holds up one hand; the imitation leaves its hands down and looks impatient. The imitation is recognisably a magical picture, not a second ordinary girl. The real cat and Echo stand beside Wren. Their reflections, where visible, match their poses normally. A wide route of flat stepping stones lies in shallow water beside the bank. Nobody is falling, trapped, or surrounded by an audience. No written taunt or thought bubble.
+
+### `c5_perfect_crossing_sign`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** A fussily decorated sign on the lake bank, straightened on its post so often that there are several old peg holes. Large heading **PERFECT CROSSING REHEARSALS**. Beneath it, three lines: **LOOK CERTAIN** / **NEVER NEED HELP** / **NO MISTAKES PLEASE**. A small ordinary path plaque attached below points along the wide stones and reads **ORCHARD PATH — OPEN TO ALL**. Keep the practical plaque readable on inspection. The large sign presents the Reflection's unreasonable standards, not rules that the player must meet. The spoken dialogue independently confirms the path is open.
+
+### `c5_perfect_frames`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Exactly three gilt picture frames hover beside the stone route. Each contains a tiny theatrical imitation of Wren. First frame: tiny Wren endlessly polishing one boot with a little brush. Second frame: tiny Wren alone under too much confetti, with a broom nearby. Third frame: tiny Wren holding a compass with several contradictory arrows. The real Wren, cat, and Echo remain on the broad stones beside the frames. Success variants fold the first frame shut, then the second, then the third. In the second success the tiny performer sweeps its own confetti; in the third, the compass lies flat. This is a fussy magical display, not a vision of actual future harm. No lettering required.
+
+### `c5_lake_crossing`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Two scene variants of the same shallow lakeside crossing. In-progress variant: Wren, her single cat, and Echo stand on wide, stable, closely spaced stones near the bank, looking at Wisp's map. Dry resting space and the orchard path are visible ahead. Finished variant: all three stand safely on the far bank. Wren waves at the water, and her ordinary reflection waves back in the same pose, with the same muddy boots and crooked coat. The magical independent imitation has become an ordinary reflection, with no separate body beside the group. The cat and Echo have matching ordinary reflections too. No dramatic leap, deep-water hazard, drowning image, or independent reflected cat.
+
+### `c5_rehearsal_slates`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Three small slate rehearsal boards stand on little easels beside a broad landing stone near the far bank. Each has a tidy painted heading: **BE IMPRESSIVE**, **LOOK BRAVE**, **START AGAIN**. The silver-outlined Reflection stands by them. On each success, one slate turns face down and becomes a plain flat stone. After all three, only ordinary stones remain beside the path. Quiet success variant for a hurt or self-belittling reply: Wren and her cat sit together while the first slate turns over without a comic opponent reaction. No grading marks, red crosses, scores, or label describing Wren as a failure.
+
+### `c5_inspection_props`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Branch-specific insert for the single approval-test retry. The silver-outlined Reflection holds an absurdly long tailor's measuring ribbon and tries to measure a heroic standing pose beside the lake. Real Wren is on a wide safe stone, fully clothed in her ordinary coat, with her cat beside her. The ribbon measures empty air near a pose guide, not Wren's body size or shape. Its graduations are little arbitrary stars. No personal-body criticism or lettering. Show only for that retry, never as a normal success or required examination.
+
+### `reward_c5`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Sticker of Wren waving at an ordinary matching reflection in a small pool. Her boots are muddy. Her cat sits at her side, with its ordinary reflection washing a paw in sync. A folded gilt frame lies flat among reeds. Wren looks pleased to be herself; the sticker awards no beauty, bravery, or perfection score. No text required.
+
+---
+
+## Chapter 6: the orchard double act
+
+### `c6_orchard_intro`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** An orchard road passes beneath apple-tree arches. On a little wheeled puppet stage beside the open road stand exactly two apple-wood puppets. Pip is tall, square-headed, green-waistcoated, and makes grand organising gestures. Pop is shorter, round-faced, purple-waistcoated, and stands on a box to match Pip's height. Both have plainly visible carved wooden joints and hinged mouths. Wren, her cat, and Echo approach together. Apples roll gently into padded baskets. The puppets are a theatrical act, with no resemblance to realistic schoolchildren, no blocking of the road, and no spectators laughing at Wren. No lettering required; their introductions supply their names.
+
+### `c6_usher_sign`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Crowded wooden sign beside the orchard puppet booth. Main heading **PIP & POP — ROYAL USHERS**. Under it, **COMPLIMENTARY OPINIONS** and **APPLAUSE ACCEPTED HERE**. Attached below, a plain route plaque reads **EAST CLOCK ENTRANCE** with a clear arrow along the public road. Very small boast near the top: **TWO OPINIONS FOR THE PRICE OF NONE**. Keep the arrow distinct from the act's decorative pointing hands. This is a comedy booth beside a public route, not a checkpoint that requires a ticket.
+
+### `c6_folding_chairs`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Exactly three pairs of folding chairs stand in the grass beside the puppets' stage. They are all empty except for one apple on a seat. Success variants fold one pair, then two, then all three flat. In the first success the apple drops harmlessly into a padded basket. In the last success Pop places a miniature sign reading **RESERVED** on an apple basket that has just rolled away. A little mechanical clamp can explain how chair pairs clap shut; no real people sit in them. Wren's road remains unobstructed. No laughing crowd or image of Wren performing for approval.
+
+### `c6_route_markers`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Two related route inserts. Orchard-turn variant: a waist-high wooden post has a plain **EAST ROAD** arrow passing apple baskets towards the palace tower. Wren's finger compares it with Wisp's paper map. Service-marker variant: a hinged flap on another post opens to show the same delivery seal printed on the map, plus an arrow and the words **CLOCK ENTRANCE — EAST SIDE**. Echo holds the flap open while Wren checks the match. Her cat stands on the ground beside her. The delivery mark is one simple repeated symbol, readable without a secret code puzzle. The spoken dialogue confirms the verified route.
+
+### `c6_usher_station`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** At the far end of the orchard, the puppets' small wheeled stage sits on its fixed station track beside the public road. Pip, the tall square-headed green-waistcoated puppet, and Pop, the short round-faced purple-waistcoated puppet, stand behind a rail holding exactly three paper tickets. Tickets read **AUDIENCE**, with no personal names. A small closed box below reads **TICKETS & COMPLAINTS**. The verified service marker and open palace path are alongside. Success variants slide the three tickets into the box one at a time. After the first, both puppets point at the same box; after the second, they try speaking the same word simultaneously. No hands reaching towards Wren, no barrier across the path, and no threat of physical pursuit.
+
+### `c6_clock_entrance`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Wren, her cat, and Echo arrive at the palace's east wall. A narrow open archway stands beside a tall clock tower. A delivery seal matching Wisp's map is mounted beside the arch; beneath it a small plaque reads **CLOCK ENTRANCE — EAST SIDE**. The outside-world clock face visible high on the tower shows 8:17. The arch opens into a corridor rather than directly onto the clock mechanism. Keep the route physically open. The Queen and her key are not visible here; arrival at the entrance does not complete the quest.
+
+### `c6_mirror_welcome_hook`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Through the east archway is a corridor lined with tall mirrors, each topped by a little decorative crown. The nearest mirror tilts on a hinged base, bowing towards Wren and her companions. Its glass reflects the arriving group normally; it is the mirror frame that bows, not a separate copy of Wren. Her cat's ears angle sideways with suspicion. Echo looks at the hinges. The far end of the corridor is not yet shown. No written favour, stolen cat, Queen in the room, or continuation of the silver-outlined lake imitation.
+
+### `reward_c6`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Sticker of Pip and Pop standing beside their stage while trying to arrange apples on folded spectator chairs. Pip has a square head and green waistcoat; Pop has a round face and purple waistcoat. An apple basket is their only audience. The road curves away in the background. Wren has already left, so neither puppet is holding or confronting her. No new lettering required.
+
+### `avatar_reflection`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Head-and-shoulders portrait of the lake's imitation of Wren. Same black bob, eyes, and coat shape as Wren's established portrait, but the collar is unnaturally neat, the smile is rehearsed, and a thin silver outline clearly distinguishes it. A narrow silver picture-frame edge appears at one side. The expression is smug and overprepared, not frightening. One face, without the real Wren standing beside it. No words, thought bubble, crown, new identity reveal, or beauty comparison. Use as the Reflection's speech portrait; ordinary Wren keeps her own portrait.
+
+### `avatar_pip`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Head-and-shoulders portrait of Pip, the taller apple-wood usher puppet. Square carved head, visible hinged jaw, neatly painted eyebrows, green waistcoat, and a raised wooden finger in an officious presenting gesture. A little corner of the usher rail may appear below. He looks pleased with his own organisation. One puppet only. His square head and green clothing distinguish him immediately from Pop. No letters or extra character.
+
+### `avatar_pop`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Head-and-shoulders portrait of Pop, the shorter apple-wood usher puppet. Round carved face, visible hinged mouth, lively painted eyebrows, purple waistcoat, and one wooden hand poised for an unnecessary flourish. He looks as though he is about to interrupt his partner. One puppet only. His round head and purple clothing distinguish him immediately from Pip. No letters or extra character.
 
 ---
 
