@@ -4,9 +4,13 @@
 
 Proposed replacement opening for story mode. This is a new script, not an edit to the shipped story pack. Character and encounter IDs below are proposed IDs for implementation. The original `plannedstory.md` remains unchanged.
 
-**Player character:** Wren, a young apprentice bellkeeper who lives at the edge of the Gloomwood. The player chooses her words and actions; the story uses her name, rather than switching between Wren and “you.” **Pet companion:** `{pet}`, the storybook version of the player's dojo pet, already Wren's friend when the story begins. Pet actions should work for every evolution stage; do not assume the pet can speak. **Coach and travelling companion:** Sensei, an older village guide with a long coat and a crooked walking stick. Sensei is physically present, introduced before speaking, and available for help. **Narrator:** a separate storyteller, who describes events but is not a character in the scene. **Setting:** a crooked, cosy, twilight wood. Strange things happen; nothing here is gory or realistically threatening.
+**Player character:** Wren, a ten-year-old girl from an ordinary present-day home. The player chooses her words and actions; the story uses her name rather than switching between Wren and “you.” **Cat companion:** `{pet}`, Wren's cat, using the player's pet name and current feline evolution art. The cat is introduced in Wren's home, accompanies her through the door, and does not speak. **Guide:** Sensei, an older traveller with a long coat and a crooked walking stick whom Wren meets beyond the door. Sensei is physically present, introduced before speaking, and available for help. **Narrator:** a separate storyteller, not a character. **Setting:** our world first, then the strange twilight Gloomwood. Home and school appear only to establish the frozen world; encounters and comeback practice happen entirely in the fantasy world.
 
-**The adventure:** In Wren's village, ringing the morning bell brings the sunrise. Today is Wren's first turn as bellkeeper, but Queen Malvina steals the bell before she can ring it. Wren sees her village stuck at the edge of morning: no sunlight, closed flowers, and the same miserable rooster trying to start the day. She sets out with her pet and Sensei to retrieve the bell from Malvina's palace and bring the morning home. The Queen wants everyone to visit her palace and praise her before she returns it. Wren wants the bell back, not a place in the Queen's audience.
+**The adventure:** Time stops at 8:17 on an ordinary morning. Wren's family, her street, and her school are frozen in place. Only Wren and her cat seem able to move; neither knows why. A door appears in a blank wall of her house. It opens into the Gloomwood, where Sensei explains that Queen Malvina has stopped the outside world using the Great Clock's Minute Key. Time still passes in the Gloomwood. Wren sets out to recover the key and restart her world. Why Wren and the cat are moving, and who opened the door, remain real mysteries: do not explain them as bravery, cleverness, emotional control, a secret bloodline, or being “the chosen one.” Chapters 1–4 do not settle them.
+
+**Continuity:** The Minute Key starts/stops the outside-world face of the Great Clock. Malvina used it and keeps it; the clock is in her palace. Wren must retrieve the key and use it there, not merely bring it home. Frozen people experience no waiting, hunger, or harm while held in their moment. The home doorway remains open and marked on the map. The game has no countdown, and stopping a session does not worsen the freeze. The old bellkeeper, morning-bell, and fair premises are retired.
+
+**Read next:** [Chapters 3–4](story-chapters-03-04.md). **Visual specifications:** [Story visual assets](story-visual-assets.md). The shared visual contract in that file supersedes older Display/read-aloud guidance below.
 
 The player-facing title is **The Gloomwood and the Stolen Tomorrow**. Do not award Wren the title “Unbothered” before she has done anything. She is allowed to feel things throughout this adventure.
 
@@ -18,7 +22,7 @@ This section is for implementation; it is not an opening lecture to the player.
 
 - No timers in these chapters. Read aloud is optional. Every narration screen advances on a tap.
 - Every spoken line has a visible speaker name. Use separate portraits/nameplates for **Narrator**, **Wren**, **Sensei**, **Echo**, and **Toastbrig**. Narrator text is labelled **Narrator** in this script; it is not Sensei's dialogue. Sensei's advice comes from Sensei standing with the group. Do not merge narration and character speech into one anonymous text box.
-- Text marked **Display** is written on an object, not spoken by that object. Read-aloud can use the narrator voice with an introduction such as “The sign says.” **Setup** text marked as narration is read to the player. Headings, prompts, grading notes, and branch instructions are implementation/UI text, not character speech.
+- Text marked **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM** is shown, never fed to the narrator/TTS. Each visual has an asset ID and a content-only generation brief in `story-visual-assets.md`. Older **Display** blocks are also visual-only: their literal wording is an image/overlay specification, not speech. A narrator may mention an odd sign without reading its text. Never send asset descriptions, IDs, prompts, verdicts, or implementation notes to TTS. **Narrator (setup)** is spoken narration; **UI ONLY** is visible interface text only.
 - In choice tables, all quoted dialogue in the Choice column belongs to Wren. Show **Wren** above the dialogue choices. Action choices remain labelled actions. Outcome cells are narrator text; any character dialogue following them gets its own labelled line. Typed-answer examples are possible Wren lines, not new speakers.
 - Each chapter contains two encounters of three challenge beats. Use the existing three-chip encounter meter. Chapters have six challenge beats each, but their tasks and consequences vary.
 - Chapter 1: six choice beats. Chapter 2: four choice beats followed by two typed beats.
@@ -51,95 +55,157 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Mechanic:** Echo's crooked judge's stand has three paper stars. Each cleared beat knocks one off. In encounter two, his portable stage has three wheels; each cleared beat folds one away. Echo's props lose their power to delay Wren. His feelings are not the meter.
 
-## Opening: the morning that wouldn't start
+## Opening: the door that wasn't there
 
-### `c1_intro_01` — narration
+### `c1_home_01` — an ordinary morning
 
-**Narrator:** Wren lived in the last cottage before the Gloomwood, where the trees leaned over the fence to see what was going on.
+**Narrator:** At seventeen minutes past eight, Wren was looking for her other boot.
 
-**Narrator:** She was learning to be the village bellkeeper.
+**Narrator:** She was ten. She lived in a perfectly ordinary house, on a perfectly ordinary street, and she was fairly sure she had owned two boots yesterday.
 
-**Narrator:** Every morning, someone rang the little brass bell in the village square. Its note travelled over the rooftops, and the sun rose to meet it.
+**Narrator:** Her cat, {pet}, was sitting on one of them.
 
-**Narrator:** Today was Wren's first turn.
+**Wren:** “That explains the smugness.”
 
-### `c1_intro_02` — narration
+**Narrator:** {pet} began a long, complicated stretch.
 
-**Narrator:** Wren reached the square wearing her best coat. Her friend {pet} trotted beside her, determined to inspect the bell before anybody rang it.
+### `c1_home_02` — the silence
 
-**Narrator:** Sensei, the old village guide who was teaching Wren, waited by the bell stand. Their coat had deep pockets, and their walking stick was almost as crooked as the trees.
+**Narrator:** Halfway through the stretch, the house went quiet.
 
-**Sensei:** “Ready?”
+**Narrator:** Not early-morning quiet. Not someone-has-hidden-the-remote quiet.
 
-**Wren:** “Ready.”
+**Narrator:** The clock stopped ticking. A spoon stopped halfway to the floor.
 
-**Narrator:** Wren reached for the bell rope.
+**Wren:** “Mum?”
 
-### `c1_intro_03` — narration
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `home_frozen_kitchen`. See visual register for exact contents.
 
-**Narrator:** The rope fell into her hand.
+### `c1_home_03` — nobody answers
 
-**Narrator:** Above it, the bell hook was empty.
+**Narrator:** Her mum stood still beside the breakfast table, one hand reaching for the spoon. Her dad was frozen in the middle of spreading jam.
 
-**Narrator:** A paper bat fluttered down and landed on the stand. It wore enormous spectacles and carried a folded notice.
+**Narrator:** Wren touched her mum's sleeve. Warm. Quite normal. Except for the not-moving part.
 
-**Paper bat:** “Royal delivery. Please admire the seal before complaining.”
+**Wren:** “This isn't funny.”
 
-**Wren:** “Where's our bell?”
+**Narrator:** {pet} rubbed against her ankle. Still moving. Still very much a cat.
 
-**Narrator:** The bat opened its notice.
+### `c1_home_04` — the whole world
 
-### `c1_intro_04` — the paper bat reads the royal notice
+**Narrator:** Through the window, Wren could see her street and, at its far end, the school gates.
 
-**Paper bat (reading Queen Malvina's notice):**
+**Narrator:** A cyclist balanced without wobbling. A pigeon hung above the pavement. Beyond the gates, the flag stood in a fold the wind had forgotten to finish.
 
-> BY ORDER OF QUEEN MALVINA THE MAGNIFICENT:
->
-> I have borrowed your morning bell.
->
-> If you would like the sun back, come to my palace and tell me how magnificent I am.
->
-> Everyone must attend. Applause should be enthusiastic.
->
-> P.S. I will decide when you have finished.
+**Wren:** “It's everywhere.”
 
-### `c1_intro_05` — dialogue
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `home_frozen_street`. No school dialogue, classmates' names, or school challenge follows this establishing image.
 
-**Narrator:** Wren looked across the square. The houses were still blue in the almost-morning light. The sunflowers stood shut beside the bakery.
+### `c1_home_05` — a new door
 
-**Narrator:** A rooster on the bakery roof tried a crow. It came out as a tired cough.
+**Narrator:** Behind her came a small click.
 
-**Wren:** “She's keeping the whole village waiting.”
+**Narrator:** There was a door under the stairs.
 
-**Sensei:** “Yes. And asking us to thank her for it.”
+**Narrator:** Yesterday, that had been a wall. Wren knew because she had bounced a ball off it and been told not to.
 
-**Wren:** “I'm getting our bell back.”
+**Narrator:** The door had a brass handle shaped like a curled leaf. Under it, a little wooden plaque hung at a slant.
 
-**Paper bat:** “Would you like me to put you down for applause?”
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `home_impossible_door`. Plaque text and content brief are in the visual register.
 
-**Wren:** “No.”
+**Wren:** “You weren't here before.”
 
-**Narrator:** The bat wrote something very small on its form.
+**Narrator:** {pet} sniffed beneath the door. On the other side, something rustled.
 
-### `c1_intro_06` — narration
+### `c1_home_06` — across the threshold
 
-**Narrator:** Sensei unrolled a map on the empty bell stand.
+**Narrator:** Wren opened the door a little.
 
-**Sensei:** “The palace is across the wood. A bridge first, then the old gallery, then the palace road.”
+**Narrator:** No cupboard. No pipes. No stairs.
 
-**Wren:** “Will you come?”
+**Narrator:** A wood. A real wood, with a narrow path and enormous roots, where the air smelled of wet leaves.
 
-**Sensei:** “Of course. You lead. I'll help when you need me.”
+**Narrator:** A moth landed on the handle. It folded its wings. It unfolded them.
 
-**Narrator:** {pet} planted both front paws on the map.
+**Wren:** “You're moving.”
 
-**Wren:** “Yes. You too.”
+**Narrator:** Wren pulled on both boots and took her coat from its hook. Whatever was out there, it wasn't the kitchen.
 
-**Narrator:** Wren packed the map and a lantern. Then the three of them took the path into the Gloomwood.
+**Narrator:** {pet} slipped past her and sat on the first root, looking back.
+
+**Wren:** “We're staying together.”
+
+**UI ONLY — action button:** **Step through with {pet}**. This is not graded. Offer **Pause here** alongside it; no urgency or countdown.
+
+### `c1_home_07` — the other side
+
+**Narrator:** Wren stepped into the wood. The floorboards became moss beneath her feet.
+
+**Narrator:** She looked back. The open door still showed her hallway, the stopped clock, and the umbrella stand.
+
+**Narrator:** She wedged a smooth stone against the door. {pet} batted it once, to check.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `portal_threshold`.
+
+### `c1_home_08` — introduce the guide
+
+**Narrator:** Someone was trying to light a lantern beside the path: an older traveller in a long coat, with a crooked walking stick tucked under one arm.
+
+**Narrator:** They saw Wren, lowered the lantern, and gave her room.
+
+**Traveller (not yet named):** “Hello. Did that door open into your house?”
+
+**Wren:** “It wasn't there before. Everyone's stopped. My family. Outside. Everything. Except us.”
+
+**Traveller:** “I'm Sensei. I look after these paths. Let's work out what's happened.”
+
+**Narrator:** {pet} inspected Sensei's boots, then settled beside Wren.
+
+### `c1_home_09` — the Queen's notice
+
+**Narrator:** Sensei pointed to a rather odd notice nailed to a tree. A portrait of a crowned woman occupied most of it. The instructions had been squeezed in underneath.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `queen_time_notice`.
+
+**Wren:** “She stopped time?”
+
+**Sensei:** “Queen Malvina. The outside-world face of the Great Clock has stopped. She has its Minute Key.”
+
+**Wren:** “For applause?”
+
+**Sensei:** “She doesn't like being missed.”
+
+### `c1_home_10` — what matters
+
+**Wren:** “Are they all right? My family?”
+
+**Sensei:** “They're held in one moment. They aren't waiting or hurting. Start the clock again and that spoon finishes falling.”
+
+**Wren:** “Why aren't I stopped? Why isn't {pet}?”
+
+**Sensei:** “I don't know. And I've never seen that door before.”
+
+**Narrator:** Wren glanced back at the small rectangle of hallway between the trees.
+
+**Wren:** “Then I'm finding her. I want everyone back.”
+
+### `c1_home_11` — choose the road
+
+**Narrator:** Sensei laid a map on a flat root.
+
+**Sensei:** “Her palace is across the wood. We need the key, and we need to turn it in the clock there.”
+
+**Wren:** “Can you come?”
+
+**Sensei:** “Yes. We'll go together. You can ask me for help at any point.”
+
+**Narrator:** Wren pointed out the home door. Sensei marked it on the map, then handed Wren the lantern.
+
+**Narrator:** The three of them followed the path. A few minutes later, they reached a fork.
 
 **Narrator:** At the first fork, Wren stopped to read the signpost.
 
-**Display — signpost:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_signpost` (initial variant). Exact visual lettering:
 
 > PALACE →
 >
@@ -163,7 +229,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** His badge supplied an introduction.
 
-**Display — the imp's badge:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_echo_badge`. Exact visual lettering:
 
 > ECHO
 >
@@ -181,11 +247,15 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** He unfolded a judge's stand. Three paper stars dangled from it.
 
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_stage_and_jar`. Use its progress variants throughout encounter 1.
+
 **Sensei:** “You came for a meow. Let's see whether you need to enter his contest.”
 
 **Transition button:** **Get the meow back**
 
 ## Encounter 1: the audition nobody requested
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_prop_labels`. Branch props only, displayed on the relevant choice outcome. Do not speak their lettering.
 
 ### `c1_e1_b1` — refuse the audition
 
@@ -198,7 +268,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 | “I'm here for the meow.” | `best` | **Narrator:** A paper star drops off the stand. Echo catches it, tries to pin it back, and pins his sleeve to the wood. |
 | “You first.” | `okish` | **Narrator:** Echo draws breath for a demonstration. His trumpet gives one small squeak. He stamps his foot; a star falls off. |
 | “I can do loads of impressive things.” | `wrong` | **Narrator:** Echo produces an entry form so long it rolls off the crate. |
-| “Your face looks like a dropped sock.” | `wrong` | **Narrator:** Echo pulls a second crate beside his own and labels it **INSULT CONTEST: ROUND ONE**. |
+| “Your face looks like a dropped sock.” | `wrong` | **Narrator:** Echo pulls a second crate beside his own and hangs a fresh contest sign on it. |
 
 **Best follow-up:**
 
@@ -242,10 +312,10 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 | Choice | Verdict | Outcome |
 |---|---|---|
-| “You just did.” | `best` | **Narrator:** Echo looks at his clipboard. It reads **ASK HER SOMETHING**. The second star slips off. |
+| “You just did.” | `best` | **Narrator:** Echo checks his own question on the clipboard. The second star slips off. |
 | “Then you won't need an answer.” | `best` | **Narrator:** Wren closes her mouth. Echo opens his. Nothing comes out. The second star lands in it. |
 | “Yes you did! You said, 'What have you got to say for yourself?'” | `okish` | **Narrator:** Echo consults the clipboard, turns it upside down, and loses the second star. |
-| “Everyone else likes hearing me talk.” | `wrong` | **Narrator:** Echo flips to a blank page headed **EVERYONE ELSE**. |
+| “Everyone else likes hearing me talk.” | `wrong` | **Narrator:** Echo flips to a blank references page. |
 
 **Best feedback, “You just did”:**
 
@@ -344,7 +414,9 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** Wren checked the signpost again.
 
-**Narrator:** It now said:
+**Narrator:** The directions had become even less certain.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_signpost` (uncertain variant). Exact visual lettering:
 
 > PALACE → MAYBE
 >
@@ -363,6 +435,8 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 **Narrator:** He pulled a little wheeled stage from behind the bush.
 
 **Narrator:** One wheel squeaked. Another squeaked in reply.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_portable_stage`. Use its folding variants throughout encounter 2.
 
 **Sensei:** “You've got your meow. Keep your own errand in view.”
 
@@ -383,7 +457,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 | “Enjoy the next bit.” | `best` | **Narrator:** Wren turns to the map. Echo prepares for a reply that never comes. A wheel folds away. |
 | **[Action] Open the map and leave his comment unanswered.** | `best` | **Narrator:** Wren opens the map. Echo leans round it; {pet} shifts into his view, all ears and disapproval. A wheel folds away. |
 | “Why? What's wrong with how I talk?” | `wrong` | **Narrator:** Echo takes out a pencil and draws a very large speech bubble. |
-| “Fine. I'll never talk again.” | `wrong` | **Narrator:** Echo tries to stamp **NO TALKING** on the map. The stamp misses and hits his own hand. |
+| “Fine. I'll never talk again.” | `wrong` | **Narrator:** Echo tries to stamp a new rule on the map. The stamp misses and hits his own hand. |
 
 **Best feedback, spoken:**
 
@@ -423,16 +497,16 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 | Choice | Verdict | Outcome |
 |---|---|---|
-| “I'm getting our bell back.” | `best` | **Narrator:** Wren folds the map. Echo looks at his notes, which have plenty about heroes and nothing about returning stolen property. Another wheel folds away. |
+| “I'm getting my family back.” | `best` | **Narrator:** Wren folds the map. Echo looks at his notes, which have plenty about heroes and nothing about helping a frozen family. Another wheel folds away. |
 | “You can think that.” | `best` | **Narrator:** Wren puts the map away. Echo waits for her to correct him. She doesn't. Another wheel folds away. |
 | “I don't think I'm a hero! I never said that!” | `okish` | **Narrator:** Echo holds up both hands. Wren finishes putting the map away; another wheel folds away. |
-| “I'll prove I'm a better hero than you.” | `wrong` | **Narrator:** Echo produces two badges reading **HERO TRIALS**. One is upside down. |
+| “I'll prove I'm a better hero than you.” | `wrong` | **Narrator:** Echo produces two trial badges. One is upside down. |
 
-**Best feedback, bell:**
+**Best feedback, family:**
 
 **Echo:** “That's it? No crown? No statue?”
 
-**Wren:** “A morning would do.”
+**Wren:** “A normal breakfast would do.”
 
 **Sensei:** “Your reason. No application for his approval.”
 
@@ -456,7 +530,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Sensei:** “He's judging again. You have a reason to go without beating him.”
 
-**Borrow:** “I'm getting our bell back.”
+**Borrow:** “I'm getting my family back.”
 
 ### `c1_e2_b3` — keep the last word
 
@@ -470,7 +544,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 |---|---|---|
 | “Keep it.” | `best` | **Narrator:** Wren walks on. Echo opens his mouth, delighted. The stage's final wheel folds away before he can say anything. |
 | **[Action] Follow the mushroom path.** | `best` | **Narrator:** Wren keeps walking. Echo announces “Ha!” to the back of the empty stage. Its last wheel folds away. |
-| “No, I get the last word!” | `wrong` | **Narrator:** Echo rings a small bell labelled **EXTRA ROUND**. |
+| “No, I get the last word!” | `wrong` | **Narrator:** Echo rings a tiny extra-round bell. |
 | “Only because I can't think of anything.” | `okish` | **Narrator:** Wren walks on. The final wheel folds away. Echo's answer is lost under the stage folding shut. |
 
 **Best feedback, spoken:**
@@ -523,6 +597,8 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Three glowing arrows flew out, zipped back to the signpost, and pointed firmly towards the bridge.
 
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_signpost` (returned-directions variant).
+
 **Echo:** “I stole them. That was rotten.”
 
 **Wren:** “Yes.”
@@ -543,7 +619,9 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 ### `c1_end_04` — narration
 
-**Narrator:** He left it beside a bush labelled **MRS. BRAMBLE'S LUGGAGE**.
+**Narrator:** He left it beside a bush with a small luggage marker.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_luggage_owner`.
 
 **Narrator:** Then he joined them on the path.
 
@@ -567,7 +645,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Echo:** “He used to do hats.”
 
-### Reward screen
+### Reward screen — UI ONLY, DO NOT NARRATE
 
 **Heading:** **Meow recovered. Tomorrow still missing.**
 
@@ -576,6 +654,8 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 - Trophy: **Keep the Last Word**. Caption: “You had somewhere better to be.”
 - Story inventory: **Palace directions**.
 - Companion unlocked: **Echo**, under Wren's rules.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `reward_c1`.
 
 **Buttons:** **On to the bridge** / **Back to the dojo**
 
@@ -605,7 +685,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** His booth carried a sign:
 
-**Display — the troll's name and job:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_inspector_sign`. Exact visual lettering:
 
 > TOASTBRIG
 >
@@ -615,7 +695,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Below it, in much smaller writing:
 
-**Display — inspection rules:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_optional_inspection`. Exact visual lettering:
 
 > The bridge is open to everyone.
 >
@@ -633,7 +713,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 ### `c2_intro_04` — dialogue
 
-**Wren:** “We need to cross. The Queen's got our morning bell.”
+**Wren:** “We need to cross. The Queen's stopped time in my world.”
 
 **Toastbrig:** “Then you'll need especially good boots.”
 
@@ -645,6 +725,8 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 ## Encounter 1: the inspection
 
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_prop_labels`. Branch props only, never read out their headings.
+
 ### `c2_e1_b1` — a small flip
 
 **Toastbrig:** “Those boots aren't adventure boots.”
@@ -653,10 +735,10 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 | Choice | Verdict | Outcome |
 |---|---|---|
-| “They got me here.” | `best` | **Narrator:** Toastbrig looks at Wren, then the road, then the boots. He ticks **ARRIVED**. A sign folds down. |
+| “They got me here.” | `best` | **Narrator:** Toastbrig looks at Wren, then the road, then the boots. He ticks a box in his notebook. A sign folds down. |
 | “I'm crossing in these.” | `best` | **Narrator:** Wren points towards the bridge. Toastbrig checks the optional-inspection notice. A sign folds down. |
-| “They're proper adventure boots. The shop said so.” | `wrong` | **Narrator:** Toastbrig searches his notebook for **SHOPS WHICH MIGHT BE WRONG**. |
-| “At least I don't wear a kettle.” | `wrong` | **Narrator:** Toastbrig turns the notebook to **HELMET DEFENCE**. Several pages are already filled in. |
+| “They're proper adventure boots. The shop said so.” | `wrong` | **Narrator:** Toastbrig searches his notebook for the shop section. |
+| “At least I don't wear a kettle.” | `wrong` | **Narrator:** Toastbrig turns to a well-used helmet section. Several pages are already filled in. |
 
 **Best feedback, got me here:**
 
@@ -703,7 +785,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 | “Saves me saying hello.” | `best` | **Narrator:** Wren takes another step. Squeak. A small bridge bird chirps back. Another sign folds down. |
 | “They squeak. I'm crossing.” | `best` | **Narrator:** Toastbrig waits for the defence of squeaking. Wren takes another step instead. Another sign folds down. |
 | “They do not squeak.” | `wrong` | **Narrator:** Her boot squeaks. Toastbrig raises one finger, delighted. |
-| “Fine. Everything I wear is stupid.” | `wrong` | **Narrator:** Toastbrig starts to write **EVERYTHING**, runs out of room, and turns the notebook sideways. |
+| “Fine. Everything I wear is stupid.” | `wrong` | **Narrator:** Toastbrig starts a new heading, runs out of room, and turns the notebook sideways. |
 
 **Best feedback, hello:**
 
@@ -749,9 +831,9 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 | Choice | Verdict | Outcome |
 |---|---|---|
-| “New rule. Same answer. I'm crossing.” | `best` | **Narrator:** Toastbrig flips between **BOOTS** and **HATS** in his notebook. The last sign folds down. |
+| “New rule. Same answer. I'm crossing.” | `best` | **Narrator:** Toastbrig flips between two notebook tabs. The last sign folds down. |
 | “I'll skip the inspection.” | `best` | **Narrator:** Wren steps past the wheeled desk. The last sign folds down and becomes a little seat. |
-| “Would my hood count?” | `wrong` | **Narrator:** Toastbrig produces a ruler labelled **HOODS: POSSIBLY HATS**. |
+| “Would my hood count?” | `wrong` | **Narrator:** Toastbrig produces a ruler with its own very particular label. |
 | “You can't change the rules! That's cheating!” | `okish` | **Narrator:** Toastbrig searches for an official rule allowing new rules. Wren reaches the far bank while he searches; the last sign folds down. |
 
 **Best feedback, same answer:**
@@ -802,7 +884,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Then he opened a second sign:
 
-**Display — complaints sign:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_complaints_sign`. Exact visual lettering:
 
 > COMPLAINTS ABOUT THE INSPECTION
 >
@@ -832,9 +914,9 @@ The troll stays behind his desk beside the bridge. He does not chase, grab, surr
 
 | Choice | Verdict | Outcome |
 |---|---|---|
-| “No more boot talk.” | `best` | **Narrator:** Wren faces the palace path. The first drawer shuts. Toastbrig's **BOOT TALK** form sticks out like a paper tongue. |
+| “No more boot talk.” | `best` | **Narrator:** Wren faces the palace path. The first drawer shuts. A long form sticks out like a paper tongue. |
 | “I don't want to discuss my boots. We're going.” | `best` | **Narrator:** Wren signals to her companions. The first drawer shuts around the edge of a long questionnaire. |
-| “Nothing! It's just that we have to find the bell, and the village is waiting, and—” | `wrong` | **Narrator:** Toastbrig pulls out a **REASONS TO LEAVE** form. It has room for forty-seven reasons. |
+| “Nothing! It's just that we have to find the key, and my family's frozen, and—” | `wrong` | **Narrator:** Toastbrig pulls out another form. It has room for forty-seven reasons. |
 | “Please stop talking about my boots.” | `best` | **Narrator:** Wren turns towards the path. The first drawer shuts. Toastbrig reaches for a form, then discovers it is inside. |
 
 **Best feedback, no more:**
@@ -859,7 +941,7 @@ The troll stays behind his desk beside the bridge. He does not chase, grab, surr
 
 **Retry:**
 
-**Toastbrig:** “I'll put 'bell' under B. Village under V. We could be here a while.”
+**Toastbrig:** “A key? What sort? How many teeth? We could be here a while.”
 
 **Sensei:** “Your reasons are real. He doesn't need the whole list. Try the boundary.”
 
@@ -1025,7 +1107,7 @@ Do not require Wren to claim she isn't scared. Do not grade whether a child soun
 Safe, defensive answers that do not invite another turn. Examples:
 
 - “I'm not scared of you.”
-- “I'm leaving because we need the bell, not because of you.”
+- “I'm leaving because we need the key, not because of you.”
 - “That's not fair.”
 
 These clear the beat and lead to the same departure. Feedback can offer a shorter ending once.
@@ -1045,7 +1127,9 @@ These clear the beat and lead to the same departure. Feedback can offer a shorte
 
 **Narrator:** He reaches for his notebook. The last drawer shuts. He stamps his own thumb.
 
-**Narrator:** The thumb now says **SCARED**.
+**Narrator:** He inspects the thumb, then hides it under the desk.
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_stamp_ending` (thumb variant).
 
 **Toastbrig:** “That's confidential.”
 
@@ -1065,9 +1149,9 @@ Now show **Follow the path**. This is an action continuation, not another graded
 
 **Toastbrig:** “—nothing.”
 
-**Narrator:** The last drawer shuts. His stamp lands on the complaints sign, which now reads:
+**Narrator:** The last drawer shuts. His stamp lands crookedly across the complaints sign.
 
-**Display — stamped complaints sign:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c2_stamp_ending` (sign variant). Exact visual lettering:
 
 > COMPLAINTS ABOUT THE INSPECTION
 >
@@ -1161,9 +1245,9 @@ Clear the beat. Give the same reward as the other successful routes.
 
 ### `c2_end_05` — hook
 
-**Narrator:** The building ahead had an enormous velvet door and a sign in gold letters:
+**Narrator:** The building ahead had an enormous velvet door and a rather odd sign.
 
-**Display — gallery sign:**
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c3_gallery_rules`. Exact main-sign lettering:
 
 > THE DUCHESS'S COMEDY GALLERY
 >
@@ -1181,7 +1265,7 @@ Clear the beat. Give the same reward as the other successful routes.
 
 **Echo:** “We could try the side door.”
 
-### Reward screen
+### Reward screen — UI ONLY, DO NOT NARRATE
 
 **Heading:** **Bridge crossed. Boots unchanged.**
 
@@ -1191,9 +1275,11 @@ Clear the beat. Give the same reward as the other successful routes.
 - Story inventory: **Route to the Comedy Gallery**.
 - Map: bridge route unlocked for free return travel. Never make the player repeat a completed encounter merely to cross the map.
 
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `reward_c2`.
+
 **Buttons:** **Chapter complete — back to the dojo** / **Replay this chapter**
 
-Until Chapter 3 exists, do not show an active button promising it. The gallery hook is enough.
+When Chapter 3 is implemented, add **Enter the gallery**. Until then the gallery hook is enough; do not show an active button that leads nowhere.
 
 ---
 
@@ -1207,7 +1293,7 @@ Until Chapter 3 exists, do not show an active button promising it. The gallery h
 - Each choice row has its own outcome; multiple `best` answers are intentional. Map document `okish` to the existing option-quality value `ok` where the pack requires it, and map the typed grader's `okish` verdict consistently. Do not accidentally interpret either spelling as failure.
 - Branch-specific Wren lines in successful outcomes are fixed continuation dialogue, not additional questions to grade.
 - Opening screens introduce Wren, {pet}, and Sensei before the first challenge. Do not skip these introductions on a first play. Unseen speakers are labelled by source (**Voice in the bush**, **Troll at the bridge**) until their names appear in the story; the parenthetical script names are implementation metadata, not visible nameplates. Once the badge/sign supplies a name, use **Echo** or **Toastbrig** consistently.
-- Narrator, character speech, and Display blocks are distinct UI types, even when they occur in the same beat. No unlabelled quotation should be rendered as speech. Sensei does not read the Queen's notice; the paper bat reads it and is labelled accordingly.
+- Narrator, character speech, visual-only assets, and UI instructions are distinct types, even in the same beat. The Queen's notice is shown as an image/legible overlay. Neither Sensei nor the Narrator reads it aloud. Wren's questions about it are separate character dialogue.
 - Both spoken and action routes advance the same beat exactly once and give the same base rewards.
 - All meter changes concern Echo's stage props or Toastbrig's paperwork. No shrinking, despair, or loneliness is necessary to demonstrate Wren's success.
 - Persist completed beats before showing the next one so closing the app does not require redoing a long narration sequence. Resuming on a challenge should include its immediate setup.
@@ -1242,21 +1328,11 @@ Before giving it to the child, play both chapters and confirm:
 - The typed grader accepts a novel relevant ending, such as “This conversation has reached the end of the bridge.”
 - Echo only joins after returning the directions and accepting a boundary. Toastbrig need not reform for Wren to finish.
 - Read every line aloud. If a joke needs an explanation to sound funny, shorten it or cut it before adding more coach text.
-- In the first minute, the player can identify Wren, her pet, Sensei, the stolen object, what its loss does, and where the group is going. No knowledge of the old draft or dojo lore is required.
-- Check each dialogue bubble against its speaker label. In particular, the paper bat reads the notice, the Narrator describes actions, and Sensei gives advice as a present companion. Written signs do not spontaneously talk.
+- By the end of the opening, the player can identify Wren, her cat, Sensei, the stopped outside world, the Minute Key, and the palace destination. No knowledge of the old draft or dojo lore is required.
+- Check each dialogue bubble against its speaker label. Wren arrives with only her cat; Sensei introduces themself beyond the door. The Narrator describes actions, and Sensei gives advice as a present companion. Written signs do not talk or have their full text automatically narrated.
 
-### Art briefs
+### Visual handoff
 
-Keep a consistent ink-and-watercolour storybook style: crooked shapes, twilight blues, warm lanterns, readable expressions. Wren can look curious, cross, or uncertain; never demand a permanently blank face. No school objects, uniforms, playgrounds, or realistic school-bully doubles.
-
-1. **Opening:** Wren and her pet at the village's empty bell stand in blue predawn light; Sensei, an older guide in a long coat with a crooked walking stick, unrolls a map. A paper bat in oversized spectacles reads a royal notice. Closed sunflowers and a sleepy rooster show the morning hasn't arrived. No cake competition or unexplained prior errand.
-2. **Echo's clearing:** patchwork imp on a crate, absurd official badge, glowing meow jar, three paper stars on a rickety judge's stand.
-3. **Returned meow:** a luminous curl springing towards the pet; imp accidentally seated on a folded stool; flattened toy trumpet.
-4. **Portable stage:** tiny stage shedding its wheels while Wren studies a map; pale mushrooms mark a usable path away.
-5. **Chapter 1 ending:** imp returns three glowing directions to a signpost; abandoned suitcase beside Mrs. Bramble's luggage sign.
-6. **Bridge:** salvage-built troll with kettle helmet at a comically small desk; optional-inspection notice readable in UI text rather than generated lettering.
-7. **Boot exchange:** Wren stepping across, one boot squeaking; bird answering; troll's signs folding down.
-8. **Complaints desk:** three drawers beneath a portable sign, fence-post pencil, ridiculous oversized stamp; clear open path beside the desk.
-9. **Chapter 2 ending:** Wren, pet, and Echo on the winding path; distant troll inspecting a stamped thumb; invitingly strange gallery ahead.
+All content-only image descriptions, including the exact words and layout of signs, are now in [the visual asset register](story-visual-assets.md). Do not use a visual brief as narration. Wren can look curious, cross, or uncertain; she does not need a permanently blank face. The opening's home and distant school are ordinary, frozen establishing scenes. All comeback encounters remain in the magical world.
 
 The practical test is whether she wants to see what's around the next bend. The comeback practice should help her get there.
