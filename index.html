@@ -284,6 +284,9 @@ header .logo{user-select:none;}
 .qnotice{background:#efe6c8; color:#2c2410; border:2px solid #b9a25a; border-radius:6px; padding:18px 22px; font-family:Georgia,serif; font-size:16px; line-height:1.65; box-shadow:inset 0 0 34px rgba(120,90,20,.25); margin:6px 0 12px;}
 .qbub.wren{margin-left:auto; background:#14301f; border:1px solid #2f5c48; border-radius:18px 18px 4px 18px; padding:13px 16px; font-size:18px; max-width:82%;}
 .qprompt{color:var(--dim); font-size:14px; margin:10px 0 12px; font-style:italic;}
+.who{display:block; font-family:inherit; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); opacity:.85; margin-bottom:5px;}
+.who.inl{display:inline; color:inherit; opacity:1; letter-spacing:.08em;}
+.qbub.wren .who{color:#8fd9b4;}
 #qPanel .opt{margin-bottom:9px;}
 .qopts .opt{margin-bottom:9px;}
 .pklock{opacity:.4; filter:grayscale(.9); cursor:default !important;}
@@ -2009,7 +2012,7 @@ const QUESTS = [
       ["wren","She can't keep tomorrow. We've got plans."],
       ["stage","The paper bat tried to turn its notice over. Its spectacles fell off."],
       ["bat","Complaints go to the palace. I only do flapping."]]},
-    {t:"narr", id:"c1_intro_06", text:["The palace lay beyond the Gloomwood.","Wren put on her coat. Your pet took the empty biscuit pocket as an invitation to come along.","At the first fork, the signpost said: PALACE →  ·  ALSO PALACE ←  ·  DON'T ASK ME ↓"]},
+    {t:"narr", id:"c1_intro_06", speak:"The palace lay beyond the Gloomwood. Wren put on her coat. Your pet took the empty biscuit pocket as an invitation to come along. At the first fork, the signpost said: Palace, this way. Also palace, the other way. Don't ask me — that way down.", text:["The palace lay beyond the Gloomwood.","Wren put on her coat. Your pet took the empty biscuit pocket as an invitation to come along.","At the first fork, the signpost said: PALACE →  ·  ALSO PALACE ←  ·  DON'T ASK ME ↓"]},
     {t:"say", id:"c1_intro_07", lines:[
       ["stage","Your pet opened its mouth to complain. A tiny trumpet sounded from a bush."],
       ["wren","That is not your normal noise."],
@@ -2048,7 +2051,7 @@ const QUESTS = [
         ["stage","Your pet meowed. A perfectly ordinary meow."],
         ["echo","I preferred the trumpet."],
         ["stage","Your pet sat on the trumpet."]]},
-      {t:"narr", id:"c1_mid_03", text:["Wren checked the signpost again. It now said: PALACE → MAYBE · PALACE ← PROBABLY NOT · I'M A SIGN, NOT A MIRACLE ↓","Echo had stolen the directions too."]},
+      {t:"narr", id:"c1_mid_03", speak:"Wren checked the signpost again. It now said: Palace, maybe. Palace, probably not. I'm a sign, not a miracle — that way down. Echo had stolen the directions too.", text:["Wren checked the signpost again. It now said: PALACE → MAYBE · PALACE ← PROBABLY NOT · I'M A SIGN, NOT A MIRACLE ↓","Echo had stolen the directions too."]},
       {t:"say", id:"c1_mid_04", btn:"Find the palace path ▸", lines:[
         ["wren","The directions. Those belong here."],
         ["echo","I might remember them if someone gave me a proper argument."],
@@ -2254,14 +2257,18 @@ function questHeadHtml(){
   return `<div class="qtop"><button class="ghost" id="qLeave">✕ close the book</button>
     <span class="qchapter">${ch.emoji} ${ch.name}${sc2?` · ${sc2.name}`:""}</span>${meter}</div>`;
 }
+const WHO = {wren:"Wren", echo:"Echo", bat:"Paper Bat", tb:"Toastbrig", duch:"A Posh Voice", unknown:"?", pet:"Your Pet", sensei:"Sensei"};
 function sayHtml(lines){
   const emo = {wren:"🧤", echo:QS.ch.emoji, bat:"🦇", tb:"🌉", duch:"🎭", unknown:"❔", pet:"🐾", sensei:"🦉"};
   return lines.map(l=>{
     if (l[0]==="stage") return `<div class="qnarr">${l[1]}</div>`;
-    if (l[0]==="sensei") return `<div class="qsense">🦉 ${l[1]}</div>`;
-    if (l[0]==="wren") return `<div class="qbub wren">${l[1]}</div>`;
-    return `<div class="qscene"><div class="qav">${emo[l[0]]||"❔"}</div><div class="qbub">${l[1]}</div></div>`;
+    if (l[0]==="sensei") return `<div class="qsense">🦉 <b class="who inl">Sensei</b> ${l[1]}</div>`;
+    if (l[0]==="wren") return `<div class="qbub wren"><span class="who">Wren</span>${l[1]}</div>`;
+    return `<div class="qscene"><div class="qav">${emo[l[0]]||"❔"}</div><div class="qbub"><span class="who">${WHO[l[0]]||"?"}</span>${l[1]}</div></div>`;
   }).join("");
+}
+function speakable(t){
+  return String(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
 }
 function speakSay(lines){
   try{ lines.forEach(l=>{ const v = SPK_VOICE[l[0]]; if (v) speak(l[1], v); }); }catch(e){}
@@ -2270,8 +2277,8 @@ function fbHtml(f){
   let h = "";
   if (f.helpLines) h += sayHtml(f.helpLines);
   if (f.stage) h += `<div class="qnarr">${f.stage}</div>`;
-  if (f.v) h += `<div class="qscene"><div class="qav">${QS.ch.emoji}</div><div class="qbub">${f.v}</div></div>`;
-  if (f.wrn) h += `<div class="qbub wren">${f.wrn}</div>`;
+  if (f.v) h += `<div class="qscene"><div class="qav">${QS.ch.emoji}</div><div class="qbub"><span class="who">${QS.ch.vill}</span>${f.v}</div></div>`;
+  if (f.wrn) h += `<div class="qbub wren"><span class="who">Wren</span>${f.wrn}</div>`;
   if (f.c) h += `<div class="qsense">🦉 ${f.c}</div>`;
   return h;
 }
@@ -2304,7 +2311,8 @@ function drawQuestBeat(){
     const b = beat;
     if (b.setup && !QS.retried) view += `<div class="qnarr">${b.setup}</div>`;
     const av = {echo:ch.emoji, tb:"🌉", duch:"🎭", unknown:"❔"}[b.spk] || ch.emoji;
-    view += `<div class="qscene"><div class="qav">${av}</div><div class="qbub">${b.line}</div></div>`;
+    view += `<div class="qscene"><div class="qav">${av}</div><div class="qbub"><span class="who">${WHO[b.spk]||ch.vill}</span>${b.line}</div></div>`;
+    if (!QS.answered && b.line){ try{ speak(beat.speak || speakable(b.line), "bully"); }catch(e){} }
     view += `<p class="qprompt">${b.prompt||""}</p>`;
     if (b.kind==="pick" || (b.opts||[]).some(o=>o.act)){
       if (b.opts && b.opts.length){
@@ -2330,8 +2338,8 @@ function drawQuestBeat(){
     ${questHeadHtml()}${view}<div id="qsAct">${act}</div>
     ${tappable ? `<p class="qtap" id="qsGo">${contLabel}</p>` : ""}
   </div>`;
-  if (beat.t==="narr" || beat.t==="sensei"){ try{ speak(Array.isArray(beat.text)?beat.text.join(" "):beat.text, "sensei"); }catch(e){} }
-  if (beat.t==="notice"){ try{ speak(beat.text, "bully"); }catch(e){} }
+  if (beat.t==="narr" || beat.t==="sensei"){ try{ speak(beat.speak || speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "sensei"); }catch(e){} }
+  if (beat.t==="notice"){ try{ speak(beat.speak || speakable(beat.text), "bully"); }catch(e){} }
   if (beat.t==="say") speakSay(beat.lines);
   const $ = id=>document.getElementById(id);
   $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; S.quest.pos=null; save(); renderQuest(); };
@@ -2490,7 +2498,7 @@ function renderQuest(){
 }
 
 /* ---- story pack: export / import / restore (panel) ---- */
-const STORY_KEYS = { ch:["name","vill","card","winHead","winLine","artPrompt"], sc:["name","setup","icon","meterLabel","artPrompt"], beat:["text","lines","taunt","setup","line","prompt","ph","send","purpose","bestEx","okEx","wrongEx","win","pkgs","borrow","borrowL","borrowAct","help","helpOut","helpSen","opts","btn","art","artPrompt"] };
+const STORY_KEYS = { ch:["name","vill","card","winHead","winLine","artPrompt"], sc:["name","setup","icon","meterLabel","artPrompt"], beat:["text","speak","lines","taunt","setup","line","prompt","ph","send","purpose","bestEx","okEx","wrongEx","win","pkgs","borrow","borrowL","borrowAct","help","helpOut","helpSen","opts","btn","art","artPrompt"] };
 function storyPick(obj, keys){
   const p = {};
   keys.forEach(k=>{ if (obj[k]!==undefined) p[k]=obj[k]; });
