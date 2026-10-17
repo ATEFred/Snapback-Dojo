@@ -42,7 +42,7 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
    "button eyes, stitched grin, fraying seams, blunt rag-doll head with floppy cloth ears, NO cat "
    "features; only he and Wren's grey tabby are ever imps/cats together"),
   # "wisp" alone is too eager: briefs mention him in the negative ("route later supplied by Wisp")
-  (("wisp",), lambda tl: any(k in tl for k in ("waistcoat","satchel","cart","bottle","press","delivery",
+  (("wisp",), lambda tl: "wisp" in tl and any(k in tl for k in ("waistcoat","satchel","cart","bottle","press","delivery",
    "gazette office")) and "Wisp: a small nervous green-furred courier creature in a buttoned "
    "waistcoat, long ears, ink-stained fingers, enormous satchel"),
   (("courier",), lambda tl: "Wisp: a small nervous green-furred courier creature in a "
@@ -54,6 +54,24 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
   (("queen malvina", "crowned woman", "queen's portrait"), "Queen Malvina appears ONLY as described "
    "(usually a printed portrait on a notice): a tall crowned woman holding a little key on a chain"),
   (("paper bat",), "a paper bat wearing enormous spectacles"),
+  # The lake Reflection: a spotless silver-outlined imitation of the same girl.
+  # Self-cancelling clause for briefs where the imitation became an ordinary reflection.
+  (("~\\bimitation\\b", "~\\bsilver[- ]outlined?\\b"),
+   "the Reflection: a picture-like magical imitation of the SAME girl — identical black bob and coat "
+   "but spotlessly clean, polished boots, a thin silver outline and a rehearsed smile; the REAL girl is "
+   "the one with muddy boots; exactly one real girl and one imitation when both appear; if the "
+   "description says the imitation has become ordinary, paint only normal water reflections and NO "
+   "silver outline"),
+  # Pip & Pop: apple-wood usher puppets. Word-bounded names; the PIP & POP sign lettering alone must
+  # not summon them into a shot the brief populates with nobody.
+  (("~\\bpip\\b", "green-waistcoated", "square-headed", "square carved head"),
+   lambda tl: ("royal ushers" not in tl) and ("Pip: the taller apple-WOOD puppet on a wheeled "
+   "stage — square carved wooden head, visible hinged jaw, painted eyebrows, green waistcoat, one "
+   "raised wooden finger in an officious presenting gesture; carved joints, NOT a real child")),
+  (("~\\bpop\\b", "purple-waistcoated", "round-faced"),
+   lambda tl: ("royal ushers" not in tl) and ("Pop: the shorter apple-WOOD puppet standing on a box — "
+   "round carved wooden face, visible hinged mouth, lively painted eyebrows, purple waistcoat, one "
+   "wooden hand mid-flourish; carved joints, NOT a real child")),
   (("mum", "dad", "parents", "family"), "Wren's ordinary parents: modern-dressed adults frozen mid "
    "breakfast, mid-gesture, gentle, unhurt"),
 ]
@@ -73,19 +91,44 @@ AVA_DESC = {
   "avatar_wisp": "Wisp: a small green-furred courier creature head, long ears, ink-stained smudges, "                 "nervous hopeful expression, waistcoat collar and satchel strap at the frame edge.",
   "avatar_queen": "Queen Malvina the Magnificent: a tall imperious woman with an elaborate small crown, "                  "chin raised, holding a tiny key on a chain between two fingers; printed-poster quality.",
   "avatar_bush": "A leafy woodland bush with a tiny brass trumpet poking out and one wide cartoon eye "                 "peeking between the leaves; humorous, not creepy.",
+  "avatar_reflection": "The lake's imitation of Wren: SAME face as the Wren portrait (straight black bob, big eyes) but an unnaturally neat coat collar, a rehearsed smug smile, and a thin silver outline around the figure with a sliver of gilt picture-frame at one side; overprepared, not frightening; no second girl.",
+  "avatar_pip": "Pip the usher puppet: a tall SQUARE apple-WOOD head with visible hinged jaw and carved joints, neatly painted eyebrows, green waistcoat, one raised wooden finger; pleased with his own organisation; a carved puppet, not a real child.",
+  "avatar_pop": "Pop the usher puppet: a ROUND apple-WOOD face with a visible hinged mouth and carved joints, lively painted eyebrows, purple waistcoat, one wooden hand poised for an unnecessary flourish; about to interrupt his partner; a carved puppet, not a real child.",
+}
+
+HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred's)
+  "c5_lake_crossing": "Paint ONE single wide scene showing the finished moment; not a grid, not comic "
+    "panels, no split frames. Exactly one real girl standing on the far bank with her grey tabby cat "
+    "and the rag imp; the water shows only ordinary matching reflections, never a second body.",
+  "c5_rehearsal_slates": "The girl and the imitation must be OBVIOUSLY different: the imitation has a "
+    "glowing thin silver outline around her whole figure and a spotlessly clean coat; the real girl is "
+    "muddy. Exactly one of each, nowhere else in frame.",
+  "c6_route_markers": "ONE single wide scene. Living beings: the muddy girl, her grey tabby cat, and "
+    "the small grey rag-doll patchwork imp with button eyes — the imp's stitched hand holds the hinged "
+    "panel flap open while the girl compares a paper map to the seal. The three of them, together, "
+    "one instance each, as the only characters.",
+  "c6_clock_entrance": "The party is the girl, her grey tabby cat and the small rag imp walking "
+    "towards the arch. The wall carries NOTHING but the delivery seal and the plaque: no cat faces, "
+    "crests, medallions, masks or ornaments on the masonry.",
+  "c6_mirror_welcome_hook": "Exactly ONE real girl, standing. She has NO body outside the mirrors — "
+    "whatever appears inside a mirror is only a reflection. No second girl standing in the corridor.",
+  "reward_c5": "COMPOSITION: one single girl stands on the bank, waving down at the water. Beside "
+    "her ONLY her grey tabby cat. The water's surface mirrors the girl and the cat. The girl appears "
+    "exactly ONCE above the waterline; any second image of her exists ONLY inside the water. No other "
+    "person, child or figure stands on the bank.",
 }
 
 def prompt_for(art_id, text):
     if art_id.startswith("avatar_"):
         desc = AVA_DESC.get(art_id, "")
         return STYLE + ("A single-character portrait, head and shoulders, the named subject's face and "                        "shoulders filling most of the frame, neutral dark background. No other "                        "characters, no girl, no child, no bystanders. ") + desc + " " + text
-    return STYLE + cast_for(text) + text
+    return STYLE + cast_for(text) + text + (" " + HINTS[art_id] if art_id in HINTS else "")
 
 def cast_for(text):
     tl = text.lower()
     extra = []
     for keys, d in CHARS:
-        if not any(k in tl for k in keys): continue
+        if not any((re.search(k[1:], tl) if k.startswith("~") else (k in tl)) for k in keys): continue
         d = d(tl) if callable(d) else d
         if d and d not in extra: extra.append(d)
     return WREN_CAT + "; ".join(extra) + (". " if extra else ". ") + EXCLUDE

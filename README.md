@@ -84,11 +84,12 @@ signs, the Queen's notice, Echo and Wisp — never from unexplained cat knowledg
 Over-the-top monsters with sad little problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary,
 every villain funnier than they are mean. Frozen people feel no waiting and no harm; there is no countdown.
 
-**Four chapters ship** — Echo the Mimic Imp, Toastbrig the Bridge Inspector, the Duchess of HA (Comedy
-Gallery) and Wisp and the Royal Copy (Midnight Gazette) — transcribed from `story-chapters-01-02-rewrite.md`
-and `story-chapters-03-04.md`. The party is Wren, the cat, and (from Chapter 1's end) Echo. Chapter 5
-(Mirror Lake) teases on the map. (The earlier bellkeeper premise and the path-guide version of the opening
-remain recoverable in git history.)
+**Six chapters ship** — Echo the Mimic Imp, Toastbrig the Bridge Inspector, the Duchess of HA (Comedy
+Gallery), Wisp and the Royal Copy (Midnight Gazette), the Reflection at Mirror Lake, and Pip & Pop's
+orchard double act — transcribed from `story-chapters-01-02-rewrite.md`, `story-chapters-03-04.md` and
+`story-chapters-05-06.md`. The party is Wren, the cat, and (from Chapter 1's end) Echo; Chapter 6 ends at
+the palace clock's east door and the bowing mirror's "tiny favour" — the Chapter 7 hook. (The earlier
+bellkeeper premise and the path-guide version of the opening remain recoverable in git history.)
 
 - **Every voice wears a nameplate, a face and a voice** — Narrator included. Bubbles carry a painted
   portrait (`quest-art/avatar_*.png`, square, cropped into the circle; emoji fallback until painted), and
@@ -105,15 +106,24 @@ remain recoverable in git history.)
   action choice like *keep walking*) ticks the villain's **prop meter** — his stars, his wheels, his drawers,
   his casting shutters — never his feelings. A miss shows that choice's specific consequence + one coach
   line, then the same prompt returns in the same shuffled order. No punishments, no escalating rounds of shame.
-- **Walking away is always legal:** the Duchess's encounters carry an ungraded *Leave with {pet}* button;
-  progress saves and the map waits. Choices like *take the garden path* or *decline the quote* clear beats
-  exactly like words.
+- **Walking away is always legal:** every encounter carries an ungraded *Leave with {pet}* / *Pause / back
+  to map* button (chapters 5–6 put it on every typed beat too); progress saves and the map waits. Choices
+  like *take the garden path*, *decline the quote* or *take the palace path* clear beats exactly like words.
+- **Two speakers, one answer (chapters 5–6):** Pip and Pop share the bait in labelled bubbles, in order,
+  before the answer box opens — they never interrupt her mid-line and nothing reacts to typing speed.
+  Answering just one of them is a fine answer. The Reflection is its own speaker: its own nameplate, its
+  own over-rehearsed voice, its own silver-outlined portrait — never a diagnosis of Wren.
+- **A hurt answer meets kindness, not a bigger attack:** self-belittling lines ("nothing, I'm useless")
+  get the quiet accepted branch — the cat sits beside her and the slate turns over gently. Feeling-only
+  replies in Chapter 6 skip the puppets' comic bit entirely; borrowed words are hers.
 - **Help is free and always on the table, in two stages:** 🐾 *Ask {pet} for help* once and the cat models a
   line — *"You could try: … Or say it your way"* — while the moment stays open and the draft she typed is
   kept; ask again and the cat steps in and walks her through it. 🪄 *Borrow a line* fills the box in one go.
   All routes clear the beat and cost nothing; after the cat has modelled a line, rambling is graded gently.
-  Stars are a flourish, not a wage. In story mode the cat is the only coach; the dojo's 🦉 Sensei
-  lives outside the book.
+  Chapters 5–6 use Fred's single-branch version straight from the script: Wren asks, the cat gives the
+  beat's exact help cue, Wren speaks the borrowed line, the accepted outcome plays and clears once with
+  full reward and no extra coach chatter. Stars are a flourish, not a wage. In story mode the cat is the
+  only coach; the dojo's 🦉 Sensei lives outside the book.
 - **Freeform answers get heard, not just waved through:** the exact line she wrote comes back on screen as
   Wren's bubble, and the cat adds one short line about *why* it landed (or what to try instead) — the AI's
   note when online, the cat's own book of reasons when offline.
@@ -216,9 +226,10 @@ it can't. The AI, if configured, is your own local model.
 **Content**
 
 - [x] Gloomwood chapters 3–4 (Comedy Gallery + Midnight Gazette — live, per `story-chapters-03-04.md`)
-- [ ] Chapter 5: Mirror Lake (the reflection that stands up first)
-- [ ] Re-paint pass: review each asset plate in `quest-art/`, reroll weak lettering with `--force`
-      (or a different `SEED_SALT`); keep lettering cards as the accessibility layer
+- [x] Chapters 5–6: Mirror Lake + the orchard double act (live, per `story-chapters-05-06.md`)
+- [ ] Chapter 7: the Hall of Mirrors ("one tiny favour") — Fred's script, whenever it lands
+- [x] Re-paint pass: every plate QC'd on sheets; weak ones rerolled with `--force` / `SEED_SALT`, and
+      `HINTS` in `gen_art.py` now guards compositions the briefs earned (one real Wren, no uninvited cast)
 - [ ] Pre-generated narration: batch-render per-beat TTS audio (quest-audio/<beat-id>), pick per-character
       voices, ship the files; live browser TTS stays the fallback
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
