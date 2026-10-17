@@ -2,6 +2,8 @@
 
 ## Chapters 5–6: complete playable script
 
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Continue with [Chapters 7–8 and the homecoming](story-chapters-07-08.md). The final script uses the actual cat name Noodles for readability; it is the same `{pet}` companion and coach, bound to the active pet name at runtime. Its existence is a script handoff, not a claim that the final app chapters are implemented.
+
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Continues [Chapters 3–4](story-chapters-03-04.md). Wren, her talking cat `{pet}`, and the patchwork imp Echo are the whole travelling party. They have Wisp's map: Mirror Lake, old orchard, east clock entrance. Queen Malvina wears the Minute Key on a chain. The Great Clock's outside-world face is stopped at 8:17, freezing Wren's family and world safely in one moment. Time passes here in the Gloomwood. The home door remains open and marked on Wren's earlier map. There is no countdown or decay of the frozen world.
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** The cat first spoke after crossing the door and has no secret local knowledge. It supplies all coaching, ordinary companion dialogue, and help under its actual pet name. Substitute `{pet}` everywhere before display/TTS. The Narrator describes events and never becomes a character. Echo knows some local places and customs, but neither he nor anyone else explains the door, the immunity to the freeze, or the cat's speech in these chapters.

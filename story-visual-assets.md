@@ -1,6 +1,6 @@
 # The Gloomwood and the Stolen Tomorrow — visual asset register
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Content briefs for Chapters 1–6. These are descriptions to give an image generator, not images already generated. No style, medium, artist, rendering, or model instructions are included. Use the established character references separately for continuity.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Content briefs for Chapters 1–8, including the homecoming. These are descriptions to give an image generator, not images already generated. No style, medium, artist, rendering, or model instructions are included. Use the established character references separately for continuity. In the final script, Noodles names the same cat previously written as `{pet}`.
 
 ## How these assets enter the story
 
@@ -371,6 +371,194 @@
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
 **Content brief:** Head-and-shoulders portrait of Pop, the shorter apple-wood usher puppet. Round carved face, visible hinged mouth, lively painted eyebrows, purple waistcoat, and one wooden hand poised for an unnecessary flourish. He looks as though he is about to interrupt his partner. One puppet only. His round head and purple clothing distinguish him immediately from Pip. No letters or extra character.
+
+---
+
+## Chapter 7: the welcome with strings
+
+### `c7_mirror_court`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** A corridor beside the palace clock room, lined with hinged tall mirrors wearing small decorative crowns. Chancellor Gleam is the nearest mirror: a silver frame with two thin brass arms, a crowned top rail, and a hinge that lets him bow. His glass reflects the actual scene normally. Wren, her cat Noodles, and Echo stand on a clear walkway. Gleam holds a cushion with a medal; exactly three loose ribbons connect it to a ceremonial desk, with no ribbon attached to anyone. An open clock-service passage and a booklet table are visible beyond. A later-use lectern beside the table has exactly three hinged brass counters. No independent copy of Wren emerges from any mirror. No lettering required.
+
+### `c7_medal_invoice`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Close view of a small bright medal on Gleam's cushion, with a very long folded tag dropping below it. Medal text **HONOURED GUEST**. Main tag text **FREE GIFT**; attached lower tag **INCLUDES THREE-HOUR APPRECIATION CEREMONY**. The word FREE is much larger than the obligation. Gleam's thin brass hand holds the cushion; Wren has not put the medal on. Loose ceremonial ribbons lead back to forms on the desk.
+
+### `c7_audience_card`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** A printed speech card held out by two thin brass hands belonging to a hinged mirror. Exact heading **APPROVED AUDIENCE WORDS**. Three numbered lines: **APOLOGISE FOR COMING** / **PRAISE HER MAGNIFICENCE** / **LET THE QUEEN DECIDE WHAT YOU DESERVE**. Small footer **DEVIATIONS DISCOURAGED**. A plain clock symbol on the wall behind the card points down an open passage. These are Gleam's unwanted instructions, not actual rules or dialogue Wren must say.
+
+### `c7_service_booklet`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** An open public clock-service booklet on a low table. Its folded-back cover shows a clock and an open doorway, with heading **GREAT CLOCK — RETURN SERVICE**. The visible page has a sequence of simple diagrams: stopped outside-world clock; one loose glowing second; a pair of generic touching figures, one human and one animal; a door appearing at their starting place. Short labels **SAFETY CATCH**, **ONE MOMENT LEFT MOVING**, and **CONTACT AT THE INSTANT OF STOPPING**. Footer **THE LOOSE SECOND MAKES A WAY BACK**. The generic diagrams contain no predicted likeness of Wren or Noodles. Wren's fingers hold the page; her real cat reads beside her. This is where they learn the rule.
+
+### `c7_return_diagram`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** A second page in the same service booklet. A diagram of the matching Minute Key shows one full turn towards **RETURN**. The next diagram shows the clock drawing the key inside, a stopping wheel folding behind a solid plate, and a light leading towards a home doorway. Labels **OUTSIDE STOP CONTROL REMOVED** and **FIRST TICK WAITS FOR TRAVELLERS AT HOME**. A small final diagram shows the doorway closing only after both human and animal footprints cross. No alternative control, countdown, trap, or sacrifice. The drawn mechanism matches the later real clock close-ups.
+
+### `c7_borrowed_words`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** An animal-speech page near the back of the same booklet. On one side of a doorway, a generic cat silhouette has a speech bubble; on the home side the same silhouette leaves ordinary pawprints beside a human hand. Heading **WORDS BORROWED HERE STAY HERE**. A clearly readable paragraph beneath: **ANIMALS KEEP THEIR SELVES, THEIR MEMORIES, AND THEIR AFFECTION WHEN THEY RETURN. HUMAN SPEECH BELONGS TO THE GLOOMWOOD.** Both cats in the diagram represent the same animal crossing, not a replacement. No fading body, gravestone, cage, crying face, or suggestion that the animal dies or forgets its person.
+
+### `reward_c7`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Sticker of Chancellor Gleam wearing the rejected medal on his own mirror frame while his presentation cushion has folded into a small laundry basket full of speech cards. His thin brass hand holds a pen without anyone's signature. The path beside him is open. Medal text **HONOURED GUEST**. No other new lettering.
+
+### `avatar_gleam`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Close portrait of Chancellor Gleam, an ornate silver mirror frame with a decorative crown on the top rail and two thin brass hands at the lower edges. Its posture suggests an exaggerated bow. The glass contains an ordinary indistinct reflection, not Wren's face or the lake's independent imitation. The crown sits slightly askew. One mirror only; no text.
+
+### `avatar_plain_mirror`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Close portrait of the small plain mirror on the service-table shelf. A simple oval glass with a warm wooden frame leans slightly towards its listener. It has no crown, hands, medal, forms, or reflected human face. One mirror only, recognisably simpler and smaller than Gleam. No lettering.
+
+---
+
+## Chapter 8: the clock, the Queen, and home
+
+### `c8_clock_court`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Queen Malvina sits in person on an elaborate wheeled throne behind a velvet curtain pulled aside by Wren. The Minute Key hangs visibly on a chain around the Queen's neck. Three tall audience-reservation pennants stand beside the throne. Painted spectators and folded mechanical applause paddles wait behind her; actual audience seats are empty. Wren, her cat Noodles, and Echo stand at the entrance. A clear walkway connects the stage edge to a clock platform at the left. The outside-world dial shows 8:17. The Queen matches her notice portrait. No gathered crowd, physical restraint, attack, or child kneeling.
+
+### `c8_key_presentation_worn`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Malvina stands on her stage behind a wheeled lectern with a cushion and three hanging gold ceremonial seals. She lifts the Minute Key on its chain but still wears it around her neck. The cushion is empty. Wren stands at the lectern's near side; her cat waits beside her, and Echo holds the open service booklet. A clear walkway reaches the clock's keyhole without passing through the throne. Generate this pre-transfer state only, with exactly one key and no key already in Wren's hand.
+
+### `c8_key_presentation_cushion`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Same stage, lectern, cushion, and clear clock walkway. Malvina has unclasped the chain and laid its single Minute Key openly on the cushion. Her neck is now bare of the key, and both hands are extended grandly for the speech she expects. Two ceremonial seals lie flat against the lectern; one remains hanging. Wren is within ordinary reach of the cushion. Her cat stays at her ankle and Echo holds the return page open. No locked case, invisible barrier, forceful snatch, or second key. Use only after the Queen visibly puts the key down.
+
+### `c8_return_control_ready`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Close view of the real clock control established in the service booklet. Wren's hand places the single matching Minute Key into its keyhole. A large readable arrow marks the one-turn direction **RETURN**. Behind clear glass are the currently raised stopping wheel and a small doorway symbol. The outside-world hands above remain at 8:17. The cat's paw rests against Wren's boot at the lower edge, with the body safely out of the machinery. No extra wrong sockets, red danger lever, timer, or countdown.
+
+### `c8_return_control_released`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Same clock close-up after Wren turns the key. The key has slid entirely inside; Wren's empty hand is withdrawing from the control. The stopping wheel is folded down behind a solid plate bearing **OUTSIDE STOP CONTROL REMOVED**. A line of light runs to the doorway symbol. Below it, a small status area reads **RETURN READY — FIRST TICK AT HOME**. Outside-world hands still show 8:17, correctly waiting for the home crossing. No Queen hand controlling this mechanism and no portable key left available to take back.
+
+### `c8_queen_last_audience`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** The Queen sits crossly on her wheeled throne with her key chain empty. A single mechanical wooden applause hand has unfolded and patted the top of her crown by mistake. Her painted audience stays painted and her real seats are empty. Wren, her cat, and Echo are leaving together along the open service passage. No injured or shrunken Queen, cheering mob, body mockery, or renewed physical threat. The joke is her apparatus failing to produce admiration.
+
+### `c8_homeward_map`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Wren's travelled map spread in her hands at the palace arch. The route already used is visible in reverse: clock entrance, orchard, Mirror Lake, Gazette, gallery, bridge, Echo's fork, and a little house-door mark. A pale line now joins these known places towards home. The home-door mark glows. The cat looks at the map beside her and Echo holds the closed booklet. No new maze, unknown destination, royal score, danger symbol, or timer. Labels may use the established place names, with a final **HOME** beside the door.
+
+### `c8_orchard_wave`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** On the return through the orchard, Pip and Pop move their little stage away from the public road and try bowing in opposite directions. Pip has his established square wooden head and green waistcoat; Pop his round face and purple waistcoat. Wren, her cat, and Echo walk past towards home. Apple baskets remain in the grass. No one blocks the route or starts a new contest. No lettering required.
+
+### `c8_gazette_wave`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** At the newspaper clearing, Wisp, the small long-eared green courier in a waistcoat and oversized satchel, pins his correction above the old front page and waves a clean sheet at Wren, her cat, and Echo walking past. Use the already established correction wording **THE QUEEN STOPPED THE OUTSIDE CLOCK** / **WREN DID NOT STEAL TOMORROW**. The blank waving sheet contains no new quote. Papers, cart, and branches match his earlier location. The party does not stop for another challenge.
+
+### `c8_gallery_wave`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** View through the open gallery garden gate on the way home. The porcelain Duchess stands at her small stage trying a joke involving the knotted watering can. Her painted portrait begins clapping too early. Wren, her cat, and Echo pass outside the gate and continue walking. The Duchess's brass winding key is visible behind her shoulder. No newly compulsory performance, captive spectators, fresh insult, or new written joke.
+
+### `c8_echo_farewell`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** At the original woodland fork, Echo's signpost arrows now agree. The patchwork imp hands Wren one small paper star from his former judging badge, with a thread tied to a corner. Wren's cat waits beside her. In the background their open home door shows the ordinary hallway, umbrella stand, and stopped clock. Echo stays on the woodland side near the signpost; he is choosing to remain there. The star is a small tangible gift, not a medal for defeating a lonely creature. No new lettering required.
+
+### `c8_doorway_goodbye`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Wren sits on the moss immediately outside the open home doorway with her familiar cat Noodles in her lap. She strokes the patch between his ears, with a few ordinary tears on her face. The cat is warm, solid, alert, and leaning into her. One paw rests on her hand. Her normal hallway is visible on the other side of the threshold. Her map and small paper star lie safely nearby. This is a quiet pause before they cross together. No fading animal, abandoned friend, grave, severed shadow, closed barrier, or text suggesting that the cat dies or loses his memories.
+
+### `c8_world_resumes`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Wren is just inside her home hallway holding her cat; all four paws are now across the threshold. The once-suspended spoon is landing normally on the kitchen floor. Her mum is completing her reaching movement; her dad has begun moving the jam knife again. The ordinary clock has resumed its second hand while the hour and minute still read just after 8:17. Through the window, the pigeon has completed its wingbeat and the street's cyclist is moving normally; the distant school flag moves in the wind. Family poses match the opening but are now alive with ordinary motion. No world reset, changed family, or disappearance of the cat.
+
+### `c8_home_table`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Same lived-in kitchen and parents as the opening. Wren is receiving a warm hug from her mum beside the breakfast table. Her dad puts down the jam knife and makes room for her. Wren's muddy boots are visible; her hand is open with Echo's small paper star and its thread. The cat sits safely on the chair beside her. The parents listen with interest and concern rather than laughing at or dismissing her. No new school confrontation, interrogation, speech balloons, or image suggesting that the star is imaginary.
+
+### `c8_paw_on_hand`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Close view of Wren's relaxed hand on the kitchen table and Noodles's ordinary furry paw resting on it. Part of the real cat's face and a breakfast plate are visible. Wren's sleeve has a little woodland mud on the cuff; the paper star lies near her plate. The cat is physically present, comfortable, and purring. No human speech bubble, translated thought, glowing afterlife double, or message written by the paw. The image can hold quietly for the optional completion cuddle.
+
+### `c8_last_page`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Later that day, Wren sits on her bed writing the adventure in a notebook while her cat curls against her leg and rests one paw on her wrist. Echo's paper star is tucked beside the bed. A small handwritten page heading reads **THE DAY WE GOT TOMORROW BACK**. The notebook's last sentence reads **I was scared. I took it anyway. Noodles came with me.** Use the active pet name in the last sentence when implementing for another profile. Wren looks tired, proud, and comfortable. An ordinary bedside light is within reach. No reopened portal, speaking cat bubble, or suggestion the events were a dream.
+
+### `reward_c8_queen`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Sticker of Queen Malvina on her ornate little wheeled throne, with the one wooden applause hand resting awkwardly on her crown. The actual audience chair beside her is empty. Her key chain is empty too. She is cross and intact. No insults about her body, physical punishment, tears as a punchline, or crowd celebrating her suffering. No lettering required.
+
+### `reward_c8_home`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Sticker of Wren and her cat together at the home breakfast table. Noodles rests one paw on Wren's hand, and Echo's tiny paper star lies beside them. Wren has a small happy smile with the last trace of tears. The cat is ordinary and present. No speech bubble or thought caption. Optional short sticker caption outside the artwork: **RIGHT HERE**. That caption is UI text, not the cat talking after returning home.
+
+### `avatar_mum`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Head-and-shoulders portrait of Wren's mum, matching the parent already shown in the frozen-kitchen opening and resumed-home scene. Ordinary breakfast clothes, warm attentive expression, looking towards Wren. No royal or magical costume, no book or clipboard. One parent only, without printed dialogue.
+
+### `avatar_dad`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Head-and-shoulders portrait of Wren's dad, matching the parent already shown holding the toast and jam knife in the opening. Ordinary breakfast clothes, kind slightly curious expression, listening to Wren. No royal or magical costume, no inspection badge. One parent only, without printed dialogue.
+
+### `avatar_queen_after_key`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Same Queen Malvina face, crown, and clothing as her established portrait, now after laying down the Minute Key. The empty unclasped chain rests on her collar; her visible hands hold no key. Her expression is grand and increasingly cross rather than frightened or injured. One Queen only. This portrait must not show another copy of the key after Wren has it or the clock has taken it inside.
 
 ---
 

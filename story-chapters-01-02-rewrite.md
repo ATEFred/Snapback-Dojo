@@ -6,7 +6,7 @@ Proposed replacement opening for story mode. This is a new script, not an edit t
 
 **Player character:** Wren, a ten-year-old girl from an ordinary present-day home. The player chooses her words and actions; the story uses her name rather than switching between Wren and “you.” **Cat companion and coach:** `{pet}`, Wren's own cat, using the player's pet name and current feline evolution art. At home the cat only makes ordinary cat sounds. After Wren and the cat cross the magic door, the cat unexpectedly speaks. The cat stays on four paws, has a dry, practical personality, and discovers this world alongside Wren. There is no separate adult guide or Sensei character in these four chapters. **Narrator:** a separate storyteller who describes events, not an unseen coach. **Setting:** our world first, then the strange twilight Gloomwood. Home and school appear only to establish the frozen world; encounters and comeback practice happen entirely in the fantasy world.
 
-**The adventure:** Time stops at 8:17 on an ordinary morning. Wren's family, her street, and her school are frozen in place. Only Wren and her cat seem able to move; neither knows why. A door appears in a blank wall of her house. It opens into the Gloomwood, where the cat discovers a speaking voice. Together they read a royal notice claiming Queen Malvina has stopped the outside world with the Great Clock's Minute Key. A map on its back shows the palace. They set out to recover the key and restart Wren's world. Why they can move, why the cat can now talk, and who opened the door remain mysteries. The cat has no hidden prior knowledge of the wood, its residents, or its clock. They learn from signs, observations, Echo, and Wisp. Chapters 1–4 do not settle the mysteries.
+**The adventure:** Time stops at 8:17 on an ordinary morning. Wren's family, her street, and her school are frozen in place. Only Wren and her cat seem able to move; neither knows why. A door appears in a blank wall of her house. It opens into the Gloomwood, where the cat discovers a speaking voice. Together they read a royal notice claiming Queen Malvina has stopped the outside world with the Great Clock's Minute Key. A map on its back shows the palace. They set out to recover the key and restart Wren's world. Why they can move, why the cat can now talk, and who opened the door are mysteries through Chapter 6. The cat has no hidden prior knowledge. They learn from signs, observations, Echo, and Wisp. Chapter 7's service booklet supplies the answers before Chapter 8 uses the recovery mechanism; don't disclose them in the opening.
 
 **Continuity:** The Minute Key starts/stops the outside-world face of the Great Clock. Malvina used it and keeps it; the clock is in her palace. Wren must retrieve the key and use it there, not merely bring it home. Frozen people experience no waiting, hunger, or harm while held in their moment. The home doorway remains open and marked on the map. The game has no countdown, and stopping a session does not worsen the freeze. The old bellkeeper, morning-bell, and fair premises are retired.
 
@@ -30,6 +30,7 @@ This section is for implementation; it is not an opening lecture to the player.
 - Chapter 1: six choice beats. Chapter 2: four choice beats followed by two typed beats.
 - Shuffle choice order. The order printed here is for review only. Never display the verdict labels beside the options.
 - `best` and `okish` both clear a challenge and remove one chip. More than one answer can earn `best`. `wrong` retries that challenge; it does not add chips, undo progress, or cost rewards.
+- This is the guided rule for Chapters 1–6 and most of Chapters 7–8. The parent's later request makes Chapter 8's last three exchanges a hard freeform duel: written incisive answers, scaffold hints, and revision under the rubric in `story-chapters-07-08.md`. Don't apply this opening's automatic borrowing/`okish`-advance rule to that specifically marked finale.
 - Some choices are actions, such as continuing to walk. Render these as action buttons, not dialogue attributed to Wren. Action-based progress must be possible without submitting an artificial typed answer like “silence.”
 - Dialogue choices contain only the words Wren says. Do not add “calmly,” “shouting,” “bored voice,” or other answer-key clues. Stage directions appear after the choice, in the outcome.
 - On an unsuccessful choice: show its specific consequence, one brief coach line, then the same prompt with its options. Do not replay the setup. Keep the same shuffled option positions on retries.
@@ -72,6 +73,8 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 **Narrator:** {pet} began a long, complicated stretch.
 
 ### `c1_home_02` — the silence
+
+**Narrator:** Wren knelt to lift the cat off her boot, resting one hand on his warm back.
 
 **Narrator:** Halfway through the stretch, the house went quiet.
 
