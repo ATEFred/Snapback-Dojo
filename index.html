@@ -287,6 +287,9 @@ header .logo{user-select:none;}
 .who{display:block; font-family:inherit; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); opacity:.85; margin-bottom:5px;}
 .who.inl{display:inline; color:inherit; opacity:1; letter-spacing:.08em;}
 .qbub.wren .who{color:#8fd9b4;}
+.who.nlab{color:#8b93a8;}
+.qdisp{background:#efe6c8; color:#2c2410; border:1.5px solid #b9a25a; border-radius:5px; padding:12px 18px; font-family:Georgia,serif; font-size:15px; line-height:1.6; box-shadow:inset 0 0 26px rgba(120,90,20,.22); margin:12px 0 4px;}
+.qdisp .qcap,.qnotice .qcap{display:block; font-family:inherit; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#7a652f; margin-bottom:7px;}
 #qPanel .opt{margin-bottom:9px;}
 .qopts .opt{margin-bottom:9px;}
 .pklock{opacity:.4; filter:grayscale(.9); cursor:default !important;}
@@ -1290,7 +1293,7 @@ function renderHome(){
   document.getElementById("xpChip").textContent = S.xp+" XP"+(next? " / "+next.xp : " 🏆");
   const due = nextDue();
   const tiles = [
-    {e:"🌗", h:"The Gloomwood", p:"Queen Malvina stole tomorrow. Wren wants it back — tomorrow is the FAIR.", a:()=>go("quest"), sub: qClearedHere() ? qClearedHere()+" chapter"+(qClearedHere()==1?"":"s")+" cleared" : "Tomorrow has been postponed"},
+    {e:"🌗", h:"The Gloomwood", p:"Queen Malvina stole the morning bell. Wren is bringing the sun back.", a:()=>go("quest"), sub: qClearedHere() ? qClearedHere()+" chapter"+(qClearedHere()==1?"":"s")+" cleared" : "Tomorrow has been postponed"},
     {e:"📜", h:"Learn the Moves", p:"Forms of the Shield and the Fang. One at a time, out loud.", a:()=>go("learn"), sub: S.formsLearned.length+"/10 trained"},
     {e:"🎯", h:"Daily Drill", p:"Real scenes. Pick or type your line. Sensei grades it.", a:()=>startDrill(), sub: due+" scenario"+(due===1?"":"s")+" due"},
     {e:"⚡", h:"Rapid Fire", p:"Taunt hits you out loud. 3 seconds. Reflex wins. This is the secret.", a:()=>startRapid(), sub:"12 rounds · combos"},
@@ -1997,6 +2000,14 @@ function resetProgress(){
    the villain's PROPS, never their feelings; the typed grader is lenient by doctrine —
    feelings never lose, plain "No" never loses, and the fallback never calls an answer wrong.
    The old chapter ("ch1 — The Stolen Meow") and its progress remain recoverable in git history. */
+/* ============================================================ THE GLOOMWOOD AND THE STOLEN TOMORROW
+   Story mode v2b — script by Fred (story-chapters-01-02-rewrite.md, speaker-clarity revision).
+   Engine contract: no timers; every screen advances on a tap; every line wears a nameplate —
+   Narrator, Wren, Sensei, Echo, Toastbrig — Display text is an object's writing, read aloud as
+   "It says…"; wrong = specific consequence + one coach line + the SAME prompt (same shuffle order);
+   borrowing and asking Sensei are free, immediate, never penalised; action choices clear beats as
+   honestly as words; meters are the villain's PROPS, never their feelings; the typed grader is
+   lenient by doctrine — feelings never lose, plain "No" never loses, fallback never calls wrong. */
 const QUESTS = [
 { id:"gloomwood_v2_c1", name:"The Imp Who Wanted the Last Word", emoji:"🎺", vill:"Echo the Mimic Imp",
   card:"An important meow has gone missing. Its owner has strong views.",
@@ -2004,24 +2015,61 @@ const QUESTS = [
   winLine:"Echo returns the directions and joins the party — under Wren's rules.",
   item:"Story inventory: Palace directions · Companion: Echo",
   intro:[
-    {t:"narr", id:"c1_intro_01", text:["Tomorrow was going to be excellent.","There would be a Moonrise Fair, a moth circus, and a cake competition with a very large first prize.","Your pet had entered the cake competition.","Your pet had not made a cake."]},
-    {t:"narr", id:"c1_intro_02", text:["Wren had packed a torch, a map, and one emergency biscuit.","She checked the biscuit pocket.","Your pet looked elsewhere with enormous concentration."]},
-    {t:"narr", id:"c1_intro_03", text:["Then a royal notice landed on the gate.","It was delivered by a paper bat wearing spectacles much too large for it."]},
-    {t:"notice", id:"c1_intro_04", text:"BY ORDER OF QUEEN MALVINA THE MAGNIFICENT: Tomorrow is postponed. The morning bell will remain in my palace until everyone has properly appreciated me. Today may continue until further notice. P.S. No refunds for tomorrow."},
+    {t:"narr", id:"c1_intro_01", text:["Wren lived in the last cottage before the Gloomwood, where the trees leaned over the fence to see what was going on.","She was learning to be the village bellkeeper.","Every morning, someone rang the little brass bell in the village square. Its note travelled over the rooftops, and the sun rose to meet it.","Today was Wren's first turn."]},
+    {t:"say", id:"c1_intro_02", lines:[
+      ["narr","Wren reached the square wearing her best coat. Her friend {pet} trotted beside her, determined to inspect the bell before anybody rang it."],
+      ["narr","Sensei, the old village guide who was teaching Wren, waited by the bell stand. Their coat had deep pockets, and their walking stick was almost as crooked as the trees."],
+      ["sensei","Ready?"],
+      ["wren","Ready."],
+      ["narr","Wren reached for the bell rope."]]},
+    {t:"say", id:"c1_intro_03", lines:[
+      ["narr","The rope fell into her hand."],
+      ["narr","Above it, the bell hook was empty."],
+      ["narr","A paper bat fluttered down and landed on the stand. It wore enormous spectacles and carried a folded notice."],
+      ["bat","Royal delivery. Please admire the seal before complaining."],
+      ["wren","Where's our bell?"],
+      ["narr","The bat opened its notice."]]},
+    {t:"notice", id:"c1_intro_04", cap:"Read aloud by the paper bat",
+      speak:"The notice read: By order of Queen Malvina the Magnificent! I have borrowed your morning bell. If you would like the sun back, come to my palace and tell me how magnificent I am. Everyone must attend. Applause should be enthusiastic. P.S. I will decide when you have finished.",
+      text:"BY ORDER OF QUEEN MALVINA THE MAGNIFICENT: I have borrowed your morning bell. If you would like the sun back, come to my palace and tell me how magnificent I am. Everyone must attend. Applause should be enthusiastic. P.S. I will decide when you have finished."},
     {t:"say", id:"c1_intro_05", lines:[
-      ["wren","She can't keep tomorrow. We've got plans."],
-      ["stage","The paper bat tried to turn its notice over. Its spectacles fell off."],
-      ["bat","Complaints go to the palace. I only do flapping."]]},
-    {t:"narr", id:"c1_intro_06", speak:"The palace lay beyond the Gloomwood. Wren put on her coat. Your pet took the empty biscuit pocket as an invitation to come along. At the first fork, the signpost said: Palace, this way. Also palace, the other way. Don't ask me — that way down.", text:["The palace lay beyond the Gloomwood.","Wren put on her coat. Your pet took the empty biscuit pocket as an invitation to come along.","At the first fork, the signpost said: PALACE →  ·  ALSO PALACE ←  ·  DON'T ASK ME ↓"]},
+      ["narr","Wren looked across the square. The houses were still blue in the almost-morning light. The sunflowers stood shut beside the bakery."],
+      ["narr","A rooster on the bakery roof tried a crow. It came out as a tired cough."],
+      ["wren","She's keeping the whole village waiting."],
+      ["sensei","Yes. And asking us to thank her for it."],
+      ["wren","I'm getting our bell back."],
+      ["bat","Would you like me to put you down for applause?"],
+      ["wren","No."],
+      ["narr","The bat wrote something very small on its form."]]},
+    {t:"say", id:"c1_intro_06",
+      speak:"Sensei unrolled a map on the empty bell stand. The palace is across the wood, Sensei said. A bridge first, then the old gallery, then the palace road. Will you come? Of course, said Sensei. You lead. I'll help when you need me. {pet} planted both front paws on the map. Yes, said Wren. You too. Wren packed the map and a lantern, and the three of them took the path into the Gloomwood. At the first fork, Wren stopped to read the signpost. The sign says: Palace, this way. Also palace, the other way. Don't ask me — that way down.",
+      disp:[{cap:"The signpost", text:"PALACE →   ·   ALSO PALACE ←   ·   DON'T ASK ME ↓"}],
+      lines:[
+      ["narr","Sensei unrolled a map on the empty bell stand."],
+      ["sensei","The palace is across the wood. A bridge first, then the old gallery, then the palace road."],
+      ["wren","Will you come?"],
+      ["sensei","Of course. You lead. I'll help when you need me."],
+      ["narr","{pet} planted both front paws on the map."],
+      ["wren","Yes. You too."],
+      ["narr","Wren packed the map and a lantern. Then the three of them took the path into the Gloomwood."],
+      ["narr","At the first fork, Wren stopped to read the signpost."]]},
     {t:"say", id:"c1_intro_07", lines:[
-      ["stage","Your pet opened its mouth to complain. A tiny trumpet sounded from a bush."],
+      ["narr","{pet} opened their mouth to complain about the unhelpful sign."],
+      ["narr","A tiny trumpet sounded from a bush."],
       ["wren","That is not your normal noise."],
-      ["unknown","Improved it."]]},
-    {t:"narr", id:"c1_intro_08", text:["A small patchwork imp climbed onto a wooden crate. He had mismatched button eyes, a jar full of glowing sounds, and a badge reading: ECHO — OFFICIAL JUDGE OF YOU.","Inside his jar, one furious meow bounced against the glass."]},
+      ["vbush","Improved it."]]},
+    {t:"say", id:"c1_intro_08",
+      speak:"A small patchwork imp climbed out of the bush and onto a wooden crate. He had mismatched button eyes and a jar full of glowing sounds. His badge supplied an introduction. It says: Echo — Official Judge of You. Inside Echo's jar, one furious meow bounced against the glass. An echo imp, said Sensei quietly. They collect sounds. That one's collected something that isn't his.",
+      disp:[{cap:"The imp's badge", text:"ECHO — OFFICIAL JUDGE OF YOU"}],
+      lines:[
+      ["narr","A small patchwork imp climbed out of the bush and onto a wooden crate. He had mismatched button eyes and a jar full of glowing sounds."],
+      ["narr","His badge supplied an introduction."],
+      ["narr","Inside Echo's jar, one furious meow bounced against the glass."],
+      ["sensei","An echo imp. They collect sounds. That one's collected something that isn't his."]]},
     {t:"say", id:"c1_intro_09", btn:"Get the meow back ▸", lines:[
       ["wren","Give the meow back."],
       ["echo","Win it back. I've always wanted a contest."],
-      ["stage","He unfolded a judge's stand. Three paper stars dangled from it."],
+      ["narr","He unfolded a judge's stand. Three paper stars dangled from it."],
       ["sensei","You came for a meow. Let's see whether you need to enter his contest."]]},
   ],
   scenes:[
@@ -2032,7 +2080,7 @@ const QUESTS = [
         {l:"“I can do loads of impressive things.”", q:"wrong", out:"Echo produces an entry form so long it rolls off the crate.", ech:"Excellent. List them. Alphabetically. No, by shininess.", sen:"Now he's judging your talents. Bring it back to what you came for."},
         {l:"“Your face looks like a dropped sock.”", q:"wrong", out:"Echo pulls a second crate beside his own and labels it INSULT CONTEST: ROUND ONE.", ech:"My turn! Your face looks like— hang on, I need a sock.", sen:"A new contest. Try refusing the first one."}]},
       {t:"say", id:"c1_e1_b2_pre", lines:[
-        ["stage","Echo frees his sleeve. He points at Wren with the authority of someone standing on borrowed furniture."],
+        ["narr","Echo frees his sleeve. He points at Wren with the authority of someone standing on borrowed furniture."],
         ["echo","Well? What have you got to say for yourself?"],
         ["wren","I'd—"],
         ["echo","Nobody asked you."]]},
@@ -2042,45 +2090,50 @@ const QUESTS = [
         {l:"“Yes you did! You said, ‘What have you got to say for yourself?’”", q:"ok", out:"Echo consults the clipboard, turns it upside down, and loses the second star.", ech:"I remember. I was there.", sen:"You spotted it. Next time, “You just did” saves some breath."},
         {l:"“Everyone else likes hearing me talk.”", q:"wrong", out:"Echo flips to a blank page headed EVERYONE ELSE.", ech:"Names? References? A signed statement from a beetle?", sen:"You don't need witnesses to prove you're worth hearing. His question is right there."}]},
       {t:"chal", id:"c1_e1_b3", kind:"pick", spk:"echo", setup:"Echo balances his last star on top of his head. This does not make the stand look more official.", line:"You're not very good at this.", prompt:"End his contest.", borrow:"Still not entering.", opts:[
-        {l:"“Still not entering.”", q:"best", out:"Wren holds out her hand for the jar. Echo leans away; the last star slides down his nose.", ech:"You can't lose a contest you won't enter. …Inconvenient.", sen:"Exactly. You didn't need his score."},
-        {l:"“Keep the prize. Return the meow.”", q:"best", out:"Echo looks at the star, then at the jar, and discovers he cannot hold both while looking important. He drops the star.", ech:"It's a very exclusive prize.", sen:"Clear request. No audition attached."},
+        {l:"“Still not entering.”", q:"best", fb:[["stage","Wren holds out her hand for the jar. Echo leans away; the last star slides down his nose."],["echo","You can't lose a contest you won't enter."],["narr","He thinks about this."],["echo","Inconvenient."],["sensei","Exactly. You didn't need his score."]]},
+        {l:"“Keep the prize. Return the meow.”", q:"best", fb:[["stage","Echo looks at the star, then at the jar, and discovers he cannot hold both while looking important. He drops the star."],["echo","It's a very exclusive prize."],["narr","{pet} makes the tiny trumpet noise again."],["sensei","Clear request. No audition attached."]]},
         {l:"“Neither are you.”", q:"wrong", out:"Echo sets out scorecards for himself and Wren.", ech:"Then we'd better find out who's worse. Best of nineteen!", sen:"That's another round. You can leave the score unsettled."},
         {l:"“Tell me what I have to do to win.”", q:"wrong", out:"Echo unfolds a rulebook with loose pages already falling out.", ech:"First rule: I may add rules. Second rule: see first rule.", sen:"He gets to move the finish line. Try stepping out of the race."}]},
-      {t:"narr", id:"c1_mid_01", text:["With no stars left, the judge's stand folded itself into an ordinary stool. Echo sat down by accident.","The jar's lid popped open. The meow sprang out, bounced once off his badge, and returned to your pet."]},
+      {t:"narr", id:"c1_mid_01", text:["With no stars left, the judge's stand folded itself into an ordinary stool.","Echo sat down by accident.","The jar's lid popped open. The meow sprang out, bounced once off his badge, and returned to {pet}."]},
       {t:"say", id:"c1_mid_02", lines:[
-        ["stage","Your pet meowed. A perfectly ordinary meow."],
+        ["narr","{pet} meowed. A perfectly ordinary meow."],
         ["echo","I preferred the trumpet."],
-        ["stage","Your pet sat on the trumpet."]]},
-      {t:"narr", id:"c1_mid_03", speak:"Wren checked the signpost again. It now said: Palace, maybe. Palace, probably not. I'm a sign, not a miracle — that way down. Echo had stolen the directions too.", text:["Wren checked the signpost again. It now said: PALACE → MAYBE · PALACE ← PROBABLY NOT · I'M A SIGN, NOT A MIRACLE ↓","Echo had stolen the directions too."]},
+        ["narr","{pet} sat on the trumpet."]]},
+      {t:"narr", id:"c1_mid_03",
+        speak:"Wren checked the signpost again. It now said: Palace, maybe. Palace, probably not. I'm a sign, not a miracle — that way down. Echo had stolen the directions too.",
+        disp:[{cap:"The signpost, updated", text:"PALACE → MAYBE   ·   PALACE ← PROBABLY NOT   ·   I'M A SIGN, NOT A MIRACLE ↓"}],
+        text:["Wren checked the signpost again.","Echo had stolen the directions too."]},
       {t:"say", id:"c1_mid_04", btn:"Find the palace path ▸", lines:[
         ["wren","The directions. Those belong here."],
         ["echo","I might remember them if someone gave me a proper argument."],
-        ["stage","He pulled a little wheeled stage from behind the bush. One wheel squeaked. Another squeaked in reply."],
+        ["narr","He pulled a little wheeled stage from behind the bush."],
+        ["narr","One wheel squeaked. Another squeaked in reply."],
         ["sensei","You've got your meow. Keep your own errand in view."]]},
     ]},
     { id:"gloomwood_v2_c1s2", name:"The portable nuisance", icon:"🛞", meterLabel:"Echo's stage", beats:[
       {t:"chal", id:"c1_e2_b1", kind:"pick", spk:"echo", line:"I liked you better when you weren't talking.", prompt:"Wren still needs to read the map. What next?", borrowAct:1, opts:[
-        {l:"“Enjoy the next bit.”", q:"best", out:"Wren turns to the map. Echo prepares for a reply that never comes. A wheel folds away.", ech:"How long is the next bit?", sen:"You answered once, then chose what to do."},
-        {l:"Open the map and leave his comment unanswered.", act:1, q:"best", out:"Wren opens the map. Echo leans round it; your pet shifts into his view, all ears and disapproval. A wheel folds away.", ech:"That's a very rude map.", sen:"You had something more useful to look at."},
+        {l:"“Enjoy the next bit.”", q:"best", fb:[["stage","Wren turns to the map. Echo prepares for a reply that never comes. A wheel folds away."],["echo","How long is the next bit?"],["narr","Wren traces the route with one finger."],["sensei","You answered once, then chose what to do."]]},
+        {l:"Open the map and leave his comment unanswered.", act:1, q:"best", out:"Wren opens the map. Echo leans round it; {pet} shifts into his view, all ears and disapproval. A wheel folds away.", ech:"That's a very rude map.", sen:"You had something more useful to look at."},
         {l:"“Why? What's wrong with how I talk?”", q:"wrong", out:"Echo takes out a pencil and draws a very large speech bubble.", ech:"At last. A review! Shall I start with the vowels?", sen:"That lets him inspect your voice. His comment doesn't need an answer."},
         {l:"“Fine. I'll never talk again.”", q:"wrong", out:"Echo tries to stamp NO TALKING on the map. The stamp misses and hits his own hand.", ech:"Excellent. A permanent rule. I'll need a larger stamp.", sen:"Quiet for a moment is a choice. Giving up your voice is much too much."}]},
-      {t:"chal", id:"c1_e2_b2", kind:"pick", spk:"echo", setup:"Wren spots an old bridge drawn on the map. Beyond it, a road curls towards the palace.", line:"Oh, off to save tomorrow? You think you're some big hero?", prompt:"Choose Wren's answer.", borrow:"I'm going to the fair.", opts:[
-        {l:"“I'm going to the fair.”", q:"best", out:"Wren folds the map. Echo checks his notes for a heroic prophecy about cake. Another wheel folds away.", ech:"That's your grand reason?", wrn:"There's cake.", sen:"Your reason. No application for his approval."},
-        {l:"“You can think that.”", q:"best", out:"Wren puts the map away. Echo waits for her to correct him. She doesn't. Another wheel folds away.", ech:"I can think other things as well.", wrn:"Busy day for you.", sen:"You left his opinion with him."},
+      {t:"chal", id:"c1_e2_b2", kind:"pick", spk:"echo", setup:"Wren spots an old bridge drawn on the map. Beyond it, a road curls towards the palace.", line:"Oh, off to save tomorrow? You think you're some big hero?", prompt:"Choose Wren's answer.", borrow:"I'm getting our bell back.", opts:[
+        {l:"“I'm getting our bell back.”", q:"best", fb:[["stage","Wren folds the map. Echo looks at his notes, which have plenty about heroes and nothing about returning stolen property. Another wheel folds away."],["echo","That's it? No crown? No statue?"],["wren","A morning would do."],["sensei","Your reason. No application for his approval."]]},
+        {l:"“You can think that.”", q:"best", fb:[["stage","Wren puts the map away. Echo waits for her to correct him. She doesn't. Another wheel folds away."],["echo","I can think other things as well."],["wren","Busy day for you."],["sensei","You left his opinion with him."]]},
         {l:"“I don't think I'm a hero! I never said that!”", q:"ok", out:"Echo holds up both hands. Wren finishes putting the map away; another wheel folds away.", ech:"It was a guess.", sen:"You corrected him. Fair enough. You can also skip proving what you never claimed."},
         {l:"“I'll prove I'm a better hero than you.”", q:"wrong", out:"Echo produces two badges reading HERO TRIALS. One is upside down.", ech:"Trial one: dramatic standing. Trial two: cape maintenance.", sen:"He's judging again. You have a reason to go without beating him."}]},
       {t:"chal", id:"c1_e2_b3", kind:"pick", spk:"echo", setup:"The actual path is visible now. Small pale mushrooms mark the way to the bridge. Wren starts along it.", line:"Walk away and I get the last word!", prompt:"Finish the encounter.", borrowAct:1, opts:[
-        {l:"“Keep it.”", q:"best", out:"Wren walks on. Echo opens his mouth, delighted. The stage's final wheel folds away before he can say anything.", ech:"Then my last word is— …ow. (The stage folded into a suitcase with him sitting in it.)", sen:"You let him have the word. You kept the afternoon."},
-        {l:"Follow the mushroom path.", act:1, q:"best", out:"Wren keeps walking. Echo announces “Ha!” to the back of the empty stage. Its last wheel folds away.", ech:"Ha is an excellent last word. Nobody disputes this.", sen:"No extra line required."},
+        {l:"“Keep it.”", q:"best", fb:[["stage","Wren walks on. Echo opens his mouth, delighted. The stage's final wheel folds away before he can say anything."],["echo","Then my last word is—"],["narr","The stage folds into a suitcase with Echo sitting inside it."],["echo","—ow."],["sensei","You let him have the word. You kept going."]]},
+        {l:"Follow the mushroom path.", act:1, q:"best", fb:[["stage","Wren keeps walking. Echo announces “Ha!” to the back of the empty stage. Its last wheel folds away."],["narr","The suitcase closes gently around his hat."],["echo","Ha is an excellent last word."],["narr","Nobody disputes this."],["sensei","No extra line required."]]},
         {l:"“No, I get the last word!”", q:"wrong", out:"Echo rings a small bell labelled EXTRA ROUND.", ech:"No, I do. No, you do. No, I— this could take YEARS.", sen:"He can keep the word. You can keep going."},
         {l:"“Only because I can't think of anything.”", q:"ok", out:"Wren walks on. The final wheel folds away. Echo's answer is lost under the stage folding shut.", sen:"You left. That counts. Next time you can leave without marking your own answer."}]},
     ]},
   ],
   outro:[
-    {t:"narr", id:"c1_end_01", text:"Something rustled behind Wren. Echo hurried up carrying the suitcase on his head. He stopped a little way away."},
+    {t:"narr", id:"c1_end_01", text:["Something rustled behind Wren.","Echo hurried up carrying the suitcase on his head.","He stopped a little way away."]},
     {t:"say", id:"c1_end_02", lines:[
       ["echo","The directions. You asked for these."],
-      ["stage","He uncorked the jar. Three glowing arrows flew out, zipped back to the signpost, and pointed firmly towards the bridge."],
+      ["narr","He uncorked the jar."],
+      ["narr","Three glowing arrows flew out, zipped back to the signpost, and pointed firmly towards the bridge."],
       ["echo","I stole them. That was rotten."],
       ["wren","Yes."]]},
     {t:"say", id:"c1_end_03", lines:[
@@ -2088,14 +2141,15 @@ const QUESTS = [
       ["wren","No stealing voices. No contests unless we say yes."],
       ["echo","Can I keep the suitcase?"],
       ["wren","Is it yours?"],
-      ["stage","Echo checked underneath."],
+      ["narr","Echo checked underneath."],
       ["echo","It is now an excellent time to return a suitcase."]]},
-    {t:"narr", id:"c1_end_04", text:["He left it beside a bush labelled MRS. BRAMBLE'S LUGGAGE. Then he joined them on the path.","Your pet inspected him, inspected the jar, and walked on. This was not forgiveness paperwork. It was enough walking for now."]},
+    {t:"narr", id:"c1_end_04", text:["He left it beside a bush labelled MRS. BRAMBLE'S LUGGAGE.","Then he joined them on the path.","{pet} inspected him, inspected the jar, and walked on.","Echo kept a little distance and his hands out of the jar. Wren checked the path ahead."]},
     {t:"sensei", id:"c1_end_05", text:"You don't have to win every little contest someone offers. Some aren't worth entering."},
     {t:"say", id:"c1_end_06", lines:[
-      ["stage","Ahead, the bridge creaked."],
-      ["unknown","BOOT INSPECTION!"],
-      ["stage","Echo sighed."],
+      ["narr","Ahead, a bridge creaked. Beside it sat an enormous troll in a kettle helmet, peering through a little wooden inspection window."],
+      ["narr","He spotted Wren's feet."],
+      ["troll","BOOT INSPECTION!"],
+      ["narr","Echo sighed."],
       ["echo","He used to do hats."]]},
   ]},
 { id:"gloomwood_v2_c2", name:"The Bridge Inspector", emoji:"🌉", vill:"Toastbrig, Bridge Inspector",
@@ -2104,57 +2158,66 @@ const QUESTS = [
   winLine:"Toastbrig did not change his opinion. You still crossed the bridge.",
   item:"Story inventory: Route to the Comedy Gallery · Bridge route unlocked",
   intro:[
-    {t:"narr", id:"c2_intro_01", text:["The bridge crossed a stream the colour of cold tea.","A large troll sat at the entrance behind a desk much too small for him. He had a plank for a back, a kettle for a helmet, and a notebook held between two enormous fingers."]},
-    {t:"notice", id:"c2_intro_02", text:"TOASTBRIG — BRIDGE INSPECTOR — BOOTS, HATS, OTHER OPINIONS. (in much smaller writing below: The bridge is open to everyone. Inspections are optional.)"},
+    {t:"narr", id:"c2_intro_01", text:["The bridge crossed a stream the colour of cold tea.","The troll who had shouted “BOOT INSPECTION” sat at the entrance behind a desk much too small for him.","He had a plank for a back, a kettle for a helmet, and a notebook held between two enormous fingers."]},
+    {t:"narr", id:"c2_intro_02",
+      speak:"His booth carried a sign. It says: Toastbrig — Bridge Inspector — boots, hats, other opinions. Below it, in much smaller writing: The bridge is open to everyone. Inspections are optional.",
+      disp:[{cap:"The booth's sign", text:"TOASTBRIG — BRIDGE INSPECTOR — BOOTS, HATS, OTHER OPINIONS"},
+            {cap:"In much smaller writing", text:"The bridge is open to everyone. Inspections are optional."}],
+      text:["His booth carried a sign.","Below it, in much smaller writing."]},
     {t:"say", id:"c2_intro_03", lines:[
       ["tb","HALT. Those boots aren't adventure boots."],
-      ["stage","Wren looked at her boots. They had mud on them, a loose lace, and no opinion about adventure."],
-      ["echo","He inspected a centipede last week. We're still in the same today partly because of that."]]},
+      ["narr","Wren looked at her boots."],
+      ["narr","They had mud on them, a loose lace, and no opinion about adventure."],
+      ["echo","He inspected a centipede last week. It's still waiting for the verdict."]]},
     {t:"say", id:"c2_intro_04", btn:"Cross the bridge ▸", lines:[
-      ["wren","We need to cross. The Queen's got the morning bell."],
+      ["wren","We need to cross. The Queen's got our morning bell."],
       ["tb","Then you'll need especially good boots."],
-      ["stage","He raised three HOLD UP signs. One was upside down."],
+      ["narr","He raised three HOLD UP signs. One was upside down."],
       ["sensei","Read his small sign. Then decide how much boot discussion you need."]]},
   ],
   scenes:[
     { id:"gloomwood_v2_c2s1", name:"The inspection", icon:"🪧", meterLabel:"HOLD UP signs", beats:[
       {t:"chal", id:"c2_e1_b1", kind:"pick", spk:"tb", line:"Those boots aren't adventure boots.", prompt:"Choose Wren's reply.", borrow:"They got me here.", opts:[
         {l:"“They got me here.”", q:"best", out:"Toastbrig looks at Wren, then the road, then the boots. He ticks ARRIVED. A sign folds down.", ech:"Yes. Well. Arrival is one of the things boots do.", sen:"You used the boots' actual job. Neat."},
-        {l:"“I'm crossing in these.”", q:"best", out:"Wren points towards the bridge. Toastbrig checks the optional-inspection notice. A sign folds down.", ech:"I haven't approved them.", wrn:"The bridge is open.", sen:"You stated the plan. No shoe trial."},
+        {l:"“I'm crossing in these.”", q:"best", fb:[["stage","Wren points towards the bridge. Toastbrig checks the optional-inspection notice. A sign folds down."],["tb","I haven't approved them."],["wren","The bridge is open."],["sensei","You stated the plan. No shoe trial."]]},
         {l:"“They're proper adventure boots. The shop said so.”", q:"wrong", out:"Toastbrig searches his notebook for SHOPS WHICH MIGHT BE WRONG.", ech:"I'll need a receipt, a witness, and a drawing of the shopkeeper's ankles.", sen:"Now the boots need evidence. You can cross without proving they're special."},
-        {l:"“At least I don't wear a kettle.”", q:"wrong", out:"Toastbrig turns the notebook to HELMET DEFENCE. Several pages are already filled in. His helmet whistles. A passing moth falls off a leaf.", ech:"INSULATED. RAINPROOF. EXCELLENT WHISTLE.", sen:"New argument: his hat. Try keeping your own journey in view."}]},
-      {t:"chal", id:"c2_e1_b2", kind:"pick", spk:"tb", setup:"Wren steps onto the bridge. Her left boot squeaks. Toastbrig brightens as if someone has brought him a birthday cake.", line:"Squeaky boots! Everyone will hear you coming.", prompt:"What does Wren do with that?", borrow:"Saves me saying hello.", opts:[
-        {l:"“Saves me saying hello.”", q:"best", out:"Wren takes another step. Squeak. A small bridge bird chirps back. Another sign folds down.", ech:"That bird isn't qualified to approve boots. (The bird squeaks back at him.)", sen:"You kept the squeak and dropped the insult."},
-        {l:"“They squeak. I'm crossing.”", q:"best", out:"Toastbrig waits for the defence of squeaking. Wren takes another step instead. Another sign folds down.", ech:"But I noticed the squeak.", wrn:"You did. (Wren keeps moving.)", sen:"A boot can squeak without it becoming a case to defend."},
-        {l:"“They do not squeak.”", q:"wrong", out:"Her boot squeaks. Toastbrig raises one finger, delighted.", ech:"Shall we hear from the boot? (Squeak.)", sen:"You can agree about a noise without agreeing there's something wrong with you."},
+        {l:"“At least I don't wear a kettle.”", q:"wrong", fb:[["stage","Toastbrig turns the notebook to HELMET DEFENCE. Several pages are already filled in."],["tb","INSULATED. RAINPROOF. EXCELLENT WHISTLE."],["narr","His helmet whistles. A passing moth falls off a leaf."],["sensei","New argument: his hat. Try keeping your own journey in view."]]}]},
+      {t:"chal", id:"c2_e1_b2", kind:"pick", spk:"tb", setup:"Wren steps onto the bridge. Her left boot squeaks. Toastbrig brightens as if the boot has just agreed to an interview.", line:"Squeaky boots! Everyone will hear you coming.", prompt:"What does Wren do with that?", borrow:"Saves me saying hello.", opts:[
+        {l:"“Saves me saying hello.”", q:"best", fb:[["stage","Wren takes another step. Squeak. A small bridge bird chirps back. Another sign folds down."],["tb","That bird isn't qualified to approve boots."],["narr","The bird squeaks back at him."],["sensei","You kept the squeak and dropped the insult."]]},
+        {l:"“They squeak. I'm crossing.”", q:"best", fb:[["stage","Toastbrig waits for the defence of squeaking. Wren takes another step instead. Another sign folds down."],["tb","But I noticed the squeak."],["wren","You did."],["narr","Wren keeps moving."],["sensei","A boot can squeak without it becoming a case to defend."]]},
+        {l:"“They do not squeak.”", q:"wrong", fb:[["stage","Her boot squeaks. Toastbrig raises one finger, delighted."],["tb","Shall we hear from the boot?"],["narr","Squeak."],["sensei","You can agree about a noise without agreeing there's something wrong with you."]]},
         {l:"“Fine. Everything I wear is stupid.”", q:"wrong", out:"Toastbrig starts to write EVERYTHING, runs out of room, and turns the notebook sideways.", ech:"Everything? I only inspected two boots.", sen:"That's a much bigger claim than his. Keep the true bit: one boot squeaks."}]},
       {t:"chal", id:"c2_e1_b3", kind:"pick", spk:"tb", setup:"Wren reaches the middle of the bridge. Toastbrig wheels his desk alongside on tiny castors.", line:"Boots aside. Now you need a hat. No hat, no crossing.", prompt:"The inspection is still optional. Choose Wren's answer.", borrow:"I'll skip the inspection.", opts:[
         {l:"“New rule. Same answer. I'm crossing.”", q:"best", out:"Toastbrig flips between BOOTS and HATS in his notebook. The last sign folds down.", ech:"But this is a hat objection. Entirely different department.", sen:"Different demand. Same choice for you."},
-        {l:"“I'll skip the inspection.”", q:"best", out:"Wren steps past the wheeled desk. The last sign folds down and becomes a little seat.", ech:"People never read that bit.", wrn:"Useful bit.", sen:"You didn't need a better hat argument. The inspection was optional."},
+        {l:"“I'll skip the inspection.”", q:"best", fb:[["stage","Wren steps past the wheeled desk. The last sign folds down and becomes a little seat."],["tb","People never read that bit."],["wren","Useful bit."],["sensei","You didn't need a better hat argument. The inspection was optional."]]},
         {l:"“Would my hood count?”", q:"wrong", out:"Toastbrig produces a ruler labelled HOODS: POSSIBLY HATS.", ech:"Depends. Hood height? Hood ambition? Has the hood previously been a hat?", sen:"Another thing to prove. You can decline the inspection."},
         {l:"“You can't change the rules! That's cheating!”", q:"ok", out:"Toastbrig searches for an official rule allowing new rules. Wren reaches the far bank while he searches; the last sign folds down.", ech:"I have a subsection about cheating. Somewhere.", sen:"You spotted the change. Good. You can name it without staying for a rules debate."}]},
-      {t:"narr", id:"c2_mid_01", text:["Wren stepped off the bridge. Your pet followed. Echo came last, walking backwards to read the small sign."],
-      },
-      {t:"say", id:"c2_mid_01b", lines:[["echo","Optional. That's a very important little word."]]},
-      {t:"narr", id:"c2_mid_02", text:["Toastbrig's desk bumped off the final plank and stopped in the grass. He folded the inspection sign away. For one peaceful second, Wren heard the stream.","Then he opened a second sign: COMPLAINTS ABOUT THE INSPECTION MUST BE DISCUSSED AT LENGTH."]},
+      {t:"say", id:"c2_mid_01", lines:[
+        ["narr","Wren stepped off the bridge."],
+        ["narr","{pet} followed. Echo came last, walking backwards to read the small sign."],
+        ["echo","Optional. That's a very important little word."]]},
+      {t:"narr", id:"c2_mid_02",
+        speak:"Toastbrig's desk bumped off the final plank and stopped in the grass. He folded the inspection sign away. For one peaceful second, Wren heard the stream. Then he opened a second sign. It says: Complaints about the inspection must be discussed at length.",
+        disp:[{cap:"The new sign", text:"COMPLAINTS ABOUT THE INSPECTION MUST BE DISCUSSED AT LENGTH"}],
+        text:["Toastbrig's desk bumped off the final plank and stopped in the grass.","He folded the inspection sign away.","For one peaceful second, Wren heard the stream.","Then he opened a second sign."]},
       {t:"say", id:"c2_mid_03", btn:"Finish the boot discussion ▸", lines:[
         ["tb","You haven't explained why you ignored my excellent boot advice."],
-        ["stage","Wren's hands felt a little tight around the map. She loosened them."],
+        ["narr","Wren's hands felt a little tight around the map. She loosened them."],
         ["sensei","You can be annoyed. You still get to choose the next words."],
-        ["stage","Three drawers popped open beneath the new sign."]]},
+        ["narr","Three drawers popped open beneath the new sign."]]},
     ]},
     { id:"gloomwood_v2_c2s2", name:"The complaints department", icon:"🗄", meterLabel:"Complaint drawers", beats:[
       {t:"chal", id:"c2_e2_b1", kind:"pick", spk:"tb", line:"Come back and answer properly. What's wrong with a boot inspection?", prompt:"Wren has crossed. What does she say now?", borrow:"No more boot talk.", opts:[
-        {l:"“No more boot talk.”", q:"best", out:"Wren faces the palace path. The first drawer shuts. Toastbrig's BOOT TALK form sticks out like a paper tongue.", ech:"But what about socks?", sen:"A clear boundary. You can keep it short."},
+        {l:"“No more boot talk.”", q:"best", fb:[["stage","Wren faces the palace path. The first drawer shuts. Toastbrig's BOOT TALK form sticks out like a paper tongue."],["tb","But what about socks?"],["narr","Wren looks down the path."],["sensei","A clear boundary. You can keep it short."]]},
         {l:"“I don't want to discuss my boots. We're going.”", q:"best", out:"Wren signals to her companions. The first drawer shuts around the edge of a long questionnaire.", ech:"I have several excellent follow-up points.", sen:"You said what you wanted and what you're doing."},
-        {l:"“Please stop talking about my boots.”", q:"best", out:"Wren turns towards the path. The first drawer shuts. Toastbrig reaches for a form, then discovers it is inside.", ech:"But I had a diagram.", sen:"Polite can still be firm. You asked him to stop; you don't owe him a debate."},
-        {l:"“Nothing! It's just that we have to find the bell, and the fair's tomorrow, and—”", q:"wrong", out:"Toastbrig pulls out a REASONS TO LEAVE form. It has room for forty-seven reasons.", ech:"I'll put ‘bell’ under B. Fair under F. We could be here a while.", sen:"Your reasons are real. He doesn't need the whole list. Try the boundary."}]},
+        {l:"“Nothing! It's just that we have to find the bell, and the village is waiting, and—”", q:"wrong", out:"Toastbrig pulls out a REASONS TO LEAVE form. It has room for forty-seven reasons.", ech:"I'll put ‘bell’ under B. Village under V. We could be here a while.", sen:"Your reasons are real. He doesn't need the whole list. Try the boundary."},
+        {l:"“Please stop talking about my boots.”", q:"best", out:"Wren turns towards the path. The first drawer shuts. Toastbrig reaches for a form, then discovers it is inside.", ech:"But I had a diagram.", sen:"Polite can still be firm. You asked him to stop; you don't owe him a debate."}]},
       {t:"chal", id:"c2_e2_b2", kind:"type", spk:"tb", setup:"Toastbrig pulls a pencil from behind the kettle. It is a fence post with a point.", line:"I only said they were squeaky. Can't you take a joke?", prompt:"Write one line for Wren. She doesn't have to prove she likes jokes.", ph:"What does Wren say?", send:"Say it",
         purpose:"Hold the boundary, briefly dismiss his new challenge, or close the subject. Plain is fine. Humour optional.",
         bestEx:["Still no more boot talk.","Heard it. Moving on.","Got the joke. I'm going.","You can stop now.","No thanks.","I'm done with this.","Not discussing it.","Keep the joke.","Leave me alone.","Please stop."],
         okEx:["I can take a joke. I just don't think this one's funny.","I don't like jokes about my boots.","They're not that squeaky, but can we go now?"],
         wrongEx:["Personal cruelty or threats","Open invitations to continue","Giving him control of departure","Unrelated text"],
-        win:{out:"The second drawer shuts. Toastbrig tries to write on the closed drawer. The pencil makes a long, useless squeak.", ech:"Now the furniture's doing it.",
+        win:{fb:[["stage","The second drawer shuts."],["stage","Toastbrig tries to write on the closed drawer. The pencil makes a long, useless squeak."],["tb","Now the furniture's doing it."]],
           senB:"That ends your part of the discussion.", senR:"Same boundary. No fresh argument.", senOk:"That works. A shorter version is: ‘Heard it. Moving on.’", senFeel:"You can say that. You can add: ‘Stop. I'm going.’"},
         pkgs:{attack:{v:"My kettle has an EXCELLENT reputation.", c:"That starts a kettle argument. Try closing the boot one."},
           threat:{stage:"Toastbrig tucks the desk behind him.", c:"Skip the threat. A boundary is enough here."},
@@ -2162,48 +2225,55 @@ const QUESTS = [
           permission:{v:"I'll draw up a departure test.", c:"The path is open. You don't need to pass his test."},
           unclear:{c:"Try a line that closes this conversation. Plain is fine."}},
         borrowL:"Heard it. Moving on.",
-        help:[["wren","Sensei, a hand?"],["sensei","Of course. Inspector, the inspection is over. We're leaving."],["tb","There is a form for—"],["sensei","Together?"],["wren","Together."]],
-        helpOut:"The second drawer shuts quietly.", helpSen:"You can ask for help whenever you need it. It is not a miss."},
+        help:[["wren","Sensei, a hand?"],["sensei","Of course. Inspector, the inspection is over. We're leaving."],["tb","There is a form for—"],["narr","Sensei points at the open path."],["sensei","Together?"],["wren","Together."]],
+        helpOut:"The second drawer shuts quietly.", helpSen:"You can ask for help whenever you need it."},
       {t:"chal", id:"c2_e2_b3", kind:"type", spk:"tb", setup:"Only one drawer remains open. The path winds towards a building full of painted windows and extremely fancy curtains. Toastbrig lifts a little stamp. Wren isn't running. She is quite ready to leave.", line:"Go on, then. Run away. I'll stamp you SCARED.", prompt:"Write a last line, or just take the path.", ph:"An ending, not an argument", send:"Say it and go",
         purpose:"An ending, a boundary, or calmly letting him keep his opinion — or take the path with the walking button. No proof of bravery required.",
         bestEx:["Stamp what you like.","I'm leaving anyway.","Keep the stamp.","Still going.","Bye, Toastbrig.","You can think that.","Not your decision.","We're done.","Stop calling after me.","I can be scared and still go.","Put it next to ‘squeaky.’"],
         okEx:["I'm not scared of you.","I'm leaving because we need the bell, not because of you.","That's not fair."],
         wrongEx:["Trying to earn a different stamp","Agreeing to stay until he approves","Threats or personal cruelty","Unrelated text"],
-        win:{out:"Wren turns towards the palace path. Toastbrig reaches for his notebook; the last drawer shuts. He stamps his own thumb. The thumb now says SCARED.", ech:"That's confidential.",
+        win:{fb:[["stage","Wren turns towards the palace path."],["tb","I haven't stamped anything yet!"],["narr","He reaches for his notebook. The last drawer shuts. He stamps his own thumb."],["narr","The thumb now says SCARED."],["tb","That's confidential."]], btn:"Follow the path",
           senB:"He can choose a stamp. You can choose the path.", senR:"Same boundary. No fresh argument.", senOk:"You left. That's the useful part. ‘I'm going’ is enough next time.", senFeel:"You can say that. You can add: ‘Stop. I'm going.’"},
-        opts:[{l:"Keep walking.", act:1, q:"best", out:"Wren takes the path without answering. Toastbrig calls, “You forgot your—” He looks at his empty hand. “—nothing.” The last drawer shuts. His stamp lands on the complaints sign, which now reads: COMPLAINTS ABOUT THE INSPECTION — SCARED.", sen:"You'd already answered. Walking was enough."}],
-        pkgs:{permission:{v:"A bravery examination. Splendid. Section one: boots.", c:"You don't need his bravery mark. The path is open."},
+        opts:[{l:"Keep walking.", act:1, q:"best", fb:[["stage","Wren takes the path without answering."],["tb","You forgot your—"],["narr","He looks at his empty hand."],["tb","—nothing."],["narr","The last drawer shuts. His stamp lands on the complaints sign, which now reads: COMPLAINTS ABOUT THE INSPECTION — SCARED."],["sensei","You'd already answered. Walking was enough."]]}],
+        pkgs:{permission:{stage:"Toastbrig picks up his pencil.", v:"A bravery examination. Splendid. Section one: boots.", c:"You don't need his bravery mark. The path is open."},
           approval:{stage:"Toastbrig pulls his chair closer to the desk.", c:"That lets him set your leaving time. Try choosing it yourself."},
           attack:{c:"You can leave without threatening him or attacking something personal."},
           threat:{c:"You can leave without threatening him or attacking something personal."},
-          invite:{v:"Well, since you asked—", c:"That invites another round. Try an ending, or the walking button."},
           unclear:{c:"Try a goodbye, a boundary, or the walking button."}},
         borrowL:"I'm leaving anyway.",
-        help:[["wren","Walk with me?"],["sensei","Yes."],["stage","Your pet takes one side. Echo takes the other. The group heads along the path. The last drawer shuts behind them."],["tb","I haven't finished the—"],["stage","The bridge bird squeaks over the rest."],["sensei","You can ask for company whenever you need it."]],
+        help:[["wren","Walk with me?"],["sensei","Yes."],["narr","{pet} takes one side. Echo takes the other."],["narr","The group heads along the path. The last drawer shuts behind them."],["tb","I haven't finished the—"],["narr","The bridge bird squeaks over the rest."],["sensei","You can ask for company whenever you need it."]],
         helpOut:"", helpSen:""},
     ]},
   ],
   outro:[
-    {t:"narr", id:"c2_end_01", text:["The stream grew quieter behind them. Wren's left boot squeaked. Then Echo's left foot squeaked.","Wren looked at him."]},
+    {t:"narr", id:"c2_end_01", text:["The stream grew quieter behind them.","Wren's left boot squeaked.","Then Echo's left foot squeaked.","Wren looked at him."]},
     {t:"say", id:"c2_end_02", lines:[
       ["echo","May I?"],
+      ["narr","Wren considered this."],
       ["wren","Once."],
-      ["stage","Echo gave one magnificent squeak. Your pet jumped, offended by the quality."]]},
+      ["narr","Echo gave one magnificent squeak."],
+      ["narr","{pet} jumped, offended by the quality."]]},
     {t:"say", id:"c2_end_03", lines:[
-      ["stage","From the bridge came a distant shout:"],
+      ["narr","From the bridge came a distant shout:"],
       ["tb","THEY ARE STILL SQUEAKY!"],
-      ["stage","Wren kept walking. The boots kept working."]]},
+      ["narr","Wren kept walking."],
+      ["narr","The boots kept working."]]},
     {t:"sensei", id:"c2_end_04", text:"He didn't change his opinion. You still crossed the bridge."},
-    {t:"say", id:"c2_end_05", lines:[
-      ["stage","The building ahead had an enormous velvet door and a sign in gold letters: THE DUCHESS'S COMEDY GALLERY — LAUGHTER COMPULSORY — EXITS DISCOURAGED. From inside came a voice:"],
+    {t:"say", id:"c2_end_05",
+      speak:"The building ahead had an enormous velvet door and a sign in gold letters. It says: The Duchess's Comedy Gallery. Laughter compulsory. Exits discouraged. Someone inside announced a performance — the Duchess who owned the place, speaking loudly enough for the road to hear. And now, my funniest joke! A very long silence followed. Echo leaned towards Wren. We could try the side door.",
+      disp:[{cap:"The sign in gold letters", text:"THE DUCHESS'S COMEDY GALLERY — LAUGHTER COMPULSORY — EXITS DISCOURAGED"}],
+      lines:[
+      ["narr","The building ahead had an enormous velvet door and a sign in gold letters."],
+      ["narr","Someone inside the gallery announced a performance. It was the Duchess who owned the place, speaking loudly enough for the road to hear."],
       ["duch","And now, my funniest joke!"],
-      ["stage","A very long silence followed."],
+      ["narr","A very long silence followed."],
+      ["narr","Echo leaned towards Wren."],
       ["echo","We could try the side door."]]},
   ]},
 ];
 /* ---- v2 runner ---- */
 let QS = null;
-const SPK_VOICE = {echo:"bully", bat:"bully", tb:"bully", duch:"bully", unknown:"bully", sensei:"sensei"};
+const SPK_VOICE = {echo:"bully", bat:"bully", tb:"bully", duch:"bully", vbush:"bully", troll:"bully", unknown:"bully", sensei:"sensei", narr:"sensei"};
 function effStoryPack(){
   const ov = S.questOv || {};
   return { version:2, exported:new Date().toISOString(),
@@ -2257,29 +2327,40 @@ function questHeadHtml(){
   return `<div class="qtop"><button class="ghost" id="qLeave">✕ close the book</button>
     <span class="qchapter">${ch.emoji} ${ch.name}${sc2?` · ${sc2.name}`:""}</span>${meter}</div>`;
 }
-const WHO = {wren:"Wren", echo:"Echo", bat:"Paper Bat", tb:"Toastbrig", duch:"A Posh Voice", unknown:"?", pet:"Your Pet", sensei:"Sensei"};
+const WHO = {wren:"Wren", echo:"Echo", bat:"Paper Bat", tb:"Toastbrig", duch:"The Duchess", vbush:"Voice in the Bush", troll:"Troll at the Bridge", unknown:"?", pet:"Your Pet", sensei:"Sensei", narr:"Narrator"};
+function pp(x){ try{ return String(x).replace(/\{pet\}/g, petNm()); }catch(e){ return String(x); } }
+const NLAB = '<span class="who nlab">Narrator</span>';
 function sayHtml(lines){
-  const emo = {wren:"🧤", echo:QS.ch.emoji, bat:"🦇", tb:"🌉", duch:"🎭", unknown:"❔", pet:"🐾", sensei:"🦉"};
+  const emo = {wren:"🧤", echo:QS.ch.emoji, bat:"🦇", tb:"🌉", duch:"🎭", vbush:"🎺", troll:"🌉", unknown:"❔", pet:"🐾", sensei:"🦉"};
+  let prevNarr = false;
   return lines.map(l=>{
-    if (l[0]==="stage") return `<div class="qnarr">${l[1]}</div>`;
-    if (l[0]==="sensei") return `<div class="qsense">🦉 <b class="who inl">Sensei</b> ${l[1]}</div>`;
-    if (l[0]==="wren") return `<div class="qbub wren"><span class="who">Wren</span>${l[1]}</div>`;
-    return `<div class="qscene"><div class="qav">${emo[l[0]]||"❔"}</div><div class="qbub"><span class="who">${WHO[l[0]]||"?"}</span>${l[1]}</div></div>`;
+    const isN = l[0]==="stage" || l[0]==="narr";
+    let h;
+    if (isN) h = `<div class="qnarr">${prevNarr?"":NLAB}${pp(l[1])}</div>`;
+    else if (l[0]==="sensei") h = `<div class="qsense">🦉 <b class="who inl">Sensei</b> ${pp(l[1])}</div>`;
+    else if (l[0]==="wren") h = `<div class="qbub wren"><span class="who">Wren</span>${pp(l[1])}</div>`;
+    else h = `<div class="qscene"><div class="qav">${emo[l[0]]||"❔"}</div><div class="qbub"><span class="who">${WHO[l[0]]||"?"}</span>${pp(l[1])}</div></div>`;
+    prevNarr = isN;
+    return h;
   }).join("");
 }
+function dispHtml(b){
+  return (b.disp||[]).map(d=>`<div class="qdisp">${d.cap?`<span class="qcap">${pp(d.cap)}</span>`:""}${pp(d.text)}</div>`).join("");
+}
 function speakable(t){
-  return String(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
+  return pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
 }
 function speakSay(lines){
-  try{ lines.forEach(l=>{ const v = SPK_VOICE[l[0]]; if (v) speak(l[1], v); }); }catch(e){}
+  try{ lines.forEach(l=>{ const v = SPK_VOICE[l[0]]; if (v) speak(pp(l[1]), v); }); }catch(e){}
 }
 function fbHtml(f){
   let h = "";
   if (f.helpLines) h += sayHtml(f.helpLines);
-  if (f.stage) h += `<div class="qnarr">${f.stage}</div>`;
-  if (f.v) h += `<div class="qscene"><div class="qav">${QS.ch.emoji}</div><div class="qbub"><span class="who">${QS.ch.vill}</span>${f.v}</div></div>`;
-  if (f.wrn) h += `<div class="qbub wren"><span class="who">Wren</span>${f.wrn}</div>`;
-  if (f.c) h += `<div class="qsense">🦉 ${f.c}</div>`;
+  if (f.segs) h += sayHtml(f.segs);
+  if (f.stage) h += `<div class="qnarr">${NLAB}${pp(f.stage)}</div>`;
+  if (f.v) h += `<div class="qscene"><div class="qav">${QS.ch.emoji}</div><div class="qbub"><span class="who">${QS.ch.vill}</span>${pp(f.v)}</div></div>`;
+  if (f.wrn) h += `<div class="qbub wren"><span class="who">Wren</span>${pp(f.wrn)}</div>`;
+  if (f.c) h += `<div class="qsense">🦉 ${pp(f.c)}</div>`;
   return h;
 }
 function drawQuestBeat(){
@@ -2300,25 +2381,25 @@ function drawQuestBeat(){
     view = fbHtml(QS.fb);
   } else if (beat.t==="narr"){
     const paras = Array.isArray(beat.text) ? beat.text : [beat.text];
-    view = paras.map(p=>`<div class="qnarr">${p}</div>`).join("");
+    view = paras.map((x,i)=>`<div class="qnarr">${i===0?NLAB:""}${pp(x)}</div>`).join("") + dispHtml(beat);
   } else if (beat.t==="notice"){
-    view = `<div class="qnotice">${beat.text}</div>`;
+    view = `<div class="qnotice">${beat.cap?`<span class="qcap">${pp(beat.cap)}</span>`:""}${pp(beat.text)}</div>`;
   } else if (beat.t==="say"){
-    view = sayHtml(beat.lines);
+    view = sayHtml(beat.lines) + dispHtml(beat);
   } else if (beat.t==="sensei"){
     view = `<div class="qsense">🦉 ${beat.text}</div>`;
   } else if (beat.t==="chal"){
     const b = beat;
-    if (b.setup && !QS.retried) view += `<div class="qnarr">${b.setup}</div>`;
-    const av = {echo:ch.emoji, tb:"🌉", duch:"🎭", unknown:"❔"}[b.spk] || ch.emoji;
-    view += `<div class="qscene"><div class="qav">${av}</div><div class="qbub"><span class="who">${WHO[b.spk]||ch.vill}</span>${b.line}</div></div>`;
+    if (b.setup && !QS.retried) view += `<div class="qnarr">${NLAB}${pp(b.setup)}</div>`;
+    const av = {echo:ch.emoji, tb:"🌉", duch:"🎭", vbush:"🎺", troll:"🌉", unknown:"❔"}[b.spk] || ch.emoji;
+    view += `<div class="qscene"><div class="qav">${av}</div><div class="qbub"><span class="who">${WHO[b.spk]||ch.vill}</span>${pp(b.line)}</div></div>`;
     if (!QS.answered && b.line){ try{ speak(beat.speak || speakable(b.line), "bully"); }catch(e){} }
-    view += `<p class="qprompt">${b.prompt||""}</p>`;
+    view += `<p class="qprompt">${pp(b.prompt||"")}</p>`;
     if (b.kind==="pick" || (b.opts||[]).some(o=>o.act)){
       if (b.opts && b.opts.length){
         if (QS.orderFor !== b.id){ QS.orderFor = b.id; QS.order = qShuffle(b.opts.length); }
         act = `<div class="qopts">${QS.order.map(i=>{ const o=b.opts[i];
-          return `<button class="opt ${o.act?"act":""} ${QS.lit&&o.q!=="wrong"?"lit":""}" data-i="${i}" data-q="${o.q}">${o.act?"🚶 ":""}${o.l}</button>`; }).join("")}</div>`;
+          return `<button class="opt ${o.act?"act":""} ${QS.lit&&o.q!=="wrong"?"lit":""}" data-i="${i}" data-q="${o.q}">${o.act?"🚶 ":""}${pp(o.l)}</button>`; }).join("")}</div>`;
       }
       if (b.kind==="pick"){
         if (!QS.lit) act += `<button class="ghost" id="qLit">🪄 need a hint?</button>`;
@@ -2333,6 +2414,7 @@ function drawQuestBeat(){
   }
   const tappable = ["narr","notice","say","sensei"].includes(beat.t) || QS.answered;
   const contLabel = QS.answered && !QS.passed ? "try the same prompt again ▸"
+    : (QS.answered && QS.fb && QS.fb.btn) ? QS.fb.btn+" ▸"
     : (beat.btn ? beat.btn.replace(" ▸","")+" ▸" : "tap to continue ▸");
   el.innerHTML = `<div class="qgothic" id="qPanel">
     ${questHeadHtml()}${view}<div id="qsAct">${act}</div>
@@ -2340,7 +2422,12 @@ function drawQuestBeat(){
   </div>`;
   if (beat.t==="narr" || beat.t==="sensei"){ try{ speak(beat.speak || speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "sensei"); }catch(e){} }
   if (beat.t==="notice"){ try{ speak(beat.speak || speakable(beat.text), "bully"); }catch(e){} }
-  if (beat.t==="say") speakSay(beat.lines);
+  if (beat.t==="say"){
+    try{
+      if (beat.speak) speak(pp(beat.speak), "sensei");
+      else { speakSay(beat.lines); if (beat.disp) speak("It says: "+beat.disp.map(d=>speakable(d.text)).join(" "), "sensei"); }
+    }catch(e){}
+  }
   const $ = id=>document.getElementById(id);
   $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; S.quest.pos=null; save(); renderQuest(); };
   $("qPanel").onclick = (e)=>{ if (e.target.closest("button,textarea")) return; if (tappable) qsContinue(); };
@@ -2359,7 +2446,7 @@ function qsPick(i){
   QS.passed = good;
   if (good){ QS.sappr++; addCoins(o.q==="best"?4:2); }
   else QS.misses++;
-  QS.fb = { stage:o.out, v:o.ech, wrn:o.wrn, c:o.sen };
+  QS.fb = o.fb ? { segs:o.fb } : { stage:o.out, v:o.ech, wrn:o.wrn, c:o.sen };
   drawQuestBeat();
 }
 async function qsSend(){
@@ -2378,7 +2465,7 @@ async function qsSend(){
     let c = w.senB;
     if (g.quality==="okish") c = (g.tag==="feel") ? (w.senFeel||w.senOk) : w.senOk;
     else if (QS.retried && g.tag==="boundary") c = w.senR;
-    QS.fb = { stage:w.out, v:w.ech, c };
+    QS.fb = { segs:w.fb, c, btn:w.btn };
   } else {
     QS.misses++;
     const p = (b.pkgs||{})[g.tag] || { c:"Try a line that ends the conversation. Plain is fine." };
@@ -2389,7 +2476,7 @@ async function qsSend(){
 function qsHelp(){
   QS.answered = true; QS.passed = true; QS.sappr++; addCoins(2);
   const b = QS.beat;
-  QS.fb = { helpLines:b.help, stage:b.helpOut||"", c:b.helpSen||"Help is always allowed." };
+  QS.fb = { helpLines:b.help, stage:b.helpOut||"", c:(b.helpSen===undefined?"Help is always allowed.":b.helpSen) };
   drawQuestBeat();
 }
 function qsContinue(){
@@ -2468,9 +2555,9 @@ function renderQuest(){
     <button class="ghost backbtn" onclick="go('home')">← dojo</button>
     <div class="qgothic">
       <h1 style="font-family:inherit;">🌗 The Gloomwood and the Stolen Tomorrow</h1>
-      <p style="color:var(--dim);margin:6px 0 18px;font-family:inherit;">Queen Malvina has postponed tomorrow until everyone has properly appreciated her.
-      Tomorrow is the <b style="color:var(--ink);">Moonrise Fair</b>, and ${petNm()} has entered the cake competition without making a cake.
-      The morning bell is in her palace. Wren is going.</p>
+      <p style="color:var(--dim);margin:6px 0 18px;font-family:inherit;">Every morning, the village bell rings the sun up. Queen Malvina has <b style="color:var(--ink);">borrowed it</b> — until everyone admits how magnificent she is.
+      Today was Wren's first turn as bellkeeper, and the village is stuck at the edge of morning.
+      Wren, ${petNm()} and Sensei are walking into the Gloomwood to bring the sun home.</p>
       <div class="pkgrid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
         ${QUESTS.map((ch,i)=>{
           const done = S.quest.cleared.includes(ch.id);
@@ -2498,7 +2585,7 @@ function renderQuest(){
 }
 
 /* ---- story pack: export / import / restore (panel) ---- */
-const STORY_KEYS = { ch:["name","vill","card","winHead","winLine","artPrompt"], sc:["name","setup","icon","meterLabel","artPrompt"], beat:["text","speak","lines","taunt","setup","line","prompt","ph","send","purpose","bestEx","okEx","wrongEx","win","pkgs","borrow","borrowL","borrowAct","help","helpOut","helpSen","opts","btn","art","artPrompt"] };
+const STORY_KEYS = { ch:["name","vill","card","winHead","winLine","artPrompt"], sc:["name","setup","icon","meterLabel","artPrompt"], beat:["text","speak","lines","taunt","setup","line","prompt","ph","send","purpose","bestEx","okEx","wrongEx","win","pkgs","borrow","borrowL","borrowAct","help","helpOut","helpSen","disp","cap","opts","btn","art","artPrompt"] };
 function storyPick(obj, keys){
   const p = {};
   keys.forEach(k=>{ if (obj[k]!==undefined) p[k]=obj[k]; });
