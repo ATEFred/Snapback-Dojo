@@ -198,9 +198,18 @@ def main():
     playlist(made)
     print(f"done — playlist at {OUT/'index.html'}")
 
-def playlist(made):
+def playlist(_made=None):
+    # Build from everything on disk, not just this run, so a partial reroll
+    # never drops the voices that were already approved on the machine.
+    made = {}
+    for voice, _how, _note, lines in CAST:
+        clips = []
+        for i in range(1, len(lines) + 1):
+            name = f"{voice}-{i}.wav"
+            if (OUT / name).exists(): clips.append((name, lines[i-1]))
+        if clips: made[voice] = clips
     rows = []
-    labels = {"narr":"Narrator","wren":"Wren","pet":"{pet}, the cat","echo":"Echo the Mimic Imp",
+    labels = {"narr":"Narrator","wren":"Wren","pet":"Noodles, the cat","echo":"Echo the Mimic Imp",
         "refl":"The Reflection","pip":"Pip","pop":"Pop","gleam":"Gleam",
         "qvoice":"The Queen (voice, unseen)","mv":"Queen Malvina","wisp":"Wisp",
         "mum":"Mum","dad":"Dad"}
