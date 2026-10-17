@@ -133,10 +133,11 @@ HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred'
   "c6_clock_entrance": "The arriving party: the girl, her grey tabby cat, and the rag doll sewn from brown and cream "
     "cloth patches with mismatched button eyes — three companions, each appearing exactly once, all in "
     "their own colours.",
-  "c6_mirror_welcome_hook": "A corridor of tall crowned mirrors on hinged bases; one mirror bows "
-    "at its hinge — the FRAME bows, furniture, not a person. ONE real girl, her grey tabby cat and "
-    "her cloth rag-doll imp walk the corridor together, all three visible. Each mirror glass holds "
-    "one single image of the real girl, matching her pose; the crowned frames themselves bow."  "reward_c5": "COMPOSITION: one single girl stands on the bank, waving down at the water. Beside "
+  "c6_mirror_welcome_hook": "A corridor of tall crowned mirrors on hinged bases; one mirror bows at its hinge — the FRAME "
+    "bows, furniture, not a person. ONE real girl, her grey tabby cat and her cloth rag-doll imp "
+    "walk single file; they are the only travellers, the stone archway behind them holds just mist. "
+    "Each mirror glass shows one image of the real girl in her blue coat, matching her pose.",
+  "reward_c5": "COMPOSITION: one single girl stands on the bank, waving down at the water. Beside "
     "her ONLY her grey tabby cat. The water's surface mirrors the girl and the cat. The girl appears "
     "exactly ONCE above the waterline; any second image of her exists ONLY inside the water. No other "
     "person, child or figure stands on the bank.",
@@ -182,12 +183,12 @@ HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred'
     "reflection in the water waves back with her — same bobbed hair, blue coat, muddy boots. Her grey "
     "tabby cat sits at her feet. The girl exists exactly once in the air; the only second image of her "
     "is her water reflection.",
-  "c5_perfect_frames": "Exactly three gilt-framed paintings on tall stands by the stone route. EVERY frame contains the "
-    "SAME girl: black bobbed hair, blue coat. Frame one: she polishes a boot with a brush. Frame two: "
-    "she stands alone under falling confetti holding a broom. Frame three: she holds an open compass "
-    "ringed by contradictory arrows. Inside each frame there is one girl and nothing else; all three "
-    "painted girls are her. On the path below the frames stand the real girl, her grey tabby cat, and "
-    "the cloth rag-doll imp looking up at the paintings. Three frames total.",
+  "c5_perfect_frames": "Exactly three gilt-framed paintings on tall stands by the stone route. Each frame holds ONE "
+    "full-length painted portrait of the human girl — black bobbed hair, blue coat, green boots — "
+    "doing one quiet chore. Frame one: she polishes a boot with a brush. Frame two: she stands alone "
+    "under falling confetti holding a broom. Frame three: she holds an open compass ringed by "
+    "contradictory arrows. Every painted figure wears her blue coat and bob. On the path below, the "
+    "real girl views the three frames with her grey tabby cat and the cloth rag-doll imp.",
 
 }
 
