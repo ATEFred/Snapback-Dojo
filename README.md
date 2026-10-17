@@ -84,12 +84,15 @@ signs, the Queen's notice, Echo and Wisp — never from unexplained cat knowledg
 Over-the-top monsters with sad little problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary,
 every villain funnier than they are mean. Frozen people feel no waiting and no harm; there is no countdown.
 
-**Six chapters ship** — Echo the Mimic Imp, Toastbrig the Bridge Inspector, the Duchess of HA (Comedy
-Gallery), Wisp and the Royal Copy (Midnight Gazette), the Reflection at Mirror Lake, and Pip & Pop's
-orchard double act — transcribed from `story-chapters-01-02-rewrite.md`, `story-chapters-03-04.md` and
-`story-chapters-05-06.md`. The party is Wren, the cat, and (from Chapter 1's end) Echo; Chapter 6 ends at
-the palace clock's east door and the bowing mirror's "tiny favour" — the Chapter 7 hook. (The earlier
-bellkeeper premise and the path-guide version of the opening remain recoverable in git history.)
+**The whole book ships — eight chapters to breakfast and back**: Echo the Mimic Imp, Toastbrig the Bridge
+Inspector, the Duchess of HA (Comedy Gallery), Wisp and the Royal Copy (Midnight Gazette), the Reflection
+at Mirror Lake, Pip & Pop's orchard double act, Chancellor Gleam's Hall of Mirrors, and Queen Malvina's
+Last Audience — transcribed from `story-chapters-01-02-rewrite.md`, `story-chapters-03-04.md`,
+`story-chapters-05-06.md` and `story-chapters-07-08.md`. The party is Wren, the cat, and (from Chapter 1's
+end) Echo. The script names the cat **Noodles** in the finale; every nameplate, mention and button binds
+to the player's own pet name. Chapter 8 ends with the spoon falling, breakfast resuming, and one small
+ordinary cat chirrup — SOUND ONLY, a caption, never spoken aloud. (The earlier bellkeeper premise and the
+path-guide version of the opening remain recoverable in git history.)
 
 - **Every voice wears a nameplate, a face and a voice** — Narrator included. Bubbles carry a painted
   portrait (`quest-art/avatar_*.png`, square, cropped into the circle; emoji fallback until painted), and
@@ -107,7 +110,8 @@ bellkeeper premise and the path-guide version of the opening remain recoverable 
   his casting shutters — never his feelings. A miss shows that choice's specific consequence + one coach
   line, then the same prompt returns in the same shuffled order. No punishments, no escalating rounds of shame.
 - **Walking away is always legal:** every encounter carries an ungraded *Leave with {pet}* / *Pause / back
-  to map* button (chapters 5–6 put it on every typed beat too); progress saves and the map waits. Choices
+  to map* button (chapters 5–8 put it on every typed beat too, and the finale's quiet bench and doorway
+  beats carry it as well); progress saves and the map waits. Choices
   like *take the garden path*, *decline the quote* or *take the palace path* clear beats exactly like words.
 - **Two speakers, one answer (chapters 5–6):** Pip and Pop share the bait in labelled bubbles, in order,
   before the answer box opens — they never interrupt her mid-line and nothing reacts to typing speed.
@@ -131,8 +135,22 @@ bellkeeper premise and the path-guide version of the opening remain recoverable 
   question ("Who is everyone?") is a *best*, spelling is invisible, and when the AI is offline the fallback
   pattern-grader errs gentle — it never calls an answer wrong on a hunch. Threats and handing the monster
   control of the exit get a funny retry, never a verdict.
-- **Progressive difficulty:** Chapter 1 is all multiple choice (with action choices); Chapter 2 introduces
-  typed lines next to the walking button; Chapters 3–4 mix both with bargain-shaped traps.
+- **Kind words with strings (Chapter 7):** Chancellor Gleam's compliments arrive with invoices — a
+  statement to sign, a ceremony that "free" gifts come with, a gratitude debt, an apology script to
+  learn. "Thank you, but no" is a *best*; a plain kind thank-you to the small plain mirror (who asks
+  nothing) is a *best*; agreeing to sign something untrue, or booking her afternoon for approval, is the
+  only kind of wrong — answered with Gleam's scripted sputter and the same prompt back. Sitting on the
+  bench "a little longer" loops gentle ambience on a button and grades nothing.
+- **The hard freeform finale (Chapter 8):** the Queen's last three exchanges are typed-only — no Borrow
+  a line, no prewritten choices, no auto-clear after hints. Each line is scored on three things a grown-up
+  can read on screen: does it answer *this* taunt, does it make a cutting point, does Wren keep control
+  (clear needs a real cutting point plus 5 of 6). A feeling, a bare "Bye", a plain boundary all get
+  *revise*: her draft survives on screen for editing and the cat gives one concrete next target — never
+  mockery, never a red X, no extra punishment. 🐾 hints scaffold without writing the line; 👂 replays the
+  Queen's taunt; a resting model says so honestly and keeps the draft rather than inventing a verdict.
+  Clearing turns the key, folds the painted applause, and the long way home plays ungraded — Echo's paper
+  star, the world mid-motion again, +80 coins, both farewell stickers, the trophy *The Morning Is Ours*
+  and the **Clockstarter** ribbon on the storybook map.
 - A bookmark saves mid-story; reopening a chapter resumes exactly where the book was closed.
 - Every crossed villain becomes a page in **The Little Book of Former Weirdos** (sticker wall) + a trophy.
 - **Story pack export / import / restore** in the parent panel: the entire story (text, taunts, options, coach
@@ -227,7 +245,8 @@ it can't. The AI, if configured, is your own local model.
 
 - [x] Gloomwood chapters 3–4 (Comedy Gallery + Midnight Gazette — live, per `story-chapters-03-04.md`)
 - [x] Chapters 5–6: Mirror Lake + the orchard double act (live, per `story-chapters-05-06.md`)
-- [ ] Chapter 7: the Hall of Mirrors ("one tiny favour") — Fred's script, whenever it lands
+- [x] Chapters 7–8: the Hall of Mirrors + Her Majesty's Last Audience, the hard freeform finale and the
+      Noodles homecoming (live, per `story-chapters-07-08.md`) — the book is finished and replayable
 - [x] Re-paint pass: every plate QC'd on sheets; weak ones rerolled with `--force` / `SEED_SALT`, and
       `HINTS` in `gen_art.py` now guards compositions the briefs earned (one real Wren, no uninvited cast)
 - [ ] Pre-generated narration: batch-render per-beat TTS audio (quest-audio/<beat-id>), pick per-character

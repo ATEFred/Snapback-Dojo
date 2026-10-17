@@ -51,7 +51,7 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
    "with a big brass winding key between her shoulder blades"),
   (("toastbrig", "troll", "inspector"), "Toastbrig: an enormous plank-backed troll inspector with a "
    "whistling kettle for a helmet"),
-  (("queen malvina", "crowned woman", "queen's portrait"), "Queen Malvina appears ONLY as described "
+  (("queen malvina", "malvina", "crowned woman", "queen's portrait"), "Queen Malvina appears ONLY as described "
    "(usually a printed portrait on a notice): a tall crowned woman holding a little key on a chain"),
   (("paper bat",), "a paper bat wearing enormous spectacles"),
   # The lake Reflection: a spotless silver-outlined imitation of the same girl.
@@ -72,6 +72,15 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
    lambda tl: ("royal ushers" not in tl) and ("Pop: the shorter apple-WOOD puppet standing on a box — "
    "round carved wooden face, visible hinged mouth, lively painted eyebrows, purple waistcoat, one "
    "wooden hand mid-flourish; carved joints, NOT a real child")),
+  # Chancellor Gleam and the parents. \bgleam\b skips the old "gleamed" briefs.
+  ((r"~\bgleam\b",),
+   "Chancellor Gleam: a tall hinged mirror in a polished silver frame with two thin brass arms and a "
+   "small crown on his top rail, bowing politely at the hinge; butler-ish and officious; his glass "
+   "shows ONLY ordinary reflections of the real scene — never an independent copy of the girl"),
+  ((r"~\bmum\b",), "Wren's mum: a warm-looking parent in ordinary comfortable breakfast clothes, kind "
+   "attentive face; a normal parent, no royal or magical costume"),
+  ((r"~\bdad\b",), "Wren's dad: a kind parent in ordinary comfortable breakfast clothes with a jam "
+   "knife nearby, curious listening face; a normal parent, no badges or uniforms"),
   (("mum", "dad", "parents", "family"), "Wren's ordinary parents: modern-dressed adults frozen mid "
    "breakfast, mid-gesture, gentle, unhurt"),
 ]
@@ -94,6 +103,20 @@ AVA_DESC = {
   "avatar_reflection": "The lake's imitation of Wren: SAME face as the Wren portrait (straight black bob, big eyes) but an unnaturally neat coat collar, a rehearsed smug smile, and a thin silver outline around the figure with a sliver of gilt picture-frame at one side; overprepared, not frightening; no second girl.",
   "avatar_pip": "Pip the usher puppet: a tall SQUARE apple-WOOD head with visible hinged jaw and carved joints, neatly painted eyebrows, green waistcoat, one raised wooden finger; pleased with his own organisation; a carved puppet, not a real child.",
   "avatar_pop": "Pop the usher puppet: a ROUND apple-WOOD face with a visible hinged mouth and carved joints, lively painted eyebrows, purple waistcoat, one wooden hand poised for an unnecessary flourish; about to interrupt his partner; a carved puppet, not a real child.",
+  "avatar_gleam": "Chancellor Gleam the court mirror: a handsome silver-framed hinged MIRROR with two "
+                 "thin brass arms and a slightly-too-large little crown on his top rail; his reflective "
+                 "glass face wears a politely smug expression; bowing posture; no girl in the glass.",
+  "avatar_plain_mirror": "The portrait's SUBJECT is the object itself: a small plain hand mirror with a "
+                 "simple wooden frame standing on a shelf, no crown, no forms, no ornament; its glass "
+                 "shows only soft lamplight. The mirror is the whole portrait, upright, centred.",
+  "avatar_mum": "Wren's mum: warm-looking parent, ordinary breakfast clothes, kind attentive smile "
+                 "looking just past the viewer; cosy kitchen light; a normal parent, not royal.",
+  "avatar_dad": "Wren's dad: kind parent, ordinary breakfast clothes, slightly curious gentle "
+                 "expression, listening; crumbs of toast context possible; a normal parent, no badge.",
+  "avatar_queen_after_key": "Queen Malvina AFTER the transfer: same theatrical portrait framing, crown "
+                 "still on, dignified and cross; the chain at her neck dangles with an OPEN, EMPTY "
+                 "clasp — her two hands rest folded, plainly showing nothing is held; comically "
+                 "deflated, unhurt. Her hands hold nothing at all.",
 }
 
 HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred's)
@@ -116,6 +139,44 @@ HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred'
     "her ONLY her grey tabby cat. The water's surface mirrors the girl and the cat. The girl appears "
     "exactly ONCE above the waterline; any second image of her exists ONLY inside the water. No other "
     "person, child or figure stands on the bank.",
+  "c7_mirror_court": "Exactly ONE real girl on the walkway. Every mirror in the corridor shows only "
+    "ordinary reflections at plausible angles; no mirror-body steps out. One crowned nearest mirror "
+    "with brass arms holds the cushion.",
+  "c7_audience_card": "The card is held forward by two thin brass mirror-arms; the girl, the cat and "
+    "the rag imp stand opposite, one instance each.",
+  "c8_clock_court": "The audience chairs are filled ONLY by FLAT PAINTED spectators on backdrop "
+    "panels — nobody else stands in the room but the queen on her wheeled throne, the girl, her grey "
+    "tabby cat and the small rag imp. Mirrored walls show ordinary reflections only.",
+  "c8_key_presentation_worn": "The QUEEN is the tall crowned woman on the wheeled throne-stage: she "
+    "lifts the chained key while the chain still hangs around HER neck, and the lectern cushion stays "
+    "empty. The girl waits at the lectern's near side with empty hands, beside her grey tabby cat and "
+    "the rag imp holding an open booklet. One queen, one girl, one key, on the queen's chain.",
+  "c8_key_presentation_cushion": "The Minute Key lies on the lectern's purple cushion, glowing gently. "
+    "On her stage behind, the QUEEN holds both hands out for applause; around her neck hangs a chain "
+    "with an open, EMPTY clasp. The girl stands at the walkway with her grey tabby cat and the rag "
+    "imp. Around the clock keyhole: a plain dark wall. One queen, one girl, one key on the cushion.",
+  "c7_borrowed_words": "The only human in the picture is ONE girl standing on the near side of a tall "
+    "doorway holding a paper diagram. On the far side of the doorway walk only animals: her grey tabby "
+    "cat mid-meow with a little speech sparkle, and a rag-doll imp. Pawprints cross the threshold. "
+    "Every figure appears exactly once.",
+  "c8_queen_last_audience": "ONE single wide scene: the girl, her grey tabby cat and the rag imp seen "
+    "from behind, walking down the service passage together; ahead, the queen alone on her stage "
+    "reaching for the applause handle. Exactly one girl, standing, seen once.",
+  "c8_homeward_map": "A folded paper map fills the frame, its glowing route ribbon winding through "
+    "painted memory vignettes; the real girl, cat and imp walk small on the road; one girl.",
+  "c8_doorway_goodbye": "The girl sitting on moss in a doorway holding ONLY her grey tabby cat; the "
+    "hallway beyond is empty of people; no mirrors anywhere, one girl.",
+  "c8_world_resumes": "LOW ANGLE at kitchen-floor level: a fallen spoon lying on the boards in the foreground, a pair of muddy green wellington boots and a grey tabby cat just stepping over the threshold in the middle distance, warm sunlit floorboards. In the soft-focus background hang a wall clock at 8:17 with its second hand sweeping and a window where a pigeon is mid-wingbeat. Torsos and heads of any other people stay out of frame above the shot; at most the hem of an apron and a trouser leg stand at the far edge.",
+  "c8_home_table": "Breakfast-table hug: the girl, her mum, her dad and the cat, exactly those four "
+    "living beings, warm ordinary light; no mirrors in the room.",
+  "c8_paw_on_hand": "Close warm scene of a hand resting beside a breakfast plate with a cat's paw on "
+    "it; the girl's face partly visible, calm; only one person.",
+  "c8_last_page": "Bedroom at dusk: the girl writing in a notebook with the cat curled against her "
+    "leg; a paper star tucked by the bedhead; no mirrors, one girl.",
+  "reward_c8_queen": "The queen on her stage with an EMPTY chain at her neck, the empty lectern "
+    "cushion beside her; two wooden hands giving a slow tiny clap; she is cross and comic, unhurt.",
+  "reward_c8_home": "The girl hugging her grey tabby cat at the kitchen doorway, both boots muddy, "
+    "family breakfast warm behind her; one girl, one cat.",
 }
 
 def prompt_for(art_id, text):
