@@ -163,6 +163,14 @@ path-guide version of the opening remain recoverable in git history.)
   scene backdrops for most screens and square avatar faces for every speaker. LAN only, resumable:
   `python3 gen_art.py` (skips existing) · `--only c1_signpost` · `--force` (add `SEED_SALT=2` for a different
   take). The app probes each plate and falls back to card/emoji automatically when a file is missing.
+- **Voices:** `gen_voices.py` casts the company on the ComfyUI box (same machine as the art) with the
+  **Qwen3-TTS nodes**. The Narrator is a **voice clone** of a British reference take (`input/british-reference.wav`
+  + its transcript, kept together as the `british_narrator` preset) — voice *design* could not hold a British
+  accent no matter the prompt, cloning nails it. Every other character is a **designed voice** from a written
+  casting note in the `CAST` sheet (Wren, the cat, Echo, the Reflection, Pip & Pop, Gleam, the Queen, Malvina,
+  Wisp, Mum, Dad). `python3 gen_voices.py [ids…]` writes `voicedemo/<id>-<n>.wav` (gitignored) + a listening
+  playlist at `voicedemo/index.html`; the app keeps using browser voices until approved takes are shipped.
+  LAN only — all model loading and generation happen on the 5090 machine.
 
 ## Grown-up panel (⚙)
 
