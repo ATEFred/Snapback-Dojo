@@ -30,21 +30,38 @@ STYLE = ("Ornate Victorian dark storybook engraving: dense pen-and-ink crosshatc
          "Every element shares ONE unified antique etching treatment: characters shaded with pen hatching "
          "and ink wash, palette limited to indigo, slate, lavender and antique gold with a single muted "
          "sage-green accent, no flat modern colours, no plastic highlights. ")
-CAST  = ("Recurring characters — Wren: a Burton-style child about ten, long thin limbs, a slightly "
-         "too-big ink-blue wool coat that hangs off her shoulders like she outgrew it, straight black "
-         "bob, sage-green wellington boots; her face: big round eyes WIDE and alert with a small spark "
-         "of nerves, composed closed mouth, quietly locked onto the strangeness like she cannot look "
-         "away; her cat: a plump unimpressed grey tabby; Echo the Mimic Imp: a small crooked patchwork "
-         "rag imp with mismatched glass button eyes, a stitched grin that stretches one stitch wider "
-         "than a mouth really should, loose fraying seams, fingers a little too long and quick — "
-         "faintly uncanny, mostly pathetic, never outright frightening — he has a blunt rag-doll head with "
-         "small floppy cloth ears, NO cat features, no tail, never resembling the cat; only ONE "
-         "imp per scene, the cat is the only other animal; Toastbrig the bridge inspector: an "
-         "enough-planked enormous troll with a gentle broad face, a wooden plank for a back and a "
-         "whistling kettle for a helmet; the Duchess of HA: a tall stiff woman in an antique "
-         "porcelain-doll gown with a big brass winding key between her shoulder blades and jointed "
-         "doll fingers; Wisp the midnight courier: a small nervous green-furred creature in a "
-         "buttoned waistcoat, long ears, ink-stained fingers and an enormous satchel. Scene: ")
+WREN_CAT = ("Recurring characters — Wren: a Burton-style child about ten, long thin limbs, a slightly "
+            "too-big ink-blue wool coat that hangs off her shoulders like she outgrew it, straight black "
+            "bob, sage-green wellington boots; her face: big round eyes WIDE and alert with a small spark "
+            "of nerves, composed closed mouth, quietly locked onto the strangeness like she cannot look "
+            "away; her cat: a plump unimpressed grey tabby — a real, ordinary, four-pawed HOUSE CAT (and "
+            "in scenes beyond the door it may have its mouth open mid-sentence, still a cat with no human "
+            "features, upright or clothed). ")
+CHARS = [  # (keywords in the content brief) → description, included ONLY when the brief calls for them
+  (("echo", "patchwork"), "Echo the Mimic Imp: a small crooked PATCHWORK RAG imp with mismatched glass "
+   "button eyes, stitched grin, fraying seams, blunt rag-doll head with floppy cloth ears, NO cat "
+   "features; only he and Wren's grey tabby are ever imps/cats together"),
+  (("wisp", "gazette", "courier"), "Wisp: a small nervous green-furred courier creature in a buttoned "
+   "waistcoat, long ears, ink-stained fingers, enormous satchel"),
+  (("duchess", "porcelain"), "the Duchess of HA: a tall stiff porcelain-faced woman in an antique gown "
+   "with a big brass winding key between her shoulder blades"),
+  (("toastbrig", "troll", "inspector"), "Toastbrig: an enormous plank-backed troll inspector with a "
+   "whistling kettle for a helmet"),
+  (("queen malvina", "crowned woman", "queen's portrait"), "Queen Malvina appears ONLY as described "
+   "(usually a printed portrait on a notice): a tall crowned woman holding a little key on a chain"),
+  (("paper bat",), "a paper bat wearing enormous spectacles"),
+  (("mum", "dad", "parents", "family"), "Wren's ordinary parents: modern-dressed adults frozen mid "
+   "breakfast, mid-gesture, gentle, unhurt"),
+]
+EXCLUDE = ("Only the characters named just above may appear in the scene. No other people, children, "
+           "creatures, imps, dolls or travellers — if the description names no character beyond scenery, "
+           "paint the object alone. ")
+
+def cast_for(text):
+    tl = text.lower()
+    extra = [d for keys, d in CHARS if any(k in tl for k in keys)]
+    return WREN_CAT + "; ".join(extra) + (". " if extra else ". ") + EXCLUDE
+
 NEG   = ("photorealistic, photograph, 3d render, gore, blood, horror, sharp teeth, jump scare, "
          "terrified, screaming, menacing monster, truly scary, text, letters, watermark, signature, "
          "blurry, deformed hands, extra fingers, low quality, slack mouth, dopey, vacant stare, "
@@ -100,7 +117,7 @@ def workflow(art_id, text, seed, want_text=False):
       "1": {"class_type": "UNETLoader", "inputs": {"unet_name": UNET, "weight_dtype": "default"}},
       "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": CLIP, "type": "qwen_image"}},
       "3": {"class_type": "VAELoader",  "inputs": {"vae_name": VAE}},
-      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": STYLE + CAST + text +
+      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": STYLE + cast_for(text) + text +
             (LETTER if want_text else "")},
       },
       "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0],

@@ -74,17 +74,21 @@ archetype, all hand-reviewed by the model itself for "would this actually land a
 A separate, fictional adventure — deliberately **not** school-flavored, so the corridor never echoes in it.
 At seventeen minutes past eight, Queen Malvina stopped Wren's whole world with the Great Clock's Minute Key
 and keeps it at her palace. An impossible door (brass leaf handle, plaque: *this was not here yesterday*)
-appeared under Wren's stairs; her cat is still moving, her family is frozen mid-breakfast, and nobody — not
-Wren, not Sensei, not anyone she meets — knows why she and the cat walk on or who opened the door. Those
-mysteries stay unexplained by contract. Wren's goal is honest: **get her family back**, not win anyone over.
-Sensei is the path guide she meets beyond the door; the dojo pet is her cat (it does not speak).
+appeared under Wren's stairs; her family is frozen mid-breakfast. Wren and her cat walk through — and on the
+other side, **the cat can suddenly talk**. Dry, practical, four paws, zero hidden knowledge: `{pet}` is the
+companion *and* the coach (the dojo's 🦉 Sensei stays in the dojo and is untouched by the story). Nobody —
+not Wren, not the cat, not anyone they meet — knows why the two of them still move, why the cat speaks, or
+who opened the door. Those mysteries stay unexplained by contract. The route and the clock facts come from
+signs, the Queen's notice, Echo and Wisp — never from unexplained cat knowledge. Wren's goal is honest:
+**get her family back**, not win anyone over.
 Over-the-top monsters with sad little problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary,
 every villain funnier than they are mean. Frozen people feel no waiting and no harm; there is no countdown.
 
 **Four chapters ship** — Echo the Mimic Imp, Toastbrig the Bridge Inspector, the Duchess of HA (Comedy
 Gallery) and Wisp and the Royal Copy (Midnight Gazette) — transcribed from `story-chapters-01-02-rewrite.md`
-and `story-chapters-03-04.md`. Chapter 5 (Mirror Lake) teases on the map. (The earlier bellkeeper premise,
-its Chapter 1 and progress remain recoverable in git history.)
+and `story-chapters-03-04.md`. The party is Wren, the cat, and (from Chapter 1's end) Echo. Chapter 5
+(Mirror Lake) teases on the map. (The earlier bellkeeper premise and the path-guide version of the opening
+remain recoverable in git history.)
 
 - **Every voice wears a nameplate** — Narrator included. Nobody wonders who's talking.
 - **VISUAL ONLY means visual only.** Signs, notices, badges, prop labels and maps (`story-visual-assets.md`)
@@ -96,11 +100,13 @@ its Chapter 1 and progress remain recoverable in git history.)
   action choice like *keep walking*) ticks the villain's **prop meter** — his stars, his wheels, his drawers,
   his casting shutters — never his feelings. A miss shows that choice's specific consequence + one coach
   line, then the same prompt returns in the same shuffled order. No punishments, no escalating rounds of shame.
-- **Walking away is always legal:** the Duchess's encounters carry an ungraded *Leave with Sensei* button;
+- **Walking away is always legal:** the Duchess's encounters carry an ungraded *Leave with {pet}* button;
   progress saves and the map waits. Choices like *take the garden path* or *decline the quote* clear beats
   exactly like words.
 - **Help is free and always on the table:** 🪄 *Borrow a line* (highlights the way through / fills a line) and
-  🦉 *Ask Sensei for help* both clear a beat and cost nothing. Stars are a flourish, not a wage.
+  🐾 *Ask {pet} for help* (the cat models a line or simply walks beside her) both clear a beat and cost
+  nothing. Stars are a flourish, not a wage. In story mode the cat is the only coach; the dojo's 🦉 Sensei
+  lives outside the book.
 - **The typed grader is lenient by doctrine:** feelings never lose, plain "No" never loses, one useful source
   question ("Who is everyone?") is a *best*, spelling is invisible, and when the AI is offline the fallback
   pattern-grader errs gentle — it never calls an answer wrong on a hunch. Threats and handing the monster
