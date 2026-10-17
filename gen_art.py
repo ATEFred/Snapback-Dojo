@@ -38,12 +38,12 @@ WREN_CAT = ("Recurring characters — Wren: a Burton-style child about ten, long
             "in scenes beyond the door it may have its mouth open mid-sentence, still a cat with no human "
             "features, upright or clothed). ")
 CHARS = [  # (keywords in the content brief) → description, included ONLY when the brief calls for them
-  (("echo", "patchwork"), "Echo the Mimic Imp: a small crooked PATCHWORK RAG imp with mismatched glass "
-   "button eyes, stitched grin, fraying seams, blunt rag-doll head with floppy cloth ears, NO cat "
-   "features; only he and Wren's grey tabby are ever imps/cats together"),
+  (("echo", "patchwork"), "Echo the Mimic Imp: a soft knee-high rag doll sewn from brown "
+   "and cream cloth patches, mismatched glass button eyes, a wide stitched grin, fraying seams, "
+   "floppy cloth ears and a blunt cloth head, springing along with a puppet bounce"),
   # "wisp" alone is too eager: briefs mention him in the negative ("route later supplied by Wisp")
-  (("wisp",), lambda tl: "wisp" in tl and any(k in tl for k in ("waistcoat","satchel","cart","bottle","press","delivery",
-   "gazette office")) and "Wisp: a small nervous green-furred courier creature in a buttoned "
+  (("wisp",), lambda tl: "wisp" in tl and any(k in tl for k in ("waistcoat","satchel","cart","bottle","press","gazette office",
+   "pins his correction","ink-stained")) and "Wisp: a small nervous green-furred courier creature in a buttoned "
    "waistcoat, long ears, ink-stained fingers, enormous satchel"),
   (("courier",), lambda tl: "Wisp: a small nervous green-furred courier creature in a "
    "buttoned waistcoat, long ears, ink-stained fingers, enormous satchel"),
@@ -120,28 +120,30 @@ AVA_DESC = {
 }
 
 HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred's)
-  "c5_lake_crossing": "Paint ONE single wide scene showing the finished moment; not a grid, not comic "
-    "panels, no split frames. Exactly one real girl standing on the far bank with her grey tabby cat "
-    "and the rag imp; the water shows only ordinary matching reflections, never a second body.",
+  "c5_lake_crossing": "ONE single wide scene (not panels, not a grid). The girl steps across wide stones while she and "
+    "the cloth rag-doll imp study an open paper map; the grey tabby cat follows on the stones. The "
+    "water carries only the girl's OWN reflection, matching her exactly. Three travelling companions, "
+    "each seen once.",
   "c5_rehearsal_slates": "The girl and the imitation must be OBVIOUSLY different: the imitation has a "
     "glowing thin silver outline around her whole figure and a spotlessly clean coat; the real girl is "
     "muddy. Exactly one of each, nowhere else in frame.",
-  "c6_route_markers": "ONE single wide scene. Living beings: the muddy girl, her grey tabby cat, and "
-    "the small grey rag-doll patchwork imp with button eyes — the imp's stitched hand holds the hinged "
-    "panel flap open while the girl compares a paper map to the seal. The three of them, together, "
-    "one instance each, as the only characters.",
-  "c6_clock_entrance": "The party is the girl, her grey tabby cat and the small rag imp walking "
-    "towards the arch. The wall carries NOTHING but the delivery seal and the plaque: no cat faces, "
-    "crests, medallions, masks or ornaments on the masonry.",
-  "c6_mirror_welcome_hook": "Exactly ONE real girl, standing. She has NO body outside the mirrors — "
-    "whatever appears inside a mirror is only a reflection. No second girl standing in the corridor.",
-  "reward_c5": "COMPOSITION: one single girl stands on the bank, waving down at the water. Beside "
+  "c6_route_markers": "ONE single wide scene (not panels, not a grid). The girl holds a paper map up against a wooden "
+    "EAST ROAD arrow signpost. With her: ONE grey tabby cat, and the rag-doll imp sewn from brown and "
+    "cream cloth patches with button eyes. Three companions, one of each, all clearly themselves.",
+  "c6_clock_entrance": "The arriving party: the girl, her grey tabby cat, and the rag doll sewn from brown and cream "
+    "cloth patches with mismatched button eyes — three companions, each appearing exactly once, all in "
+    "their own colours.",
+  "c6_mirror_welcome_hook": "A corridor of tall crowned mirrors on hinged bases; one mirror bows "
+    "at its hinge — the FRAME bows, furniture, not a person. ONE real girl, her grey tabby cat and "
+    "her cloth rag-doll imp walk the corridor together, all three visible. Each mirror glass holds "
+    "one single image of the real girl, matching her pose; the crowned frames themselves bow."  "reward_c5": "COMPOSITION: one single girl stands on the bank, waving down at the water. Beside "
     "her ONLY her grey tabby cat. The water's surface mirrors the girl and the cat. The girl appears "
     "exactly ONCE above the waterline; any second image of her exists ONLY inside the water. No other "
     "person, child or figure stands on the bank.",
-  "c7_mirror_court": "Exactly ONE real girl on the walkway. Every mirror in the corridor shows only "
-    "ordinary reflections at plausible angles; no mirror-body steps out. One crowned nearest mirror "
-    "with brass arms holds the cushion.",
+  "c7_mirror_court": "ONE single wide scene. The only travellers: the girl in the blue coat, her grey tabby cat (small, "
+    "fur), and the rag-doll imp (knee-high, sewn from brown and cream cloth patches, button eyes) — "
+    "three separate beings, each appearing exactly once. Every mirror shows only the ordinary "
+    "reflection of the corridor and its three travellers. No figures stand inside or behind the glass.",
   "c7_audience_card": "The card is held forward by two thin brass mirror-arms; the girl, the cat and "
     "the rag imp stand opposite, one instance each.",
   "c8_clock_court": "The audience chairs are filled ONLY by FLAT PAINTED spectators on backdrop "
@@ -176,7 +178,17 @@ HINTS = {  # composition guardrails the briefs earned in QC (content stays Fred'
   "reward_c8_queen": "The queen on her stage with an EMPTY chain at her neck, the empty lectern "
     "cushion beside her; two wooden hands giving a slow tiny clap; she is cross and comic, unhurt.",
   "reward_c8_home": "The girl hugging her grey tabby cat at the kitchen doorway, both boots muddy, "
-    "family breakfast warm behind her; one girl, one cat.",
+    "family breakfast warm behind her; one girl, one cat.",  "c5_lake_wave": "Calm lakeside after the crossing. ONE real girl stands at the water's edge waving; her OWN "
+    "reflection in the water waves back with her — same bobbed hair, blue coat, muddy boots. Her grey "
+    "tabby cat sits at her feet. The girl exists exactly once in the air; the only second image of her "
+    "is her water reflection.",
+  "c5_perfect_frames": "Exactly three gilt-framed paintings on tall stands by the stone route. EVERY frame contains the "
+    "SAME girl: black bobbed hair, blue coat. Frame one: she polishes a boot with a brush. Frame two: "
+    "she stands alone under falling confetti holding a broom. Frame three: she holds an open compass "
+    "ringed by contradictory arrows. Inside each frame there is one girl and nothing else; all three "
+    "painted girls are her. On the path below the frames stand the real girl, her grey tabby cat, and "
+    "the cloth rag-doll imp looking up at the paintings. Three frames total.",
+
 }
 
 def prompt_for(art_id, text):
@@ -210,6 +222,22 @@ def grab(path):
     with urllib.request.urlopen(COMFY + path, timeout=600) as r:
         return r.read()
 
+EXTRA_PROMPTS = {
+  # local plates requested by playtest, pending a register entry. When an id below
+  # also exists in the register its brief is REPLACED here: the register's "two
+  # scene variants" briefs are grid-makers — the model paints every variant at once
+  # and duplicates the cast across panels.
+  "c5_lake_crossing": "Calm shallow lake crossed by wide flat stepping stones. One girl in a blue "
+    "coat stands mid-crossing holding an open paper map; the rag-doll imp sewn from brown and cream "
+    "cloth patches stands on the next stone pointing at the map; a grey tabby cat follows along the "
+    "stones. The still water carries each traveller's own reflection, matching them exactly. A dry "
+    "path and an orchard track ahead, morning mist. No text.",
+  "c5_lake_wave": "Calm lakeside after the crossing. The girl stands at the water's edge waving at "
+    "the water; her own ordinary reflection waves back. The grey tabby cat sits at her feet watching "
+    "the ripples. Beyond, the far bank and a path of apple trees in early leaf. Mist soft on the lake, "
+    "morning light. No text.",
+}
+
 def prompts_from_assets():
     """Asset id → content brief from story-visual-assets.md (the visual register).
     Briefs are content-only by contract; the style anchor below is what paints them."""
@@ -224,7 +252,12 @@ def prompts_from_assets():
         if not b:
             continue
         brief = " ".join(b.group(1).split()).replace("**", "")
+        if aid in EXTRA_PROMPTS: brief = " ".join(EXTRA_PROMPTS[aid].split())
         jobs.append((aid, brief, True))
+    painted = {j[0] for j in jobs}
+    for aid, brief in EXTRA_PROMPTS.items():
+        if aid not in painted:
+            jobs.append((aid, " ".join(brief.split()), True))
     return jobs
 
 def prompts_from_pack():

@@ -2692,7 +2692,7 @@ const QUESTS = [
         wrongEx:["Volunteering to remain in an endless worth assessment","Cruelty or threats"],
         quietRe:"\\b(useless|worthless|no good|never do anything right|i'?m terrible|nothing right)\\b",
         quietFb:[["pet","We don't have to agree with its verdict. You're here trying. I'll count that."],["narr","The cat sits beside Wren. The first slate turns face down quietly."]],
-        win:{fb:[["narr","The first slate turns face down. The reflection bends to turn it back, but it has become an ordinary flat stone."],["refl","That used to have standards."]],
+        win:{fb:[["narr","The first slate turns face down. The reflection bends to turn it back, but it has become an ordinary flat stone."],["refl","That was NOT in the rehearsal! It was supposed to have standards!"]],
           senB:"Small and yours. Enough.", senOk:"No need for a grand answer. You can try: 'I'm learning.'", senFeel:"Saying it out loud counts. You're here trying, and I'll count that."},
         pkgs:{permission:{v:"A full appraisal, then. We may be some time.", c:"No need for a whole report. Try a small truth or a refusal."},
           invite:{v:"A full appraisal, then. We may be some time.", c:"No need for a whole report. Try a small truth or a refusal."},
@@ -2735,7 +2735,7 @@ const QUESTS = [
     ]},
   ],
   outro:[
-    {t:"say", id:"c5_end_01", vis:[{a:"c5_lake_crossing"}], lines:[
+    {t:"say", id:"c5_end_01", vis:[{a:"c5_lake_wave"}], lines:[
       ["narr","Wren looked back at the lake. Her real reflection had muddy boots, a crooked coat, and a map corner sticking out of her pocket."],
       ["narr","She waved. It waved back."],
       ["wren","I'll keep that one."]]},
@@ -2842,7 +2842,7 @@ const QUESTS = [
         ["pip","Second position. Royal duty."],
         ["pop","Different backdrop. Fresh material."],
         ["pet","Same wheels."]]},
-      {t:"chal", id:"c6_e2_b1", visNote:"c6_usher_station", kind:"type", spk:"pip", pre:[["pip","Between us, I'm the clever one."],["pop","She can tell. Go on. Which of us is better?"]], line:"There's a correct answer.", prompt:"Wren isn't judging their contest. One line.", ph:"What does Wren say?", send:"Say it",
+      {t:"chal", id:"c6_e2_b1", visNote:"c6_usher_station", kind:"type", spk:"pip", setup:"Pip and Pop wheel a small tarnished trophy between them, and Pop hands out voting tickets for the Which-Usher-Is-Better contest.", pre:[["pip","Between us, I'm the clever one."],["pop","She can tell. Go on. Which of us is better?"]], line:"There's a correct answer.", prompt:"Wren isn't judging their contest. One line.", ph:"What does Wren say?", send:"Say it",
         purpose:"Hand the contest back, refuse the ranking, or a light flip. A safe genuine answer also passes.",
         bestEx:["Joint last.","Not judging.","You can share first place. I'm leaving.","You two decide.","Same act, different hat.","I'm checking the route."],
         okEx:["I like the green one.","I don't know.","Hmm. That's hard."],
@@ -3345,7 +3345,8 @@ let QS = null;
 // Story voices: one profile per speaker code. re = preferred voice family,
 // idx = fallback slot in the English voice pool, pitch/rate shape the character
 // even on machines with only one installed voice. Wren finally gets a voice.
-const SPK_VOICE = {troll:"tb", woman:"duch", duchess:"duch", courier:"wisp", bat:"echo"}; // aliases
+const SPK_VOICE = {troll:"tb", woman:"duch", duchess:"duch", courier:"wisp", bat:"echo",
+  tallfig:"pip", tallpup:"pip", roundfig:"pop", roundpup:"pop"}; // aliases
 const STORY_VOICES = {
   narr:  {re:/daniel|arthur|george|ryan|male/i, idx:0, pitch:1.0,  rate:0.95},
   wren:  {re:/serena|sonia|libby|ava|zira|kate|susan|female|hazel|linda/i, idx:1, pitch:1.5, rate:1.02},
@@ -3469,8 +3470,8 @@ function visLoad(el){
 function speakable(t){
   return pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
 }
-function speakSay(lines){
-  try{ let n=0; lines.forEach(l=>{ if (l[0]==="sfx") return; const code = SPK_VOICE[l[0]] || l[0]; if (STORY_VOICES[code]){ speak(pp(l[1]), code, null, n>0); n++; } }); }catch(e){}
+function speakSay(lines, queued){
+  try{ let n=queued?1:0; lines.forEach(l=>{ if (l[0]==="sfx") return; const code = SPK_VOICE[l[0]] || l[0]; if (STORY_VOICES[code]){ speak(pp(l[1]), code, null, n>0); n++; } }); }catch(e){}
 }
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
   source:"A real question. He had to go and find an answer.",
@@ -3486,15 +3487,31 @@ const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
 function duelNote(f){
   return f && f.duelNote ? `<p class="qduelnote">Grown-up note — a clearing line does three things: answers <i>this</i> taunt, pokes the weak spot in it, and ends on Wren's own terms. No password, no long words needed.</p>` : "";
 }
+function fbSpeak(f){
+  try{
+    const L=[];
+    if (f.echo) L.push(["wren","“"+f.echo+"”"]);
+    if (f.helpLines) L.push(...f.helpLines);
+    if (f.catFirst && f.c) L.push(["pet", f.c+(f.why?" "+f.why:"")]);
+    if (f.segs) L.push(...f.segs);
+    if (f.stage) L.push(["narr", f.stage]);
+    if (f.v) L.push([(QS.beat&&QS.beat.spk)||"narr", f.v]);
+    if (f.wrn) L.push(["wren", f.wrn]);
+    if (!f.catFirst && f.c) L.push(["pet", f.c+(f.why?" "+f.why:"")]);
+    speakSay(L);
+  }catch(e){}
+}
 function fbHtml(f){
   let h = "";
   if (f.echo) h += `<div class="qscene">${ava("wren","🧤")}<div class="qbub wren"><span class="who">Wren</span>“${pp(f.echo)}”</div></div>`;
+  const catB = f.c ? `<div class="qscene">${ava("pet","🐾")}<div class="qbub"><span class="who">${petNm()}</span>${pp(f.c)}${f.why?`<span class="qwhy">${pp(f.why)}</span>`:""}</div></div>` : "";
   if (f.helpLines) h += sayHtml(f.helpLines);
+  if (f.catFirst) h += catB;
   if (f.segs) h += sayHtml(f.segs);
   if (f.stage) h += `<div class="qnarr">${NLAB}${pp(f.stage)}</div>`;
   if (f.v){ const vc = QS.beat && QS.beat.spk || ""; h += `<div class="qscene">${ava(vc, QS.ch.emoji)}<div class="qbub"><span class="who">${WHO[vc]||QS.ch.vill}</span>${pp(f.v)}</div></div>`; }
   if (f.wrn) h += `<div class="qscene">${ava("wren","🧤")}<div class="qbub wren"><span class="who">Wren</span>${pp(f.wrn)}</div></div>`;
-  if (f.c) h += `<div class="qscene">${ava("pet","🐾")}<div class="qbub"><span class="who">${petNm()}</span>${pp(f.c)}${f.why?`<span class="qwhy">${pp(f.why)}</span>`:""}</div></div>`;
+  if (!f.catFirst) h += catB;
   if (f.vis) h += visHtml({vis:[f.vis]});
   h += duelNote(f);
   return h;
@@ -3536,7 +3553,12 @@ function drawQuestBeat(){
     const tcode = STORY_VOICES[SPK_VOICE[b.spk]||b.spk||""] ? (SPK_VOICE[b.spk]||b.spk) : "bully";
     if (b.pre && !QS.answered) view += sayHtml(b.pre);
     view += `<div class="qscene">${ava(b.spk, av)}<div class="qbub"><span class="who">${WHO[b.spk]||ch.vill}</span>${pp(b.line)}</div></div>`;
-    if (!QS.answered && b.line){ try{ if (b.pre) speakSay(b.pre); speak(speakable(b.line), tcode, null, !!b.pre); }catch(e){} }
+    if (!QS.answered){ try{
+      let q=0;
+      if (b.setup && !QS.retried){ speak(speakable(b.setup), "narr", null, false); q=1; }
+      if (b.pre){ speakSay(b.pre, q); q=1; }
+      if (b.line) speak(speakable(b.line), tcode, null, q===1);
+    }catch(e){} }
     if (b.visNote) view += visHtml({vis:[{a:b.visNote}]});
     view += `<p class="qprompt">${pp(b.prompt||"")}</p>`;
     if (b.hintArr && QS.hint>0 && !QS.answered){
@@ -3583,6 +3605,7 @@ function drawQuestBeat(){
   if (beat.t==="sensei"){ try{ speak(speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "pet"); }catch(e){} }
   if (beat.t==="notice"){ try{ speak(speakable(beat.text), "narr"); }catch(e){} }
   if (beat.t==="say") speakSay(beat.lines);
+  if (beat.t==="chal" && QS.answered && QS.fb) try{ fbSpeak(QS.fb); }catch(e){}
   const $ = id=>document.getElementById(id);
   $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; S.quest.pos=null; save(); renderQuest(); };
   $("qPanel").onclick = (e)=>{ if (e.target.closest("button,textarea")) return; if (tappable) qsContinue(); };
@@ -3627,7 +3650,7 @@ async function qsSend(){
       QS.fb = { duelNote:1, segs:[["wren","“"+val+"”"],["pet","The thinking-clock is resting. Your line is safe with me — send it again in a moment, or a grown-up can check it against the note below."]], c:"" };
     } else if (d.verdict==="clear" && d.cutting===2 && (d.attack+d.cutting+d.agency)>=5){
       QS.passed = true; QS.sappr++; addCoins(4);
-      QS.fb = { segs:[["wren","“"+val+"”"]].concat(b.win.fb), c:b.win.senB||"", btn:b.win.btn };
+      QS.fb = { catFirst:1, echo:val, segs:b.win.fb, c:b.win.senB||"", btn:b.win.btn };
     } else if (d.verdict==="retry"){
       QS.fb = { duelNote:1, echo:val, c:b.duelRetry||"Aim at the way she's using power, not a personal wound." };
     } else {
@@ -3641,7 +3664,7 @@ async function qsSend(){
   QS.answered = true;
   if (b.quietFb && b.quietRe && new RegExp(b.quietRe,"i").test(val)){
     QS.passed = true; QS.sappr++; addCoins(2);
-    QS.fb = { segs:[["wren","“"+val+"”"]].concat(b.quietFb), c:"" };
+    QS.fb = { echo:val, segs:b.quietFb, c:"" };
     drawQuestBeat(); return;
   }
   const good = g.quality==="best" || g.quality==="okish";
@@ -3650,14 +3673,14 @@ async function qsSend(){
     QS.sappr++; addCoins(g.quality==="best"?4:2);
     const w = b.win;
     if (w.feelOnly && g.quality==="okish" && g.tag==="feel"){
-      QS.fb = { segs:[["wren","“"+val+"”"]].concat(w.feelOnly.fb), c:w.feelOnly.c||"", btn:w.btn };
+      QS.fb = { catFirst:1, echo:val, segs:w.feelOnly.fb, c:w.feelOnly.c||"", btn:w.btn };
       drawQuestBeat(); return;
     }
     let c = w.senB;
     if (g.quality==="okish") c = (g.tag==="feel") ? (w.senFeel||w.senOk) : w.senOk;
     else if (QS.retried && (g.tag==="boundary"||g.tag==="source") && w.senR) c = w.senR;
     else if (g.tag==="source" && w.senSrc) c = w.senSrc;
-    QS.fb = { segs:[["wren","“"+val+"”"]].concat(w.fb), c, btn:w.btn, why:(g.coach||"").trim() || QWHY[g.tag] || "" };
+    QS.fb = { catFirst:1, echo:val, segs:w.fb, c, btn:w.btn, why:(g.coach||"").trim() || QWHY[g.tag] || "" };
   } else {
     QS.misses++;
     const p = (b.pkgs||{})[g.tag] || { c:"Try a line about this moment. You can borrow one or ask me for help." };

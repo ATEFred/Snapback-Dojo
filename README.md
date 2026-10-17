@@ -99,7 +99,7 @@ path-guide version of the opening remain recoverable in git history.)
   each speaker gets their **own browser voice** (`STORY_VOICES`: Wren high and young, the cat low and dry,
   Toastbrig a rumble, Wisp quick and squeaky… chosen from installed en-GB voices by family, with pitch and
   speed shaping the character even when the machine only has one voice). The read-aloud queues **every
-  line** of a beat, not just the last.
+  line** of a beat — setup, taunt bubbles and the feedback screen included — not just the last.
 - **VISUAL ONLY means visual only.** Signs, notices, badges, prop labels and maps (`story-visual-assets.md`)
   appear on screen — as painted plate when available, as a lettering card otherwise — and are **never**
   narrated or TTS'd; spoken lines merely refer to them ("a rather odd sign"). Branch-specific props and the
