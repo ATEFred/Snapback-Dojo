@@ -72,34 +72,52 @@ archetype, all hand-reviewed by the model itself for "would this actually land a
 ## 🌗 The Gloomwood and the Stolen Tomorrow (story mode)
 
 A separate, fictional adventure — deliberately **not** school-flavored, so the corridor never echoes in it.
-Queen Malvina has postponed tomorrow until everyone has properly appreciated her; tomorrow is the Moonrise
-Fair and the pet has entered the cake competition without making a cake. Wren walks the Gloomwood with the
-dojo pet at her side; Sensei coaches. Over-the-top monsters with sad little problems, Tim-Burton-adjacent in
-mood: gothic-twilight but never scary, every villain funnier than they are mean.
-**Two chapters ship** (Echo the Mimic Imp, Toastbrig the Bridge Inspector), written from
-`story-chapters-01-02-rewrite.md`; the rest of the arc lands as it's written. (The original Chapter 1 and its
-progress remain recoverable in git history.)
+At seventeen minutes past eight, Queen Malvina stopped Wren's whole world with the Great Clock's Minute Key
+and keeps it at her palace. An impossible door (brass leaf handle, plaque: *this was not here yesterday*)
+appeared under Wren's stairs; her cat is still moving, her family is frozen mid-breakfast, and nobody — not
+Wren, not Sensei, not anyone she meets — knows why she and the cat walk on or who opened the door. Those
+mysteries stay unexplained by contract. Wren's goal is honest: **get her family back**, not win anyone over.
+Sensei is the path guide she meets beyond the door; the dojo pet is her cat (it does not speak).
+Over-the-top monsters with sad little problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary,
+every villain funnier than they are mean. Frozen people feel no waiting and no harm; there is no countdown.
 
+**Four chapters ship** — Echo the Mimic Imp, Toastbrig the Bridge Inspector, the Duchess of HA (Comedy
+Gallery) and Wisp and the Royal Copy (Midnight Gazette) — transcribed from `story-chapters-01-02-rewrite.md`
+and `story-chapters-03-04.md`. Chapter 5 (Mirror Lake) teases on the map. (The earlier bellkeeper premise,
+its Chapter 1 and progress remain recoverable in git history.)
+
+- **Every voice wears a nameplate** — Narrator included. Nobody wonders who's talking.
+- **VISUAL ONLY means visual only.** Signs, notices, badges, prop labels and maps (`story-visual-assets.md`)
+  appear on screen — as painted plate when available, as a lettering card otherwise — and are **never**
+  narrated or TTS'd; spoken lines merely refer to them ("a rather odd sign"). Branch-specific props and the
+  signpost's changed states stay honest lettering cards (asset-id `noimg` / `NOIMG` set), because exact
+  lettering must never be left to chance.
 - **No failure state.** Every beat advances on a tap. An approved line (grader `okish` or `best`, or an
-  action choice like *keep walking*) ticks the villain's **prop meter** — his stars, his wheels, his drawers —
-  never his feelings. A miss shows that choice's specific consequence + one coach line, then the same prompt
-  returns in the same shuffled order. No punishments, no escalating rounds of shame.
+  action choice like *keep walking*) ticks the villain's **prop meter** — his stars, his wheels, his drawers,
+  his casting shutters — never his feelings. A miss shows that choice's specific consequence + one coach
+  line, then the same prompt returns in the same shuffled order. No punishments, no escalating rounds of shame.
+- **Walking away is always legal:** the Duchess's encounters carry an ungraded *Leave with Sensei* button;
+  progress saves and the map waits. Choices like *take the garden path* or *decline the quote* clear beats
+  exactly like words.
 - **Help is free and always on the table:** 🪄 *Borrow a line* (highlights the way through / fills a line) and
   🦉 *Ask Sensei for help* both clear a beat and cost nothing. Stars are a flourish, not a wage.
-- **The typed grader is lenient by doctrine:** feelings never lose, plain "No" never loses, spelling is
-  invisible, and when the AI is offline the fallback pattern-grader errs gentle — it never calls an answer
-  wrong on a hunch. Threats and handing the monster control of the exit get a funny retry, never a verdict.
+- **The typed grader is lenient by doctrine:** feelings never lose, plain "No" never loses, one useful source
+  question ("Who is everyone?") is a *best*, spelling is invisible, and when the AI is offline the fallback
+  pattern-grader errs gentle — it never calls an answer wrong on a hunch. Threats and handing the monster
+  control of the exit get a funny retry, never a verdict.
 - **Progressive difficulty:** Chapter 1 is all multiple choice (with action choices); Chapter 2 introduces
-  typed lines next to the walking button.
+  typed lines next to the walking button; Chapters 3–4 mix both with bargain-shaped traps.
 - A bookmark saves mid-story; reopening a chapter resumes exactly where the book was closed.
 - Every crossed villain becomes a page in **The Little Book of Former Weirdos** (sticker wall) + a trophy.
 - **Story pack export / import / restore** in the parent panel: the entire story (text, taunts, options, coach
   lines, ComfyUI `artPrompt`s) is JSON with stable ids — edit it, import it back, restore anytime. Story
   *progress* is separate and survives story edits and progress resets.
-- **Art:** `gen_art.py` paints scene plates (`quest-art/<id>.png`, gitignored, reproducible) from `artPrompt`
-  fields via ComfyUI with **Qwen Image 2.1** (`qwen_image_2.1_bf16` + Qwen3-VL encoder), shared style anchor +
-  character cast. LAN only, resumable: `python3 gen_art.py` (skips existing) · `--only ch1s1t2` · `--force`.
-  The rewritten chapters are shipped text-first; v2 art passes come after the story reads well on screen.
+- **Art:** `gen_art.py` paints the **visual asset register** (`story-visual-assets.md` → `quest-art/<asset-id>.png`,
+  gitignored, reproducible) plus any `artPrompt` fields via ComfyUI with **Qwen Image 2.1**
+  (`qwen_image_2.1_bf16` + Qwen3-VL encoder), shared style anchor + character cast; briefs' lettering is
+  requested exactly (negative prompt relaxed for text). LAN only, resumable: `python3 gen_art.py`
+  (skips existing) · `--only c1_signpost` · `--force` (add `SEED_SALT=2` for a different take).
+  The app probes each plate and falls back to the card automatically when a file is missing.
 
 ## Grown-up panel (⚙)
 
@@ -180,9 +198,12 @@ it can't. The AI, if configured, is your own local model.
 
 **Content**
 
-- [ ] Gloomwood chapters 3+ (arc mapped in `plannedstory.md`, Chapters 1–2 rewritten per
-      `story-chapters-01-02-rewrite.md` — now live)
-- [ ] Re-paint pass: review each generated scene, tune artPrompts in the story pack, regen single ids
+- [x] Gloomwood chapters 3–4 (Comedy Gallery + Midnight Gazette — live, per `story-chapters-03-04.md`)
+- [ ] Chapter 5: Mirror Lake (the reflection that stands up first)
+- [ ] Re-paint pass: review each asset plate in `quest-art/`, reroll weak lettering with `--force`
+      (or a different `SEED_SALT`); keep lettering cards as the accessibility layer
+- [ ] Pre-generated narration: batch-render per-beat TTS audio (quest-audio/<beat-id>), pick per-character
+      voices, ship the files; live browser TTS stays the fallback
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
 - [ ] Two-kid scenarios (the pair dynamic that matches the real situation at school)
 - [ ] Voice-note roleplay: the app speaks the taunt, she answers out loud, ASR + Sensei grade spoken delivery

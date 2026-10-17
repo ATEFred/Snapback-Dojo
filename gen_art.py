@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Batch-paint the Unbothered Quest — ComfyUI + Qwen Image 2.1, LAN only.
 
-Reads every `artPrompt` from the story pack in index.html (chapter, scene and
-beat level), wraps it in the shared style anchor, and writes quest-art/<id>.png
+Reads the visual asset register in story-visual-assets.md (asset id + content
+brief) plus every `artPrompt` from the story pack, wraps them in the shared
+style anchor, and writes quest-art/<id>.png
 which the app picks up automatically. Resumable: existing images are skipped.
 
 Usage:
@@ -38,7 +39,12 @@ CAST  = ("Recurring characters — Wren: a Burton-style child about ten, long th
          "than a mouth really should, loose fraying seams, fingers a little too long and quick — "
          "faintly uncanny, mostly pathetic, never outright frightening — he has a blunt rag-doll head with "
          "small floppy cloth ears, NO cat features, no tail, never resembling the cat; only ONE "
-         "imp per scene, the cat is the only other animal. Scene: ")
+         "imp per scene, the cat is the only other animal; Toastbrig the bridge inspector: an "
+         "enough-planked enormous troll with a gentle broad face, a wooden plank for a back and a "
+         "whistling kettle for a helmet; the Duchess of HA: a tall stiff woman in an antique "
+         "porcelain-doll gown with a big brass winding key between her shoulder blades and jointed "
+         "doll fingers; Wisp the midnight courier: a small nervous green-furred creature in a "
+         "buttoned waistcoat, long ears, ink-stained fingers and an enormous satchel. Scene: ")
 NEG   = ("photorealistic, photograph, 3d render, gore, blood, horror, sharp teeth, jump scare, "
          "terrified, screaming, menacing monster, truly scary, text, letters, watermark, signature, "
          "blurry, deformed hands, extra fingers, low quality, slack mouth, dopey, vacant stare, "
@@ -55,6 +61,23 @@ def grab(path):
     with urllib.request.urlopen(COMFY + path, timeout=600) as r:
         return r.read()
 
+def prompts_from_assets():
+    """Asset id → content brief from story-visual-assets.md (the visual register).
+    Briefs are content-only by contract; the style anchor below is what paints them."""
+    try:
+        md = (HERE / "story-visual-assets.md").read_text()
+    except FileNotFoundError:
+        return []
+    jobs = []
+    for m in re.finditer(r'### `([a-z0-9_]+)`(.*?)(?=\n### `|\n## |\Z)', md, re.S):
+        aid, sec = m.group(1), m.group(2)
+        b = re.search(r'\*\*Content brief:\*\*\s*(.*?)(?=\n\n\*\*|\Z)', sec, re.S)
+        if not b:
+            continue
+        brief = " ".join(b.group(1).split()).replace("**", "")
+        jobs.append((aid, brief, True))
+    return jobs
+
 def prompts_from_pack():
     """Scan the QUESTS const for id → artPrompt pairs, in story order."""
     src  = (HERE / "index.html").read_text()
@@ -67,15 +90,21 @@ def prompts_from_pack():
             cur = m.group(2)
         elif cur:
             pairs.append((cur, m.group(2)))
-    return pairs
+    return [(i, txt, False) for i, txt in pairs]
 
-def workflow(art_id, text, seed):
+LETTER = (" Draw the specified lettering exactly as given: correct spelling, word order and "
+          "arrow directions, clean legible antique serif capitals on the object. ")
+
+def workflow(art_id, text, seed, want_text=False):
     return {
       "1": {"class_type": "UNETLoader", "inputs": {"unet_name": UNET, "weight_dtype": "default"}},
       "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": CLIP, "type": "qwen_image"}},
       "3": {"class_type": "VAELoader",  "inputs": {"vae_name": VAE}},
-      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": STYLE + CAST + text}},
-      "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": NEG}},
+      "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": STYLE + CAST + text +
+            (LETTER if want_text else "")},
+      },
+      "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0],
+            "text": NEG.replace("text, letters, ", "") if want_text else NEG}},
       "6": {"class_type": "EmptyLatentImage", "inputs": {"width": WIDTH, "height": HEIGHT, "batch_size": 1}},
       "7": {"class_type": "KSampler", "inputs": {"model": ["1", 0], "positive": ["4", 0],
             "negative": ["5", 0], "latent_image": ["6", 0], "seed": seed, "steps": STEPS,
@@ -85,10 +114,10 @@ def workflow(art_id, text, seed):
             "filename_prefix": "snapback/" + art_id, "quality": "lossless"}},
     }
 
-def generate(art_id, text):
+def generate(art_id, text, want_text=False):
     salt = os.environ.get("SEED_SALT", "")  # SEED_SALT=2 python3 gen_art.py --only X → a different take
     seed = int(hashlib.sha1((art_id + salt).encode()).hexdigest()[:8], 16)
-    pid = api("/prompt", {"prompt": workflow(art_id, text, seed), "client_id": "snapback-dojo"})["prompt_id"]
+    pid = api("/prompt", {"prompt": workflow(art_id, text, seed, want_text), "client_id": "snapback-dojo"})["prompt_id"]
     t0 = time.time()
     while time.time() - t0 < 900:
         time.sleep(2)
@@ -115,12 +144,12 @@ def main():
     only = args[args.index("--only") + 1] if "--only" in args else None
     limit = int(args[args.index("--limit") + 1]) if "--limit" in args else 0
     OUT.mkdir(exist_ok=True)
-    jobs = prompts_from_pack()
+    jobs = prompts_from_assets() + prompts_from_pack()
     if only:
         jobs = [j for j in jobs if j[0] == only]
-    print(f"{len(jobs)} art slots found in the story pack", flush=True)
+    print(f"{len(jobs)} art slots found (visual register + story pack)", flush=True)
     done = failed = skipped = 0
-    for art_id, text in jobs:
+    for art_id, text, want_text in jobs:
         dest = OUT / (art_id + ".png")
         if dest.exists() and dest.stat().st_size > 0 and not force:
             skipped += 1
@@ -129,7 +158,7 @@ def main():
             break
         print(f"▸ {art_id}: {text[:70]}…", flush=True)
         try:
-            generate(art_id, text)
+            generate(art_id, text, want_text)
             done += 1
         except (urllib.error.URLError, RuntimeError) as e:
             failed += 1
