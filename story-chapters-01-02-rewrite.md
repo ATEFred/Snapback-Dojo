@@ -4,9 +4,9 @@
 
 Proposed replacement opening for story mode. This is a new script, not an edit to the shipped story pack. Character and encounter IDs below are proposed IDs for implementation. The original `plannedstory.md` remains unchanged.
 
-**Player character:** Wren, a ten-year-old girl from an ordinary present-day home. The player chooses her words and actions; the story uses her name rather than switching between Wren and “you.” **Cat companion:** `{pet}`, Wren's cat, using the player's pet name and current feline evolution art. The cat is introduced in Wren's home, accompanies her through the door, and does not speak. **Guide:** Sensei, an older traveller with a long coat and a crooked walking stick whom Wren meets beyond the door. Sensei is physically present, introduced before speaking, and available for help. **Narrator:** a separate storyteller, not a character. **Setting:** our world first, then the strange twilight Gloomwood. Home and school appear only to establish the frozen world; encounters and comeback practice happen entirely in the fantasy world.
+**Player character:** Wren, a ten-year-old girl from an ordinary present-day home. The player chooses her words and actions; the story uses her name rather than switching between Wren and “you.” **Cat companion and coach:** `{pet}`, Wren's own cat, using the player's pet name and current feline evolution art. At home the cat only makes ordinary cat sounds. After Wren and the cat cross the magic door, the cat unexpectedly speaks. The cat stays on four paws, has a dry, practical personality, and discovers this world alongside Wren. There is no separate adult guide or Sensei character in these four chapters. **Narrator:** a separate storyteller who describes events, not an unseen coach. **Setting:** our world first, then the strange twilight Gloomwood. Home and school appear only to establish the frozen world; encounters and comeback practice happen entirely in the fantasy world.
 
-**The adventure:** Time stops at 8:17 on an ordinary morning. Wren's family, her street, and her school are frozen in place. Only Wren and her cat seem able to move; neither knows why. A door appears in a blank wall of her house. It opens into the Gloomwood, where Sensei explains that Queen Malvina has stopped the outside world using the Great Clock's Minute Key. Time still passes in the Gloomwood. Wren sets out to recover the key and restart her world. Why Wren and the cat are moving, and who opened the door, remain real mysteries: do not explain them as bravery, cleverness, emotional control, a secret bloodline, or being “the chosen one.” Chapters 1–4 do not settle them.
+**The adventure:** Time stops at 8:17 on an ordinary morning. Wren's family, her street, and her school are frozen in place. Only Wren and her cat seem able to move; neither knows why. A door appears in a blank wall of her house. It opens into the Gloomwood, where the cat discovers a speaking voice. Together they read a royal notice claiming Queen Malvina has stopped the outside world with the Great Clock's Minute Key. A map on its back shows the palace. They set out to recover the key and restart Wren's world. Why they can move, why the cat can now talk, and who opened the door remain mysteries. The cat has no hidden prior knowledge of the wood, its residents, or its clock. They learn from signs, observations, Echo, and Wisp. Chapters 1–4 do not settle the mysteries.
 
 **Continuity:** The Minute Key starts/stops the outside-world face of the Great Clock. Malvina used it and keeps it; the clock is in her palace. Wren must retrieve the key and use it there, not merely bring it home. Frozen people experience no waiting, hunger, or harm while held in their moment. The home doorway remains open and marked on the map. The game has no countdown, and stopping a session does not worsen the freeze. The old bellkeeper, morning-bell, and fair premises are retired.
 
@@ -21,7 +21,9 @@ The player-facing title is **The Gloomwood and the Stolen Tomorrow**. Do not awa
 This section is for implementation; it is not an opening lecture to the player.
 
 - No timers in these chapters. Read aloud is optional. Every narration screen advances on a tap.
-- Every spoken line has a visible speaker name. Use separate portraits/nameplates for **Narrator**, **Wren**, **Sensei**, **Echo**, and **Toastbrig**. Narrator text is labelled **Narrator** in this script; it is not Sensei's dialogue. Sensei's advice comes from Sensei standing with the group. Do not merge narration and character speech into one anonymous text box.
+- Every spoken line has a visible speaker name. Use separate portraits/nameplates for **Narrator**, **Wren**, **{pet}**, **Echo**, and **Toastbrig**. Narrator text is labelled **Narrator** in this script; it is not {pet}'s dialogue. {pet}'s advice comes from {pet} standing with the group. Do not merge narration and character speech into one anonymous text box.
+- Replace `{pet}` with the cat's actual name in every nameplate, line of dialogue, and help button before display or TTS. Never show a separate “Sensei” nameplate in story mode. The cat's speech and meow are different sounds: Echo steals only the meow, so the cat can still talk and coach. The cat can suggest a short response or stand beside Wren; it cannot provide adult protection or promise to end real-world bullying. Outside story mode, the existing dojo coach is unchanged by this script revision.
+- Bind ordinary cat dialogue, borrowed-line suggestions, and feedback to the same cat portrait and TTS voice. No separate coaching avatar or voice appears when help is requested. The Narrator keeps its own voice and never delivers the cat's advice. Story-state migration must remove the old guide from party and scene compositions, rather than renaming a human portrait to the pet's name.
 - Text marked **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM** is shown, never fed to the narrator/TTS. Each visual has an asset ID and a content-only generation brief in `story-visual-assets.md`. Older **Display** blocks are also visual-only: their literal wording is an image/overlay specification, not speech. A narrator may mention an odd sign without reading its text. Never send asset descriptions, IDs, prompts, verdicts, or implementation notes to TTS. **Narrator (setup)** is spoken narration; **UI ONLY** is visible interface text only.
 - In choice tables, all quoted dialogue in the Choice column belongs to Wren. Show **Wren** above the dialogue choices. Action choices remain labelled actions. Outcome cells are narrator text; any character dialogue following them gets its own labelled line. Typed-answer examples are possible Wren lines, not new speakers.
 - Each chapter contains two encounters of three challenge beats. Use the existing three-chip encounter meter. Chapters have six challenge beats each, but their tasks and consequences vary.
@@ -131,6 +133,8 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** Wren pulled on both boots and took her coat from its hook. Whatever was out there, it wasn't the kitchen.
 
+**Narrator:** She checked the little torch in her coat pocket. It worked.
+
 **Narrator:** {pet} slipped past her and sat on the first root, looking back.
 
 **Wren:** “We're staying together.”
@@ -147,43 +151,55 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `portal_threshold`.
 
-### `c1_home_08` — introduce the guide
+### `c1_home_08` — the cat's first words
 
-**Narrator:** Someone was trying to light a lantern beside the path: an older traveller in a long coat, with a crooked walking stick tucked under one arm.
+**{pet}:** “Well. That's definitely not the cupboard.”
 
-**Narrator:** They saw Wren, lowered the lantern, and gave her room.
+**Narrator:** Wren looked behind her. Then at the trees. Then down at the cat.
 
-**Traveller (not yet named):** “Hello. Did that door open into your house?”
+**Wren:** “You can TALK?”
 
-**Wren:** “It wasn't there before. Everyone's stopped. My family. Outside. Everything. Except us.”
+**{pet}:** “Apparently.”
 
-**Traveller:** “I'm Sensei. I look after these paths. Let's work out what's happened.”
+**Wren:** “Since when?”
 
-**Narrator:** {pet} inspected Sensei's boots, then settled beside Wren.
+**{pet}:** “Since the cupboard became a forest. I'm having quite a morning too.”
+
+**Narrator:** The cat tried a small meow, then looked surprised all over again.
+
+**{pet}:** “Both still work. Convenient.”
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `cat_first_words`.
 
 ### `c1_home_09` — the Queen's notice
 
-**Narrator:** Sensei pointed to a rather odd notice nailed to a tree. A portrait of a crowned woman occupied most of it. The instructions had been squeezed in underneath.
+**Narrator:** The cat's ears turned towards a rustling sheet nailed to a tree. Wren stepped closer to inspect the rather odd notice. A portrait of a crowned woman occupied most of it. The instructions had been squeezed in underneath.
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `queen_time_notice`.
 
 **Wren:** “She stopped time?”
 
-**Sensei:** “Queen Malvina. The outside-world face of the Great Clock has stopped. She has its Minute Key.”
+**{pet}:** “That's what she's taking credit for. Queen Malvina. Modest portrait.”
+
+**Wren:** “And she's keeping the Minute Key. We need that to start the Great Clock again.”
 
 **Wren:** “For applause?”
 
-**Sensei:** “She doesn't like being missed.”
+**{pet}:** “I don't think she'd enjoy being ignored.”
 
 ### `c1_home_10` — what matters
 
 **Wren:** “Are they all right? My family?”
 
-**Sensei:** “They're held in one moment. They aren't waiting or hurting. Start the clock again and that spoon finishes falling.”
+**Narrator:** Wren found a smaller paragraph at the bottom of the notice and read it twice. The cat leaned against her boot.
 
-**Wren:** “Why aren't I stopped? Why isn't {pet}?”
+**Wren:** “It says paused people don't feel time passing. They aren't waiting or hurting.”
 
-**Sensei:** “I don't know. And I've never seen that door before.”
+**{pet}:** “Then they're still at breakfast. We need to get that clock going.”
+
+**Wren:** “Why aren't we stopped? Why can you talk?”
+
+**{pet}:** “I don't know. Yesterday I thought the washing machine was the strangest thing in the house.”
 
 **Narrator:** Wren glanced back at the small rectangle of hallway between the trees.
 
@@ -191,17 +207,19 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 ### `c1_home_11` — choose the road
 
-**Narrator:** Sensei laid a map on a flat root.
+**Narrator:** A corner of the notice lifted in the breeze. There was a little palace map printed on the back.
 
-**Sensei:** “Her palace is across the wood. We need the key, and we need to turn it in the clock there.”
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `queen_notice_map`.
 
-**Wren:** “Can you come?”
+**Narrator:** Wren lifted the notice off its nail and spread it on a flat root.
 
-**Sensei:** “Yes. We'll go together. You can ask me for help at any point.”
+**Wren:** “Across the wood. Get the key. Turn it in the clock. That's where we start.”
 
-**Narrator:** Wren pointed out the home door. Sensei marked it on the map, then handed Wren the lantern.
+**{pet}:** “Together. I recommend the path over the brambles.”
 
-**Narrator:** The three of them followed the path. A few minutes later, they reached a fork.
+**Narrator:** Wren marked their home door on the map and folded it into her pocket. She switched on her torch.
+
+**Narrator:** Wren and the cat followed the path. A few minutes later, they reached a fork.
 
 **Narrator:** At the first fork, Wren stopped to read the signpost.
 
@@ -215,9 +233,9 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 ### `c1_intro_07` — dialogue
 
-**Narrator:** {pet} opened their mouth to complain about the unhelpful sign.
+**Narrator:** The cat sniffed a suspicious bush and began an indignant meow.
 
-**Narrator:** A tiny trumpet sounded from a bush.
+**Narrator:** Halfway out, the sound turned into a tiny trumpet blast. Something bright zipped from the cat's mouth into the bush.
 
 **Wren:** “That is not your normal noise.”
 
@@ -237,7 +255,11 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** Inside Echo's jar, one furious meow bounced against the glass.
 
-**Sensei, quietly to Wren:** “An echo imp. They collect sounds. That one's collected something that isn't his.”
+**Wren:** “That's your meow in there.”
+
+**{pet}:** “I can explain my displeasure. I would also like to make the noise.”
+
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** The meow in the jar cannot speak. The cat retains the new speaking voice; no coaching or speech is lost during this encounter. Echo is not identified by species until he or someone familiar with him supplies it.
 
 ### `c1_intro_09` — dialogue
 
@@ -249,7 +271,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_stage_and_jar`. Use its progress variants throughout encounter 1.
 
-**Sensei:** “You came for a meow. Let's see whether you need to enter his contest.”
+**{pet} (quietly to Wren):** “I want the meow. He wants an audition. Rather different errands.”
 
 **Transition button:** **Get the meow back**
 
@@ -274,7 +296,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Echo:** “You're supposed to audition.”
 
-**Sensei:** “You skipped the audition. Good.”
+**{pet}:** “No audition. Sensible. I refuse most of those.”
 
 **Okay follow-up:**
 
@@ -282,19 +304,19 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Wren:** “Keep the warm-up. I'll take the meow.”
 
-**Sensei:** “Short, and it worked. 'You first' can also buy you a whole performance.”
+**{pet}:** “Short, and it worked. 'You first' can also buy you a whole performance.”
 
 **Retry: impressive things**
 
 **Echo:** “Excellent. List them. Alphabetically. No, by shininess.”
 
-**Sensei:** “Now he's judging your talents. Bring it back to what you came for.”
+**{pet}:** “Now he's judging your talents. Bring it back to what you came for.”
 
 **Retry: dropped sock**
 
 **Echo:** “My turn! Your face looks like— hang on, I need a sock.”
 
-**Sensei:** “A new contest. Try refusing the first one.”
+**{pet}:** “Another contest. We haven't ordered one yet.”
 
 **Borrow:** “I'm here for the meow.”
 
@@ -321,25 +343,25 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Echo:** “That question was decorative.”
 
-**Sensei:** “His own words did the work.”
+**{pet}:** “His own words did the work.”
 
 **Best feedback, “Then you won't”:**
 
 **Echo:** “I might need a small answer.”
 
-**Sensei:** “You let the contradiction sit there. No explanation needed.”
+**{pet}:** “You let the contradiction sit there. No explanation needed.”
 
 **Okay feedback:**
 
 **Echo:** “I remember. I was there.”
 
-**Sensei:** “You spotted it. Next time, 'You just did' saves some breath.”
+**{pet}:** “You spotted it. Next time, 'You just did' saves some breath.”
 
 **Retry:**
 
 **Echo:** “Names? References? A signed statement from a beetle?”
 
-**Sensei:** “You don't need witnesses to prove you're worth hearing. His question is right there.”
+**{pet}:** “You don't need witnesses to prove you're worth hearing. His question is right there.”
 
 **Borrow:** “You just did.”
 
@@ -366,7 +388,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Echo:** “Inconvenient.”
 
-**Sensei:** “Exactly. You didn't need his score.”
+**{pet}:** “Exactly. You didn't need his score.”
 
 **Best feedback, “Keep the prize”:**
 
@@ -374,19 +396,19 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **Narrator:** {pet} makes the tiny trumpet noise again.
 
-**Sensei:** “Clear request. No audition attached.”
+**{pet}:** “Clear request. No audition attached.”
 
 **Retry: neither are you**
 
 **Echo:** “Then we'd better find out who's worse. Best of nineteen!”
 
-**Sensei:** “That's another round. You can leave the score unsettled.”
+**{pet}:** “That's another round. You can leave the score unsettled.”
 
 **Retry: how to win**
 
 **Echo:** “First rule: I may add rules. Second rule: see first rule.”
 
-**Sensei:** “He gets to move the finish line. Try stepping out of the race.”
+**{pet}:** “He gets to move the finish line. Try stepping out of the race.”
 
 **Borrow:** “Still not entering.”
 
@@ -438,7 +460,7 @@ Here it means **a strong response for this scene**, not a guaranteed way to cont
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c1_portable_stage`. Use its folding variants throughout encounter 2.
 
-**Sensei:** “You've got your meow. Keep your own errand in view.”
+**{pet}:** “Meow recovered. Now, where were we going before all that?”
 
 **Transition button:** **Find the palace path**
 
@@ -465,25 +487,25 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Wren traces the route with one finger.
 
-**Sensei:** “You answered once, then chose what to do.”
+**{pet}:** “You answered once, then chose what to do.”
 
 **Best feedback, action:**
 
 **Echo:** “That's a very rude map.”
 
-**Sensei:** “You had something more useful to look at.”
+**{pet}:** “You had something more useful to look at.”
 
 **Retry: what's wrong**
 
 **Echo:** “At last. A review! Shall I start with the vowels?”
 
-**Sensei:** “That lets him inspect your voice. His comment doesn't need an answer.”
+**{pet}:** “That lets him inspect your voice. His comment doesn't need an answer.”
 
 **Retry: never talk**
 
 **Echo:** “Excellent. A permanent rule. I'll need a larger stamp.”
 
-**Sensei:** “Quiet for a moment is a choice. Giving up your voice is much too much.”
+**{pet}:** “Quiet for a moment is a choice. Giving up your voice is much too much.”
 
 **Borrow:** Highlight the map action. The lifeline does not always have to lend dialogue.
 
@@ -508,7 +530,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Wren:** “A normal breakfast would do.”
 
-**Sensei:** “Your reason. No application for his approval.”
+**{pet}:** “Your reason. No application for his approval.”
 
 **Best feedback, think that:**
 
@@ -516,19 +538,19 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Wren:** “Busy day for you.”
 
-**Sensei:** “You left his opinion with him.”
+**{pet}:** “You left his opinion with him.”
 
 **Okay feedback:**
 
 **Echo:** “It was a guess.”
 
-**Sensei:** “You corrected him. Fair enough. You can also skip proving what you never claimed.”
+**{pet}:** “You corrected him. Fair enough. You can also skip proving what you never claimed.”
 
 **Retry:**
 
 **Echo:** “Trial one: dramatic standing. Trial two: cape maintenance.”
 
-**Sensei:** “He's judging again. You have a reason to go without beating him.”
+**{pet}:** “He's judging again. You have a reason to go without beating him.”
 
 **Borrow:** “I'm getting my family back.”
 
@@ -555,7 +577,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Echo, muffled:** “—ow.”
 
-**Sensei:** “You let him have the word. You kept going.”
+**{pet}:** “You let him have the word. You kept going.”
 
 **Best feedback, action:**
 
@@ -565,17 +587,17 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Nobody disputes this.
 
-**Sensei:** “No extra line required.”
+**{pet}:** “Excellent. Now we can walk instead of explaining walking.”
 
 **Okay feedback:**
 
-**Sensei:** “You left. That counts. Next time you can leave without marking your own answer.”
+**{pet}:** “You left. That counts. Next time you can leave without marking your own answer.”
 
 **Retry:**
 
 **Echo:** “No, I do. No, you do. No, I— this could take YEARS.”
 
-**Sensei:** “He can keep the word. You can keep going.”
+**{pet}:** “He can keep the word. You can keep going.”
 
 **Borrow:** Highlight the path action.
 
@@ -629,9 +651,9 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Echo kept a little distance and his hands out of the jar. Wren checked the path ahead.
 
-### `c1_end_05` — Sensei
+### `c1_end_05` — {pet}
 
-**Sensei:** “You don't have to win every little contest someone offers. Some aren't worth entering.”
+**{pet}:** “You don't have to win every little contest someone offers. Some aren't worth entering.”
 
 ### `c1_end_06` — hook
 
@@ -667,7 +689,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Practice:** a light flip; harmless agreement without self-belittling; noticing a changed demand; a clear boundary; repeating it; leaving an argument unfinished.
 
-**Difficulty:** first four challenges are choices. Final two allow typed replies with an immediate **Borrow a line** option and a separate **Ask Sensei for help** action. Each typed challenge has several accepted strategies.
+**Difficulty:** first four challenges are choices. Final two allow typed replies with an immediate **Borrow a line** option and a separate **Ask {pet} for help** action. Each typed challenge has several accepted strategies.
 
 **Mechanic:** Toastbrig's inspection booth has three **HOLD UP** signs. Each cleared challenge folds one down. After Wren reaches the far bank, Toastbrig opens a portable complaints desk with three file drawers. Each cleared challenge closes one. Don't use emotional distress as his health bar.
 
@@ -719,7 +741,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** He raised three **HOLD UP** signs. One was upside down.
 
-**Sensei:** “Read his small sign. Then decide how much boot discussion you need.”
+**{pet}:** “His small sign says the inspection's optional. I recommend very little boot discussion.”
 
 **Transition button:** **Cross the bridge**
 
@@ -744,7 +766,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Toastbrig:** “Yes. Well. Arrival is one of the things boots do.”
 
-**Sensei:** “You used the boots' actual job. Neat.”
+**{pet}:** “You used the boots' actual job. Neat.”
 
 **Best feedback, crossing:**
 
@@ -752,13 +774,13 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Wren:** “The bridge is open.”
 
-**Sensei:** “You stated the plan. No shoe trial.”
+**{pet}:** “You stated the plan. No shoe trial.”
 
 **Retry: shop**
 
 **Toastbrig:** “I'll need a receipt, a witness, and a drawing of the shopkeeper's ankles.”
 
-**Sensei:** “Now the boots need evidence. You can cross without proving they're special.”
+**{pet}:** “Now the boots need evidence. You can cross without proving they're special.”
 
 **Retry: kettle**
 
@@ -766,7 +788,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** His helmet whistles. A passing moth falls off a leaf.
 
-**Sensei:** “New argument: his hat. Try keeping your own journey in view.”
+**{pet}:** “New argument: his hat. Try keeping your own journey in view.”
 
 **Borrow:** “They got me here.”
 
@@ -793,7 +815,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** The bird squeaks back at him.
 
-**Sensei:** “You kept the squeak and dropped the insult.”
+**{pet}:** “You kept the squeak and dropped the insult.”
 
 **Best feedback, crossing:**
 
@@ -803,7 +825,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Wren keeps moving.
 
-**Sensei:** “A boot can squeak without it becoming a case to defend.”
+**{pet}:** “A boot can squeak without it becoming a case to defend.”
 
 **Retry: denial**
 
@@ -811,13 +833,13 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Squeak.
 
-**Sensei:** “You can agree about a noise without agreeing there's something wrong with you.”
+**{pet}:** “You can agree about a noise without agreeing there's something wrong with you.”
 
 **Retry: everything**
 
 **Toastbrig:** “Everything? I only inspected two boots.”
 
-**Sensei:** “That's a much bigger claim than his. Keep the true bit: one boot squeaks.”
+**{pet}:** “That's a much bigger claim than his. Keep the true bit: one boot squeaks.”
 
 **Borrow:** “Saves me saying hello.”
 
@@ -840,7 +862,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Toastbrig:** “But this is a hat objection. Entirely different department.”
 
-**Sensei:** “Different demand. Same choice for you.”
+**{pet}:** “Different demand. Same choice for you.”
 
 **Best feedback, skip:**
 
@@ -848,19 +870,19 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Wren:** “Useful bit.”
 
-**Sensei:** “You didn't need a better hat argument. The inspection was optional.”
+**{pet}:** “You didn't need a better hat argument. The inspection was optional.”
 
 **Okay feedback:**
 
 **Toastbrig:** “I have a subsection about cheating. Somewhere.”
 
-**Sensei:** “You spotted the change. Good. You can name it without staying for a rules debate.”
+**{pet}:** “You spotted the change. Good. You can name it without staying for a rules debate.”
 
 **Retry:**
 
 **Toastbrig:** “Depends. Hood height? Hood ambition? Has the hood previously been a hat?”
 
-**Sensei:** “Another thing to prove. You can decline the inspection.”
+**{pet}:** “Another thing to prove. You can decline the inspection.”
 
 **Borrow:** “I'll skip the inspection.”
 
@@ -896,7 +918,7 @@ Echo's stage has three wheels. Each cleared challenge folds one wheel underneath
 
 **Narrator:** Wren's hands felt a little tight around the map. She loosened them.
 
-**Sensei:** “You can be annoyed. You still get to choose the next words.”
+**{pet}:** “You can be annoyed. You still get to choose the next words.”
 
 **Narrator:** Three drawers popped open beneath the new sign.
 
@@ -925,25 +947,25 @@ The troll stays behind his desk beside the bridge. He does not chase, grab, surr
 
 **Narrator:** Wren looks down the path.
 
-**Sensei:** “A clear boundary. You can keep it short.”
+**{pet}:** “A clear boundary. You can keep it short.”
 
 **Best feedback, don't want:**
 
 **Toastbrig:** “I have several excellent follow-up points.”
 
-**Sensei:** “You said what you wanted and what you're doing.”
+**{pet}:** “You said what you wanted and what you're doing.”
 
 **Best feedback, please stop:**
 
 **Toastbrig:** “But I had a diagram.”
 
-**Sensei:** “Polite can still be firm. You asked him to stop; you don't owe him a debate.”
+**{pet}:** “Polite can still be firm. You asked him to stop; you don't owe him a debate.”
 
 **Retry:**
 
 **Toastbrig:** “A key? What sort? How many teeth? We could be here a while.”
 
-**Sensei:** “Your reasons are real. He doesn't need the whole list. Try the boundary.”
+**{pet}:** “Your reasons are real. He doesn't need the whole list. Try the boundary.”
 
 **Borrow:** “No more boot talk.”
 
@@ -957,7 +979,7 @@ The troll stays behind his desk beside the bridge. He does not chase, grab, surr
 
 **Input placeholder:** `What does Wren say?`
 
-**Buttons:** **Say it** / **Borrow a line** / **Ask Sensei for help**
+**Buttons:** **Say it** / **Borrow a line** / **Ask {pet} for help**
 
 #### Accept as `best`
 
@@ -1004,13 +1026,13 @@ Do not label “I'm upset,” “That hurt,” “I'm scared,” or an answer co
 
 **Toastbrig:** “Now the furniture's doing it.”
 
-**Sensei (best; repeated boundary):** “Same boundary. No fresh argument.”
+**{pet} (best; repeated boundary):** “Same boundary. No fresh argument.”
 
-**Sensei (best; other close):** “That ends your part of the discussion.”
+**{pet} (best; other close):** “That ends your part of the discussion.”
 
-**Sensei (okay):** “That works. A shorter version is: 'Heard it. Moving on.'”
+**{pet} (okay):** “That works. A shorter version is: 'Heard it. Moving on.'”
 
-**Sensei (okay; feeling only):** “You can say that. You can add: 'Stop. I'm going.'”
+**{pet} (okay; feeling only):** “You can say that. You can add: 'Stop. I'm going.'”
 
 Use exactly one coach line, selected by response strategy. Do not add a generated lecture.
 
@@ -1020,13 +1042,13 @@ Use exactly one coach line, selected by response strategy. Do not add a generate
 
 **Toastbrig:** “My kettle has an EXCELLENT reputation.”
 
-**Sensei:** “That starts a kettle argument. Try closing the boot one.”
+**{pet}:** “That starts a kettle argument. Try closing the boot one.”
 
 **Threat:**
 
 **Narrator:** Toastbrig tucks the desk behind him.
 
-**Sensei:** “Skip the threat. A boundary is enough here.”
+**{pet}:** “Skip the threat. A boundary is enough here.”
 
 **Invitation:**
 
@@ -1034,35 +1056,35 @@ Use exactly one coach line, selected by response strategy. Do not add a generate
 
 **Toastbrig:** “Well, since you asked—”
 
-**Sensei:** “That offers him another round. Try finishing your part.”
+**{pet}:** “That offers him another round. Try finishing your part.”
 
 **Permission to leave:**
 
 **Toastbrig:** “I'll draw up a departure test.”
 
-**Sensei:** “The path is open. You don't need to pass his test.”
+**{pet}:** “The path is open. You don't need to pass his test.”
 
 **Unrelated or unclear:**
 
-**Sensei:** “Try a line that closes this conversation. Plain is fine.”
+**{pet}:** “Try a line that closes this conversation. Plain is fine.”
 
 Do not generate a taunt mocking spelling or an unclear answer.
 
 **Borrowed line:** “Heard it. Moving on.”
 
-#### Ask Sensei for help
+#### Ask {pet} for help
 
 This is a valid alternative, not a miss. Clear the beat and close the second drawer.
 
-**Wren:** “Sensei, a hand?”
+**Wren:** “{pet}, a paw?”
 
-**Sensei:** “Of course. Inspector, the inspection is over. We're leaving.”
+**{pet}:** “Four available. Inspector, we're finished. Come on, Wren.”
 
 **Toastbrig:** “There is a form for—”
 
-**Narrator:** Sensei points at the open path.
+**Narrator:** The cat steps onto the open path and looks back at Wren.
 
-**Sensei, to Wren:** “Together?”
+**{pet}, to Wren:** “Together?”
 
 **Wren:** “Together.”
 
@@ -1082,7 +1104,7 @@ Then proceed to the final beat. Help remains available there too.
 
 **Input placeholder:** `An ending, not an argument`
 
-**Buttons:** **Say it and go** / **Keep walking** / **Borrow a line** / **Ask Sensei for help**
+**Buttons:** **Say it and go** / **Keep walking** / **Borrow a line** / **Ask {pet} for help**
 
 #### Accept as `best`
 
@@ -1133,9 +1155,9 @@ These clear the beat and lead to the same departure. Feedback can offer a shorte
 
 **Toastbrig:** “That's confidential.”
 
-**Sensei (best):** “He can choose a stamp. You can choose the path.”
+**{pet} (best):** “He can choose a stamp. You can choose the path.”
 
-**Sensei (okay):** “You left. That's the useful part. 'I'm going' is enough next time.”
+**{pet} (okay):** “You left. That's the useful part. 'I'm going' is enough next time.”
 
 Now show **Follow the path**. This is an action continuation, not another graded challenge. No second comeback is required.
 
@@ -1157,15 +1179,15 @@ Now show **Follow the path**. This is an action continuation, not another graded
 >
 > SCARED
 
-**Sensei:** “You'd already answered. Walking was enough.”
+**{pet}:** “You'd already answered. Four paws ahead of you.”
 
 Clear the beat. Do not require a further departure button beyond normal narration advance.
 
-#### Ask Sensei for help outcome
+#### Ask {pet} for help outcome
 
 **Wren:** “Walk with me?”
 
-**Sensei:** “Yes.”
+**{pet}:** “Yes.”
 
 **Narrator:** {pet} takes one side. Echo takes the other.
 
@@ -1175,7 +1197,7 @@ Clear the beat. Do not require a further departure button beyond normal narratio
 
 **Narrator:** The bridge bird squeaks over the rest.
 
-**Sensei:** “You can ask for company whenever you need it.”
+**{pet}:** “You can ask for company whenever you need it.”
 
 Clear the beat. Give the same reward as the other successful routes.
 
@@ -1187,21 +1209,21 @@ Clear the beat. Give the same reward as the other successful routes.
 
 **Toastbrig:** “A bravery examination. Splendid. Section one: boots.”
 
-**Sensei:** “You don't need his bravery mark. The path is open.”
+**{pet}:** “You don't need his bravery mark. The path is open.”
 
 **Staying for approval:**
 
 **Narrator:** Toastbrig pulls his chair closer to the desk.
 
-**Sensei:** “That lets him set your leaving time. Try choosing it yourself.”
+**{pet}:** “That lets him set your leaving time. Try choosing it yourself.”
 
 **Threat or personal attack:**
 
-**Sensei:** “You can leave without threatening him or attacking something personal.”
+**{pet}:** “You can leave without threatening him or attacking something personal.”
 
 **Unclear:**
 
-**Sensei:** “Try a goodbye, a boundary, or the walking button.”
+**{pet}:** “Try a goodbye, a boundary, or the walking button.”
 
 **Borrowed line:** “I'm leaving anyway.”
 
@@ -1239,9 +1261,9 @@ Clear the beat. Give the same reward as the other successful routes.
 
 **Narrator:** The boots kept working.
 
-### `c2_end_04` — Sensei
+### `c2_end_04` — {pet}
 
-**Sensei:** “He didn't change his opinion. You still crossed the bridge.”
+**{pet}:** “He didn't change his opinion. You still crossed the bridge.”
 
 ### `c2_end_05` — hook
 
@@ -1292,8 +1314,8 @@ When Chapter 3 is implemented, add **Enter the gallery**. Until then the gallery
 - Proposed chapter IDs: `gloomwood_v2_c1` and `gloomwood_v2_c2`. Do not overwrite the old story pack as part of importing this review document.
 - Each choice row has its own outcome; multiple `best` answers are intentional. Map document `okish` to the existing option-quality value `ok` where the pack requires it, and map the typed grader's `okish` verdict consistently. Do not accidentally interpret either spelling as failure.
 - Branch-specific Wren lines in successful outcomes are fixed continuation dialogue, not additional questions to grade.
-- Opening screens introduce Wren, {pet}, and Sensei before the first challenge. Do not skip these introductions on a first play. Unseen speakers are labelled by source (**Voice in the bush**, **Troll at the bridge**) until their names appear in the story; the parenthetical script names are implementation metadata, not visible nameplates. Once the badge/sign supplies a name, use **Echo** or **Toastbrig** consistently.
-- Narrator, character speech, visual-only assets, and UI instructions are distinct types, even in the same beat. The Queen's notice is shown as an image/legible overlay. Neither Sensei nor the Narrator reads it aloud. Wren's questions about it are separate character dialogue.
+- The opening introduces Wren and her cat at home, then gives the cat its first speech after the portal. There is no third traveller to introduce. Do not skip the speech reveal on first play. Unseen speakers are labelled by source (**Voice in the bush**, **Troll at the bridge**) until their names appear in the story; parenthetical script names are metadata. Once the badge/sign supplies a name, use **Echo** or **Toastbrig** consistently.
+- Narrator, character speech, visual-only assets, and UI instructions are distinct types, even in the same beat. The Queen's notice is shown as an image/legible overlay. Neither {pet} nor the Narrator reads it aloud. Wren's questions about it are separate character dialogue.
 - Both spoken and action routes advance the same beat exactly once and give the same base rewards.
 - All meter changes concern Echo's stage props or Toastbrig's paperwork. No shrinking, despair, or loneliness is necessary to demonstrate Wren's success.
 - Persist completed beats before showing the next one so closing the app does not require redoing a long narration sequence. Resuming on a challenge should include its immediate setup.
@@ -1323,13 +1345,14 @@ Before giving it to the child, play both chapters and confirm:
 - “Please stop” clears the appropriate boundary beat.
 - “I'm upset. Stop talking about my boots” clears the first typed beat.
 - “What do I do to prove I'm brave?” gets a useful retry at the final beat, while “I'm scared and I'm leaving” succeeds.
-- “Keep walking” and asking Sensei for help clear the final beat with full rewards.
+- “Keep walking” and asking {pet} for help clear the final beat with full rewards.
 - An `okish` answer advances once. Borrowing is available without an artificial losing streak.
 - The typed grader accepts a novel relevant ending, such as “This conversation has reached the end of the bridge.”
 - Echo only joins after returning the directions and accepting a boundary. Toastbrig need not reform for Wren to finish.
 - Read every line aloud. If a joke needs an explanation to sound funny, shorten it or cut it before adding more coach text.
-- By the end of the opening, the player can identify Wren, her cat, Sensei, the stopped outside world, the Minute Key, and the palace destination. No knowledge of the old draft or dojo lore is required.
-- Check each dialogue bubble against its speaker label. Wren arrives with only her cat; Sensei introduces themself beyond the door. The Narrator describes actions, and Sensei gives advice as a present companion. Written signs do not talk or have their full text automatically narrated.
+- By the end of the opening, the player understands that the cat and coach are one character, first speaks beyond the door, and knows no more about the wood than Wren has discovered. The stopped world, Minute Key, and palace destination are clear without old-draft or dojo knowledge.
+- Check every cat nameplate and help button substitutes the actual pet name, and every action works for a four-pawed cat. The Narrator describes events, and the cat talks with Wren. Written signs do not talk or have their full text automatically narrated.
+- Echo takes the meow, not speech. Cat advice continues while the meow is in the jar; recovering it restores the ordinary meow. No sound from the jar receives the cat's spoken dialogue.
 
 ### Visual handoff
 

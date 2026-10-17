@@ -2,13 +2,15 @@
 
 ## Chapters 3–4: complete playable script
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Continues [Chapters 1–2](story-chapters-01-02-rewrite.md), using its latest portal opening. Wren is a girl from our world, not a bellkeeper. Her family and world are frozen at 8:17. She and her cat `{pet}` entered the Gloomwood through a new door in her house. Sensei is the older path guide they met there. Echo is the patchwork sound-stealing imp who returned what he took and now travels under Wren's rules. No character knows why Wren and the cat can move or who opened the door. Do not resolve those mysteries here.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Continues [Chapters 1–2](story-chapters-01-02-rewrite.md), using its latest portal opening. Wren's family and world are frozen at 8:17. She and her cat `{pet}` entered the Gloomwood through a new door in her house. The cat unexpectedly gained speech after crossing and now supplies the coaching dialogue under the player's actual pet name. Wren, the cat, and Echo are the entire travelling party. Echo is the patchwork imp who returned the cat's meow; speech was never stolen. No adult guide accompanies them. No character knows why Wren and the cat can move, why the cat now speaks, or who opened the door. Do not resolve those mysteries here. They learn the world together; the cat has no secret local knowledge.
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Queen Malvina used the Minute Key to stop the outside-world face of the Great Clock in her palace. Wren needs the key and must use it in that clock to release her world. People frozen at home are safe in their moment; there is no countdown. Gloomwood time still runs. Wren's purpose is to get her family back, not to impress, punish, or reform everyone she meets.
 
 ## Reading and display contract
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Only lines beginning **Narrator**, a character name, or **Character (direction)** are spoken. Parenthetical direction identifies delivery/recipient; it is not read aloud. Speaker names are shown as nameplates and are not themselves spoken. Use **Woman on the stage** until the Duchess introduces herself, and **Small courier** until Wisp introduces himself. Coach dialogue belongs to Sensei, physically present with the group. “Best,” “retry,” “borrow,” IDs, conditions, headings, and all grading notes are never spoken.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Only lines beginning **Narrator**, a character name, or **Character (direction)** are spoken. Parenthetical direction identifies delivery/recipient; it is not read aloud. Speaker names are shown as nameplates and are not themselves spoken. Use **Woman on the stage** until the Duchess introduces herself, and **Small courier** until Wisp introduces himself. Coach dialogue belongs to {pet}, physically present with the group. “Best,” “retry,” “borrow,” IDs, conditions, headings, and all grading notes are never spoken.
+
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Substitute the actual cat name for `{pet}` in nameplates, dialogue, and buttons before display/TTS. The cat is one four-pawed companion, not a second speaker called “Sensei.” Its advice is a suggestion or companionship; it does not act as an adult authority. The Narrator remains a separate storytelling voice. No branch creates a second cat or a guide portrait.
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** A block tagged **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM** is a required image with a content-only brief in [the visual register](story-visual-assets.md). Display its readable lettering as part of the image or a legible overlay. Do not send the brief or sign text to TTS. Narrator lines refer to the object without reading it. Character dialogue can naturally refer to what they have read. No essential rule or route depends solely on decoding a sign: spoken dialogue supplies necessary facts. An optional user-requested screen-reader description may read the image's alt text; it is distinct from automatic story narration.
 
@@ -16,14 +18,14 @@
 
 ## Play and grading
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Keep the existing free retries, immediate borrowing, equal base rewards for help/action routes, and no timers. `best` and `okish` both advance one beat and remove one meter chip. `wrong` repeats only the current challenge without adding chips. Never infer fear or bad intent from wording; assess the response. “Please stop,” “Leave him alone,” and asking Sensei for help can be strong answers. A funny line is optional. Safe imperfect answers usually advance as `okish`.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Keep the existing free retries, immediate borrowing, equal base rewards for help/action routes, and no timers. `best` and `okish` both advance one beat and remove one meter chip. `wrong` repeats only the current challenge without adding chips. Never infer fear or bad intent from wording; assess the response. “Please stop,” “Leave him alone,” and asking {pet} for help can be strong answers. A funny line is optional. Safe imperfect answers usually advance as `okish`.
 
 | Chapter | Choice beats | Typed beats | Progression |
 |---|---:|---:|---|
 | 3 | 3 | 3 | Pick, pick, type / pick, type, type. From refusing to perform to refusing a role at someone else's expense. |
 | 4 | 2 | 4 | Pick, type, type / pick, type, type. Distinguish fact-finding from rumour-chasing; give one correction without supplying a new story. |
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Every typed beat includes **Borrow a line** and **Ask Sensei for help**. On help, Sensei supplies the borrowed line as a model, then Wren may borrow it or use a listed action if present. No rewards are lost. If the model is unavailable or uncertain, say nothing about the child's answer being wrong; retain it and offer borrowing/help/action. Do not generate fresh villain cruelty.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Every typed beat includes **Borrow a line** and **Ask {pet} for help**. On help, {pet} supplies the borrowed line as a model, then Wren may borrow it or use a listed action if present. No rewards are lost. If the model is unavailable or uncertain, say nothing about the child's answer being wrong; retain it and offer borrowing/help/action. Do not generate fresh villain cruelty.
 
 ---
 
@@ -43,9 +45,9 @@
 
 **Echo:** “Excellent brooms. Poor shortcut.”
 
-**Narrator:** Sensei pointed to a narrow public passage running beside the main stage.
+**Narrator:** The cat followed a small arrow beside the entrance, then looked back at Wren. A narrow passage ran beside the main stage.
 
-**Sensei:** “Through here. The garden gate is at the back.”
+**{pet}:** “Through here. The garden gate is at the back.”
 
 ### `c3_intro_02`
 
@@ -55,7 +57,7 @@
 
 **Wren:** “Can she actually make us watch?”
 
-**Sensei:** “No. It's a public passage. We don't have to join the show.”
+**{pet}:** “No. It's a public passage. We don't have to join the show.”
 
 ### `c3_intro_03`
 
@@ -106,25 +108,25 @@
 
 **Wren:** “We haven't stopped.”
 
-**Sensei:** “A refusal and your plan. That does it.”
+**{pet}:** “Good. We didn't come for a compulsory laugh.”
 
 **ON OKISH — spoken:**
 
 **Duchess:** “A request! I take requests.”
 
-**Sensei:** “A fair reply. It might also buy you the whole show.”
+**{pet}:** “A fair reply. It might also buy you the whole show.”
 
 **RETRY — three laughs:**
 
 **Duchess:** “Three? We shall hear them alphabetically.”
 
-**Sensei:** “Now you're auditioning. You can decline the part.”
+**{pet}:** “Now you're auditioning. You can decline the part.”
 
 **RETRY — personal attack:**
 
 **Duchess:** “A heckler. Finally, a second act!”
 
-**Sensei:** “You don't need to attack her. You can just keep your own plans.”
+**{pet}:** “You don't need to attack her. You can just keep your own plans.”
 
 **UI ONLY — borrowed Wren line:** “No thanks. We're passing through.”
 
@@ -147,7 +149,7 @@
 
 **Duchess:** “One can never have enough.”
 
-**Sensei:** “Her score doesn't need your vote.”
+**{pet}:** “Her score doesn't need your vote.”
 
 **ON BEST — leave them:**
 
@@ -155,11 +157,11 @@
 
 **Echo:** “Very loyal, though.”
 
-**Sensei:** “You stepped out of the popularity contest.”
+**{pet}:** “You stepped out of the popularity contest.”
 
 **ON OKISH:**
 
-**Sensei:** “You can say that. You also don't need to defend your laugh.”
+**{pet}:** “You can say that. You also don't need to defend your laugh.”
 
 **RETRY:**
 
@@ -167,7 +169,7 @@
 
 **Duchess:** “I have statistics. This arrow goes up. That means laughter.”
 
-**Sensei:** “Now it's a debate about her fans. Try leaving the count to her.”
+**{pet}:** “Now it's a debate about her fans. Try leaving the count to her.”
 
 **UI ONLY — borrowed Wren line:** “Then you've got enough laughs.”
 
@@ -179,7 +181,7 @@
 
 **UI ONLY — prompt:** **One line for Wren. Her sense of humour isn't on trial.**
 
-**UI ONLY — buttons:** **Say it** / **Borrow a line** / **Ask Sensei for help**.
+**UI ONLY — buttons:** **Say it** / **Borrow a line** / **Ask {pet} for help**.
 
 **GRADING — DO NOT NARRATE:**
 
@@ -193,19 +195,19 @@
 
 **Duchess:** “My equipment is being supportive in the wrong way.”
 
-**Sensei (best):** “You didn't have to prove you can laugh.”
+**{pet} (best):** “You didn't have to prove you can laugh.”
 
-**Sensei (okish; use instead of best):** “That works. You can also skip the defence: 'Not doing the laugh test.'”
+**{pet} (okish; use instead of best):** “That works. You can also skip the defence: 'Not doing the laugh test.'”
 
 **RETRY — invitation:**
 
 **Narrator:** The Duchess reaches for a much thicker stack of joke cards.
 
-**Sensei:** “That's a long booking. Try closing it.”
+**{pet}:** “That's a long booking. I'd cancel.”
 
 **RETRY — threat or cruelty:**
 
-**Sensei:** “You can refuse without threatening her or attacking something personal.”
+**{pet}:** “You can refuse without threatening her or attacking something personal.”
 
 **UI ONLY — borrowed Wren line:** “Not doing the laugh test.”
 
@@ -231,9 +233,9 @@
 
 **Duchess:** “All you have to do is help me with one tiny joke.”
 
-**Narrator:** Sensei stayed beside the garden passage. Wren could leave at any time.
+**Narrator:** {pet} stayed beside the garden passage. Wren could leave at any time.
 
-**UI ONLY — continue:** **Hear the offer**. **Leave with Sensei** remains available as the ungraded retreat route; it saves progress rather than resetting the encounter.
+**UI ONLY — continue:** **Hear the offer**. **Leave with {pet}** remains available as the ungraded retreat route; it saves progress rather than resetting the encounter.
 
 ## Encounter 2: no part required
 
@@ -258,25 +260,25 @@
 
 **Wren:** “And that was my answer.”
 
-**Sensei:** “You refused the job, without finding her a new target.”
+**{pet}:** “You refused the job, without finding her a new target.”
 
 **ON BEST — coming:**
 
 **Echo:** “Correct. Very busy. Places to go. Eye to reattach.”
 
-**Sensei:** “Plain and clear. He's not the price of passing through.”
+**{pet}:** “Plain and clear. He's not the price of passing through.”
 
 **RETRY — me afterwards:**
 
 **Duchess:** “A double act! I'll need a larger programme.”
 
-**Sensei:** “Adding yourself doesn't make the job kinder. You can refuse it.”
+**{pet}:** “Adding yourself doesn't make the job kinder. You can refuse it.”
 
 **RETRY — doesn't mind:**
 
 **Echo:** “I—”
 
-**Sensei:** “He doesn't need a spotlight to earn your support. You can decline your own part.”
+**{pet}:** “He doesn't need a spotlight to earn your support. You can decline your own part.”
 
 **UI ONLY — borrowed Wren line:** “No. Leave him out.”
 
@@ -290,7 +292,7 @@
 
 **UI ONLY — prompt:** **Wren doesn't need the special seat. What does she say?**
 
-**UI ONLY — buttons:** **Say it** / **Borrow a line** / **Ask Sensei for help**.
+**UI ONLY — buttons:** **Say it** / **Borrow a line** / **Ask {pet} for help**.
 
 **GRADING — DO NOT NARRATE:**
 
@@ -304,19 +306,19 @@
 
 **Duchess:** “Well. I am dependable.”
 
-**Sensei (best):** “You chose your company. No special seat needed.”
+**{pet} (best):** “Good company. Questionable seating offer.”
 
-**Sensei (okish; alternative):** “You made your choice. 'No thanks' can be the whole answer.”
+**{pet} (okish; alternative):** “You made your choice. 'No thanks' can be the whole answer.”
 
 **RETRY — exclusion bargain or accepting her conditions:**
 
 **Duchess:** “We'll call that a provisional yes.”
 
-**Sensei:** “You can turn down the seat without trading a friend for it.”
+**{pet}:** “You can turn down the seat without trading a friend for it.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “Refuse the offer. You don't need a personal attack.”
+**{pet}:** “Refuse the offer. You don't need a personal attack.”
 
 **UI ONLY — borrowed Wren line:** “We're leaving together.”
 
@@ -328,7 +330,7 @@
 
 **UI ONLY — prompt:** **A last line, or the garden path.**
 
-**UI ONLY — buttons:** **Say it and leave** / **Take the garden path** / **Borrow a line** / **Ask Sensei to walk with you**.
+**UI ONLY — buttons:** **Say it and leave** / **Take the garden path** / **Borrow a line** / **Ask {pet} to walk with you**.
 
 **GRADING — DO NOT NARRATE:**
 
@@ -342,17 +344,17 @@
 
 **Duchess:** “You too? This is not a solo competition.”
 
-**Sensei (best):** “You left the review behind.”
+**{pet} (best):** “You left the review behind.”
 
-**Sensei (okish; alternative):** “You left. You don't have to settle her review first.”
+**{pet} (okish; alternative):** “You left. You don't have to settle her review first.”
 
-**ACTION — garden path:** Use the same outcome. Replace coach line with **Sensei:** “You'd already said no. No extra speech needed.”
+**ACTION — garden path:** Use the same outcome. Replace coach line with **{pet}:** “You'd already said no. No extra speech needed.”
 
 **ACTION — help:**
 
-**Wren:** “Sensei, with me?”
+**Wren:** “{pet}, with me?”
 
-**Sensei:** “Right here.”
+**{pet}:** “Right here.”
 
 **Narrator:** They take the path together. The last casting shutter closes behind them.
 
@@ -362,11 +364,11 @@
 
 **Narrator:** The Duchess reaches for her audition stool again.
 
-**Sensei:** “That makes her review the exit test. The gate is already open.”
+**{pet}:** “That makes her review the exit test. The gate is already open.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “An ending is enough. Try a goodbye or the path.”
+**{pet}:** “An ending is enough. Try a goodbye or the path.”
 
 **UI ONLY — borrowed Wren line:** “Keep the review. We're going.”
 
@@ -400,7 +402,9 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c3_garden_route`.
 
-**Sensei:** “The Midnight Gazette handles royal deliveries. Its courier will know the way to the clock entrance.”
+**{pet}:** “Royal deliveries. Somebody here must know where the palace post goes.”
+
+**Wren:** “Then let's ask the courier.”
 
 **Wren:** “Good. I want to get Mum's spoon out of the air.”
 
@@ -468,7 +472,7 @@
 
 **Wisp:** “I can do directions. How newsworthy are they?”
 
-**Sensei:** “Wren needs the clock entrance at the palace. Facts will do.”
+**{pet}:** “We're trying to get to the palace clock. Directions would be useful. Opinions less so.”
 
 **UI ONLY — action:** **Ask for the route**.
 
@@ -495,25 +499,25 @@
 
 **Wisp:** “Royal copy didn't mention that bit.”
 
-**Sensei:** “One correction. Clear and useful.”
+**{pet}:** “One correction. Clear and useful.”
 
 **ON BEST — source:**
 
 **Wisp:** “Palace dispatch. I didn't write it.”
 
-**Sensei:** “That question found a source. It wasn't an invitation for more rumours.”
+**{pet}:** “That question found a source. It wasn't an invitation for more rumours.”
 
 **ON OKISH:**
 
 **Wisp:** “I'll mark that disputed.”
 
-**Sensei:** “You corrected it. You don't have to make every reader agree before you move.”
+**{pet}:** “You corrected it. You don't have to make every reader agree before you move.”
 
 **RETRY:**
 
 **Wisp:** “There's a small supplement. And a medium supplement. And an apology we've printed in advance.”
 
-**Sensei:** “That's more stories to chase. Pick the fact you actually need.”
+**{pet}:** “That's more stories to chase. Pick the fact you actually need.”
 
 **UI ONLY — borrowed Wren line:** “The Queen stopped the clock. I want it started.”
 
@@ -537,11 +541,11 @@
 
 **Wisp:** “I keep saying 'everyone.' There's only one voice in the bottle.”
 
-**Sensei (best):** “You didn't need a vote to keep going.”
+**{pet} (best):** “You didn't need a vote to keep going.”
 
-**Sensei (best; source question instead):** “One question found the size of 'everyone.' Useful.”
+**{pet} (best; source question instead):** “One question found the size of 'everyone.' Useful.”
 
-**Sensei (okish):** “That works. You can also skip defending yourself: 'I'm still going.'”
+**{pet} (okish):** “That works. You can also skip defending yourself: 'I'm still going.'”
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Select one coach line only.
 
@@ -549,17 +553,17 @@
 
 **Wisp:** “I could print a poll. Several polls. We'd need tiny pencils.”
 
-**Sensei:** “You need a route, not a vote.”
+**{pet}:** “You need a route, not a vote.”
 
 **RETRY — counter-rumour:**
 
 **Narrator:** Wisp reaches for an empty bottle.
 
-**Sensei:** “No need to give him someone else to print about.”
+**{pet}:** “No need to give him someone else to print about.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “You can reject the claim without threatening him or attacking something personal.”
+**{pet}:** “You can reject the claim without threatening him or attacking something personal.”
 
 **UI ONLY — borrowed Wren line:** “I'll need directions, not votes.”
 
@@ -585,19 +589,19 @@
 
 **Wisp:** “Ah. That's been me all morning.”
 
-**Sensei (best):** “No demonstration needed.”
+**{pet} (best):** “No demonstration needed.”
 
-**Sensei (okish):** “That works. You can keep what you can do separate from what he wants to test.”
+**{pet} (okish):** “That works. You can keep what you can do separate from what he wants to test.”
 
 **RETRY — performing for approval:**
 
 **Wisp:** “One demonstration form. Do you require a rabbit?”
 
-**Sensei:** “You can decline the test. The palace route isn't a prize for passing it.”
+**{pet}:** “You can decline the test. The palace route isn't a prize for passing it.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “Leave out the attack. Try refusing the test.”
+**{pet}:** “Leave out the attack. Try refusing the test.”
 
 **UI ONLY — borrowed Wren line:** “No tricks. Directions, please.”
 
@@ -623,9 +627,11 @@
 
 ### `c4_mid_02`
 
-**Narrator:** Sensei finds a small route drawer under the machine. Its handle won't turn while the bottles jam the rollers.
+**Narrator:** The cat crouches beneath the cart and sniffs at a small drawer. Wren tries its handle, but it won't turn.
 
-**Sensei:** “The delivery map is in here. We can unjam this together.”
+**{pet}:** “Something useful in here, Wisp? Or more mushrooms with opinions?”
+
+**Wisp:** “The delivery map. Those bottles are jamming its catch.”
 
 **Wisp:** “We need to mark what goes back to the palace. Something that isn't another rumour.”
 
@@ -656,25 +662,25 @@
 
 **Wisp:** “Clock entrance. East side of the palace. That's the dispatch address.”
 
-**Sensei:** “A fact you can use.”
+**{pet}:** “A fact you can use.”
 
 **ON BEST — correction:**
 
 **Wisp:** “One correction. No extra scandal.”
 
-**Sensei:** “You can correct a false claim without chasing every reader.”
+**{pet}:** “You can correct a false claim without chasing every reader.”
 
 **ON OKISH:**
 
 **Wisp:** “I'll print the correction. I can't promise what every reader thinks.”
 
-**Sensei:** “Wanting that makes sense. You can give the facts without visiting every tree.”
+**{pet}:** “Wanting that makes sense. You can give the facts without visiting every tree.”
 
 **RETRY:**
 
 **Wisp:** “First reader: a mushroom. Second reader: the mushroom next to it. They're a difficult family.”
 
-**Sensei:** “That's a long detour. Try a correction or a useful delivery fact.”
+**{pet}:** “That's a long detour. Try a correction or a useful delivery fact.”
 
 **UI ONLY — borrowed Wren line:** “Where did the palace send it from?”
 
@@ -700,19 +706,19 @@
 
 **Wisp:** “We over-ordered those.”
 
-**Sensei (best):** “You kept the story on your errand.”
+**{pet} (best):** “You kept the story on your errand.”
 
-**Sensei (okish):** “Fair reply. You don't need to prove she knows your name.”
+**{pet} (okish):** “Fair reply. You don't need to prove she knows your name.”
 
 **RETRY — feud or false claim:**
 
 **Narrator:** Wisp gets out two reply bottles, then a third.
 
-**Sensei:** “That starts a new exchange. Try sending the job back, not a fresh rumour.”
+**{pet}:** “That starts a new exchange. Try sending the job back, not a fresh rumour.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “You can challenge what she's doing without a threat or a personal attack.”
+**{pet}:** “You can challenge what she's doing without a threat or a personal attack.”
 
 **UI ONLY — borrowed Wren line:** “Tell her to start the clock.”
 
@@ -728,9 +734,9 @@
 
 **Wisp:** “What shall I put?”
 
-**UI ONLY — prompt:** **Wren can give a short statement, refuse a quote, or let Sensei help.**
+**UI ONLY — prompt:** **Wren can give a short statement, refuse a quote, or let {pet} help.**
 
-**UI ONLY — buttons:** **Send the line** / **Decline the quote** / **Borrow a line** / **Ask Sensei for help**.
+**UI ONLY — buttons:** **Send the line** / **Decline the quote** / **Borrow a line** / **Ask {pet} for help**.
 
 **GRADING — DO NOT NARRATE:**
 
@@ -746,9 +752,9 @@
 
 **Narrator:** The third royal bottle goes into the return rack. The last roller lifts, and the route drawer clicks open.
 
-**Sensei (best):** “Your words stayed yours.”
+**{pet} (best):** “Your words stayed yours.”
 
-**Sensei (okish):** “You can say how you feel. You can also say what may be printed.”
+**{pet} (okish):** “You can say how you feel. You can also say what may be printed.”
 
 **ACTION — decline the quote:**
 
@@ -760,9 +766,9 @@
 
 **ACTION — help:**
 
-**Wren:** “Sensei, can you help with this?”
+**Wren:** “{pet}, can you help with this?”
 
-**Sensei:** “Yes. Wisp, no quote is authorised. Just the correction Wren gave you.”
+**{pet}:** “Certainly. No quote, Wisp. Just the correction.”
 
 **Wisp:** “Understood.”
 
@@ -772,11 +778,11 @@
 
 **Narrator:** Wisp pauses with his pen above the label.
 
-**Sensei:** “You don't need a new rumour to correct the old one. Try the fact, the request, or no quote.”
+**{pet}:** “You don't need a new rumour to correct the old one. Try the fact, the request, or no quote.”
 
 **RETRY — cruelty/threat:**
 
-**Sensei:** “Leave out the attack. Your request is strong enough on its own.”
+**{pet}:** “Leave out the attack. Your request is strong enough on its own.”
 
 **UI ONLY — borrowed Wren line:** “Print the correction. No quote.”
 
@@ -806,7 +812,7 @@
 
 **Narrator:** For a moment, nobody makes a joke.
 
-**Sensei:** “Now we know where to go.”
+**{pet}:** “Now we know where to go.”
 
 ### `c4_end_03`
 
@@ -836,7 +842,7 @@
 
 ### `c4_end_05`
 
-**Narrator:** Wren, Sensei, Echo, and the cat take the lake path. Behind them, Wisp's machine begins to print again, more slowly this time.
+**Narrator:** Wren, {pet}, and Echo take the lake path. Behind them, Wisp's machine begins to print again, more slowly this time.
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM:** `c4_correction`.
 
@@ -848,7 +854,7 @@
 
 ### `c4_end_06` — next-chapter hook
 
-**Narrator:** At the lake, the trees are reflected perfectly. So is Sensei. So is the cat, although the reflected cat looks mildly disappointed with the arrangement.
+**Narrator:** At the lake, the trees and Echo are reflected perfectly. So is {pet}, although the reflected cat looks mildly disappointed with the arrangement.
 
 **Narrator:** Wren's reflection is already standing up.
 
@@ -870,7 +876,7 @@
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Typed-grading precedence: (1) meaningful threats/personal cruelty/fabricating harm; (2) a relevant clear boundary, correction, useful question, request for help, or ending; (3) safe defence/explanation/feeling; (4) explicit invitation to an unwanted continued test, approval bargain, or smear exchange; (5) unrelated/unclear text. Mixed replies with a clear ending normally succeed. Do not treat a single token like “why,” “angry,” “please,” or “everyone” as a verdict rule. In these chapters, refusing the opponent's invitation is not the same as refusing the adventure's practical task.
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** For every typed beat, unrelated/unclear text gets this shared retry with no villain retort: **Sensei:** “Try a line about this moment. You can borrow one or ask me for help.” Retain input. On help, use **Sensei:** “You could try: [the authored borrowed line]. Or say it your way.” The final beats' authored action/help branches take precedence over this generic modelling branch.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** For every typed beat, unrelated/unclear text gets this shared retry with no villain retort: **{pet}:** “Try a line about this moment. You can borrow one or ask me for help.” Retain input. On help, use **{pet}:** “You could try: [the authored borrowed line]. Or say it your way.” The final beats' authored action/help branches take precedence over this generic modelling branch.
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** Keep chosen answers in Wren's voice. Exact words on signs, newspaper headlines, labels, maps, sashes, and casting boards belong to visual assets. Rewards, prompt text, buttons, and section names are UI only. Never run an entire Markdown block through TTS; parse typed content fields.
 
@@ -886,6 +892,7 @@
 - Borrowing, asking for help, leaving the performance, and declining a quote need no failed attempt first.
 - The Duchess has no physical hold over Wren, and the actor refusal never requires insulting Echo or finding a replacement target.
 - The minute 8:17, Minute Key, palace clock, open home door, and travelling party are consistent. Wisp stays to repair his own work.
+- The party is Wren, her talking cat, and Echo. Every former coach line/help button uses the cat's actual name; no adult guide or second cat remains. Directions and clock facts come from the notice, observation, Echo, or Wisp, not unexplained cat knowledge.
 - Each unseen speaker is identified by source before a name is supplied, and no visual asset metadata is read aloud.
 - Wren makes concrete progress: gallery crossed in Chapter 3; confirmed clock entrance, route, and key location obtained in Chapter 4.
 

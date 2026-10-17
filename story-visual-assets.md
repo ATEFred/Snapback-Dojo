@@ -8,7 +8,7 @@
 
 **IMPLEMENTATION ONLY — DO NOT NARRATE:** When a generator cannot reproduce exact lettering, generate the object with a clear blank text area and place the specified lettering on it as a legible overlay. Preserve wording, arrows, reading order, and intended hierarchy. Never rely on distorted generated text for a gameplay rule. Keep an inspect/enlarge control for notices, maps, and papers. If an image is missing, show its visual lettering/diagram as a UI card, with no added narration. Do not show raw prompts or filenames to the player.
 
-**IMPLEMENTATION ONLY — DO NOT NARRATE:** Wren's clothes and cat are consistent before and after the portal. Sensei is an older traveller in a long coat with a crooked walking stick, not an invisible narrator. Echo is a small patchwork imp with mismatched button eyes. Toastbrig is a large troll assembled from bridge salvage, with a kettle helmet. The Duchess is a tall clockwork woman in a porcelain dress with a brass key between her shoulders. Wisp is a small green courier with long ears, ink-stained fingers, a waistcoat, and an oversized satchel. Characters are introduced in speech/narration before named portrait use; asset IDs do not introduce them to the player.
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Wren's clothes and cat are consistent before and after the portal. `{pet}` is that same cat, whose speech and coaching begin beyond the door. It remains on four paws, with ordinary cat anatomy and the player's current feline pet art. Before Echo joins, only Wren and her cat travel; afterwards the party is Wren, cat, and Echo. No separate adult guide, guide costume, or second cat appears. Echo is a small patchwork imp with mismatched button eyes. Toastbrig is a large troll assembled from bridge salvage, with a kettle helmet. The Duchess is a tall clockwork woman in a porcelain dress with a brass key between her shoulders. Wisp is a small green courier with long ears, ink-stained fingers, a waistcoat, and an oversized satchel. The Narrator never has an in-scene body. Character nameplates are interface text, not extra characters in an image.
 
 ---
 
@@ -42,7 +42,19 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** A royal paper notice nailed to a tree beside the woodland path. Most of the upper half is an absurdly large portrait of Queen Malvina: tall crowned woman holding a little key on a chain and expecting admiration. Beneath it, the announcement is squeezed into a smaller rectangular area. Add a crown seal in a lower corner. Exact lettering in reading order: **QUEEN MALVINA THE MAGNIFICENT** / **THE OUTSIDE WORLD IS PAUSED** / **I HAVE THE MINUTE KEY** / **COME TO MY PALACE AND APPLAUD** / **I WILL DECIDE WHEN YOU HAVE FINISHED**. The actual Minute Key in later images must match the one depicted here. This notice is evidence of the Queen's claim, not an image of her personally standing beside Wren.
+**Content brief:** A royal paper notice nailed to a tree beside the woodland path. Most of the upper half is an absurdly large portrait of Queen Malvina: tall crowned woman holding a little key on a chain and expecting admiration. Beneath it, the announcement is squeezed into a smaller rectangular area. Add a crown seal in a lower corner. Main lettering in reading order: **QUEEN MALVINA THE MAGNIFICENT** / **THE OUTSIDE WORLD IS PAUSED** / **I HAVE THE MINUTE KEY** / **COME TO MY PALACE AND APPLAUD** / **I WILL DECIDE WHEN YOU HAVE FINISHED**. A smaller but inspectably legible boxed paragraph at the bottom reads **THE MINUTE KEY RESTARTS THE GREAT CLOCK IN MY PALACE. PAUSED PEOPLE DO NOT FEEL TIME PASSING AND REMAIN UNHARMED.** The actual Minute Key in later images must match the one depicted here. This is where Wren and the cat learn these facts, not knowledge the cat already possessed. The portrait is printed evidence of the Queen's claim, not the Queen personally standing beside Wren.
+
+### `cat_first_words`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Just beyond the open doorway, Wren looks down at her familiar cat in delighted disbelief. The cat stands on all four paws on a root, mouth slightly open as if surprised by its own first sentence. Its appearance matches the cat at home exactly. Wren's normal hallway remains visible through the door behind them. Wren holds a small pocket torch; no lantern-bearing stranger or other traveller is present. No speech text, extra cat, human hands, clothing transformation, or revelation about the door's origin.
+
+### `queen_notice_map`
+
+**VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
+
+**Content brief:** Reverse of the same royal notice, laid on a flat tree root by Wren. A very self-important map has an enormous palace drawing at the far end, a winding woodland path, a bridge symbol, and a gallery symbol along the way. The palace label reads **MY PALACE**. Small caption **GREAT CLOCK INSIDE**. The map is deliberately broad; it does not yet reveal the east clock entrance or the detailed lake route later supplied by Wisp. Wren marks a tiny door at the near edge; her cat rests one paw beside it. One folded corner reveals part of the Queen's portrait on the reverse. No adult hand, walking stick, or second guide is shown.
 
 ---
 
@@ -68,7 +80,7 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Echo on a wooden crate beside a rickety judge's stand with exactly three dangling paper stars. He carries a capped glass sound jar containing a curled luminous meow. Wren, her cat, and Sensei stand on the open path. A small toy trumpet lies near the bush. Variants show two, one, and zero stars; at zero the stand folds into a stool, the jar opens, and the meow returns to the cat. The cat later sits on the toy trumpet. No suffering or threatening broken glass.
+**Content brief:** Echo on a wooden crate beside a rickety judge's stand with exactly three dangling paper stars. He carries a capped glass sound jar containing a curled luminous meow. Wren and her single cat stand on the open path. The cat is able to speak despite its stolen meow. A small toy trumpet lies near the bush. Variants show two, one, and zero stars; at zero the stand folds into a stool, the jar opens, and the meow returns to the cat. The cat later sits on the toy trumpet. No suffering or threatening broken glass.
 
 ### `c1_prop_labels`
 
@@ -80,13 +92,13 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Echo's tiny rolling stage on three wheels beside an open path marked with pale mushrooms. Wren studies a map; her cat and Sensei stay beside her. Variants have two, one, and zero visible wheels as the stage folds. At zero it folds gently into a suitcase around Echo, with his hat sticking out. The mechanism is silly rather than crushing or painful. No words required.
+**Content brief:** Echo's tiny rolling stage on three wheels beside an open path marked with pale mushrooms. Wren studies the map on the back of the folded royal notice; her cat stays beside her. Variants have two, one, and zero visible wheels as the stage folds. At zero it folds gently into a suitcase around Echo, with his hat sticking out. The mechanism is silly rather than crushing or painful. No words required.
 
 ### `c1_luggage_owner`
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Echo leaves the folded stage/suitcase beside a leafy bush. A small weathered luggage marker stands by the bush with exact text **MRS. BRAMBLE'S LUGGAGE**. Wren, cat, and Sensei wait on the path. The marker makes clear the suitcase belongs to someone else. No owner is shown or needs to be introduced.
+**Content brief:** Echo leaves the folded stage/suitcase beside a leafy bush. A small weathered luggage marker stands by the bush with exact text **MRS. BRAMBLE'S LUGGAGE**. Wren and her cat wait on the path. The marker makes clear the suitcase belongs to someone else. No owner is shown or needs to be introduced.
 
 ### `reward_c1`
 
@@ -108,7 +120,7 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Close view of a smaller official plaque attached beneath the booth's grand sign. Clear lettering: **THE BRIDGE IS OPEN TO EVERYONE** / **INSPECTIONS ARE OPTIONAL**. A plain walking-person-and-arrow symbol points onto the bridge. Keep it prominent enough to inspect. Sensei's spoken line also establishes that the inspection is optional; do not require reading alone.
+**Content brief:** Close view of a smaller official plaque attached beneath the booth's grand sign. Clear lettering: **THE BRIDGE IS OPEN TO EVERYONE** / **INSPECTIONS ARE OPTIONAL**. A plain walking-person-and-arrow symbol points onto the bridge. Keep it prominent enough to inspect. {pet}'s spoken line also establishes that the inspection is optional; do not require reading alone.
 
 ### `c2_prop_labels`
 
@@ -120,7 +132,7 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Toastbrig's portable desk on the far side of the bridge, with exactly three drawers open. Its new fold-out sign reads **COMPLAINTS ABOUT THE INSPECTION** / **MUST BE DISCUSSED AT LENGTH**. The troll has a fence-post pencil and an oversized rubber stamp. Wren's onward path is open, with Sensei, Echo, and the cat waiting beside it. Variants show one drawer closing at each success. Do not depict the troll blocking or pursuing Wren.
+**Content brief:** Toastbrig's portable desk on the far side of the bridge, with exactly three drawers open. Its new fold-out sign reads **COMPLAINTS ABOUT THE INSPECTION** / **MUST BE DISCUSSED AT LENGTH**. The troll has a fence-post pencil and an oversized rubber stamp. Wren's onward path is open, with her cat and Echo waiting beside it. Variants show one drawer closing at each success. Do not depict the troll blocking or pursuing Wren.
 
 ### `c2_stamp_ending`
 
@@ -242,7 +254,7 @@
 
 **VISUAL ONLY — DO NOT NARRATE — NEEDS IMAGE GENERATED FOR THEM**
 
-**Content brief:** Wren's group arrives at a quiet lake. Wren stands on the bank; her reflection is already upright on the surface, looking impatient and a little too tidy. The cat's reflection is recognisably the same cat. Sensei and Echo are also reflected normally. No written insult, school detail, frightening duplicate, or explanation of the portal mystery. This is only the Chapter 5 hook.
+**Content brief:** Wren, her cat, and Echo arrive at a quiet lake. Wren stands on the bank; her reflection is already upright on the surface, looking impatient and a little too tidy. The cat and Echo have normal matching reflections. There is one real cat and one reflected cat, with no fourth traveller. No written insult, school detail, frightening duplicate, or explanation of the portal mystery. This is only the Chapter 5 hook.
 
 ---
 
@@ -257,3 +269,4 @@
 - UI prompts, buttons, grader notes, reward headings, and implementation directions have separate fields and are not narrated as story text.
 - The home freeze is ordinary suspended motion, without danger imagery or a timer. The school is a distant establishing location; no school comeback scene is added.
 - There is no style paragraph to accidentally send as image content, and no image-generation prompt is passed to TTS.
+- The cat gains speech only after crossing the door, and keeps its ordinary feline appearance. No guide, extra cat, anthropomorphic hands, or lantern transfer is introduced. The opening map comes from the notice's reverse, not a stranger's belongings.
