@@ -270,3 +270,65 @@
 - The home freeze is ordinary suspended motion, without danger imagery or a timer. The school is a distant establishing location; no school comeback scene is added.
 - There is no style paragraph to accidentally send as image content, and no image-generation prompt is passed to TTS.
 - The cat gains speech only after crossing the door, and keeps its ordinary feline appearance. No guide, extra cat, anthropomorphic hands, or lantern transfer is introduced. The opening map comes from the notice's reverse, not a stranger's belongings.
+
+---
+
+## Extra plates — implementation additions
+
+**IMPLEMENTATION ONLY — DO NOT NARRATE:** Scene backdrops and character faces
+added on request so most screens carry a picture. Same contract as above:
+content briefs only, never narrated, painted by `gen_art.py`. Avatars are
+head-and-shoulders portraits rendered square; the app crops them into the
+bubble circles.
+
+### `gloomwood_title`
+
+**Content brief:** An ordinary modern hallway at dawn, seen from the dojo map screen. At its end, where a blank wall should be, a narrow door stands ajar. Through the gap: dark twisted woodland and faint lantern-light. A plump grey tabby cat sits before the gap, tail over paws, contemplating the woods. Warm hallway objects (shoes, umbrella stand, coat pegs) versus cold wood beyond. No text.
+
+### `home_lost_boot`
+
+**Content brief:** Morning by a family front door: a ten-year-old girl in pyjamas and one wellington boot searches among scattered shoes. Her other boot lies just out of reach — the cat is sitting on it. Ordinary kitchen light through a doorway, family shapes blurred moving at breakfast in the background. No text, no strangeness yet.
+
+### `c1_door_cracked`
+
+**Content brief:** The impossible door opened a few centimetres from inside the ordinary hallway. In the gap: enormous tree roots and blue-green woodland depth. A large moth rests on the brass leaf-shaped handle. A grey tabby cat squeezes through the crack ahead, only half its body through. Hallway warm, wood cold. No text.
+
+### `c2_bridge_approach`
+
+**Content brief:** A wide old wooden bridge over a stream the colour of cold tea, entering at one end a small desk and booth with an enormous kettle-helmeted troll inspector visible, holding a notebook. A girl, a cat and a small patchwork imp approach on the path. Morning mist; the bridge looks sound but extremely squeaky. No text.
+
+### `c4_newspaper_clearing`
+
+**Content brief:** A woodland clearing where hundreds of folded newspapers hang from branches on strings like laundry, slowly turning in a wind that moves nothing else. A delivery cart stands in the middle with a glowing brass speaking funnel on its side. Pale gaslight from above the paper canopy. No text.
+
+### `avatar_wren`
+
+**Content brief:** Head-and-shoulders portrait: the girl. Big round alert eyes, small composed mouth, straight black bob, slightly too-big wool coat collar. Neutral dark background. Face fills most of the frame.
+
+### `avatar_cat`
+
+**Content brief:** Head-and-shoulders portrait: a plump unimpressed grey tabby cat, slightly hooded eyes, one ear tilted as if permanently unimpressed. Neutral dark background. Face fills most of the frame.
+
+### `avatar_echo`
+
+**Content brief:** Head-and-shoulders portrait: a small patchwork rag imp, mismatched glass button eyes (one larger), stitched grin one stitch too wide, fraying seams, floppy cloth ears. Faintly cheeky, not frightening. Neutral dark background.
+
+### `avatar_toastbrig`
+
+**Content brief:** Head-and-shoulders portrait: an enormous plank-faced troll wearing a whistling kettle as a helmet. Broad gentle-but-bureaucratic expression, heavy brow, notebook edge visible at the frame bottom. Neutral dark background.
+
+### `avatar_duchess`
+
+**Content brief:** Head-and-shoulders portrait: a tall porcelain-faced lady doll with a painted poised smile, jointed neck seams, a brass winding key rising behind one shoulder, tiny tiara-like crown detail. Elegant, faintly uncanny, not frightening. Neutral dark background.
+
+### `avatar_wisp`
+
+**Content brief:** Head-and-shoulders portrait: a small green-furred courier creature with long ears, ink-stained fingers adjusting a satchel strap at the frame edge, nervous hopeful expression. Neutral dark background.
+
+### `avatar_queen`
+
+**Content brief:** Portrait: a tall imperious queen with an elaborate small crown, chin raised, holding a tiny key on a chain between two fingers. Printed-poster quality, as if cut from a royal notice. Neutral dark background.
+
+### `avatar_bush`
+
+**Content brief:** A leafy woodland bush with a tiny brass trumpet poking out of it, one wide cartoon eye peeking between the leaves behind the bell. Humorous, not creepy. Neutral dark background.

@@ -90,7 +90,9 @@ and `story-chapters-03-04.md`. The party is Wren, the cat, and (from Chapter 1's
 (Mirror Lake) teases on the map. (The earlier bellkeeper premise and the path-guide version of the opening
 remain recoverable in git history.)
 
-- **Every voice wears a nameplate** — Narrator included. Nobody wonders who's talking.
+- **Every voice wears a nameplate and a face** — Narrator included. Bubbles carry a painted portrait
+  (`quest-art/avatar_*.png`, square, cropped into the circle; emoji fallback until painted). Nobody wonders
+  who's talking, and the read-aloud queues **every line** of a beat, not just the last.
 - **VISUAL ONLY means visual only.** Signs, notices, badges, prop labels and maps (`story-visual-assets.md`)
   appear on screen — as painted plate when available, as a lettering card otherwise — and are **never**
   narrated or TTS'd; spoken lines merely refer to them ("a rather odd sign"). Branch-specific props and the
@@ -103,10 +105,15 @@ remain recoverable in git history.)
 - **Walking away is always legal:** the Duchess's encounters carry an ungraded *Leave with {pet}* button;
   progress saves and the map waits. Choices like *take the garden path* or *decline the quote* clear beats
   exactly like words.
-- **Help is free and always on the table:** 🪄 *Borrow a line* (highlights the way through / fills a line) and
-  🐾 *Ask {pet} for help* (the cat models a line or simply walks beside her) both clear a beat and cost
-  nothing. Stars are a flourish, not a wage. In story mode the cat is the only coach; the dojo's 🦉 Sensei
+- **Help is free and always on the table, in two stages:** 🐾 *Ask {pet} for help* once and the cat models a
+  line — *"You could try: … Or say it your way"* — while the moment stays open and the draft she typed is
+  kept; ask again and the cat steps in and walks her through it. 🪄 *Borrow a line* fills the box in one go.
+  All routes clear the beat and cost nothing; after the cat has modelled a line, rambling is graded gently.
+  Stars are a flourish, not a wage. In story mode the cat is the only coach; the dojo's 🦉 Sensei
   lives outside the book.
+- **Freeform answers get heard, not just waved through:** the exact line she wrote comes back on screen as
+  Wren's bubble, and the cat adds one short line about *why* it landed (or what to try instead) — the AI's
+  note when online, the cat's own book of reasons when offline.
 - **The typed grader is lenient by doctrine:** feelings never lose, plain "No" never loses, one useful source
   question ("Who is everyone?") is a *best*, spelling is invisible, and when the AI is offline the fallback
   pattern-grader errs gentle — it never calls an answer wrong on a hunch. Threats and handing the monster
@@ -120,10 +127,11 @@ remain recoverable in git history.)
   *progress* is separate and survives story edits and progress resets.
 - **Art:** `gen_art.py` paints the **visual asset register** (`story-visual-assets.md` → `quest-art/<asset-id>.png`,
   gitignored, reproducible) plus any `artPrompt` fields via ComfyUI with **Qwen Image 2.1**
-  (`qwen_image_2.1_bf16` + Qwen3-VL encoder), shared style anchor + character cast; briefs' lettering is
-  requested exactly (negative prompt relaxed for text). LAN only, resumable: `python3 gen_art.py`
-  (skips existing) · `--only c1_signpost` · `--force` (add `SEED_SALT=2` for a different take).
-  The app probes each plate and falls back to the card automatically when a file is missing.
+  (`qwen_image_2.1_bf16` + Qwen3-VL encoder), shared style anchor + a **per-brief cast** (only characters the
+  brief actually names appear; no uninvited guests, no duplicates). The register's *Extra plates* section adds
+  scene backdrops for most screens and square avatar faces for every speaker. LAN only, resumable:
+  `python3 gen_art.py` (skips existing) · `--only c1_signpost` · `--force` (add `SEED_SALT=2` for a different
+  take). The app probes each plate and falls back to card/emoji automatically when a file is missing.
 
 ## Grown-up panel (⚙)
 

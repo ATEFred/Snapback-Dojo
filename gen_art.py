@@ -59,7 +59,8 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
 ]
 EXCLUDE = ("Only the characters named just above may appear in the scene. No other people, children, "
            "creatures, imps, dolls or travellers — if the description names no character beyond scenery, "
-           "paint the object alone. ")
+           "paint the object alone. Never duplicate a character: exactly one of each, unless the "
+           "description explicitly asks for reflections or multiple views. ")
 
 def cast_for(text):
     tl = text.lower()
@@ -121,6 +122,7 @@ LETTER = (" Draw the specified lettering exactly as given: correct spelling, wor
           "arrow directions, clean legible antique serif capitals on the object. ")
 
 def workflow(art_id, text, seed, want_text=False):
+    W, H = (768, 768) if art_id.startswith("avatar_") else (WIDTH, HEIGHT)
     return {
       "1": {"class_type": "UNETLoader", "inputs": {"unet_name": UNET, "weight_dtype": "default"}},
       "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": CLIP, "type": "qwen_image"}},
@@ -130,7 +132,7 @@ def workflow(art_id, text, seed, want_text=False):
       },
       "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0],
             "text": NEG.replace("text, letters, ", "") if want_text else NEG}},
-      "6": {"class_type": "EmptyLatentImage", "inputs": {"width": WIDTH, "height": HEIGHT, "batch_size": 1}},
+      "6": {"class_type": "EmptyLatentImage", "inputs": {"width": W, "height": H, "batch_size": 1}},
       "7": {"class_type": "KSampler", "inputs": {"model": ["1", 0], "positive": ["4", 0],
             "negative": ["5", 0], "latent_image": ["6", 0], "seed": seed, "steps": STEPS,
             "cfg": CFG, "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0}},
