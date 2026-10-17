@@ -41,8 +41,12 @@ CHARS = [  # (keywords in the content brief) → description, included ONLY when
   (("echo", "patchwork"), "Echo the Mimic Imp: a small crooked PATCHWORK RAG imp with mismatched glass "
    "button eyes, stitched grin, fraying seams, blunt rag-doll head with floppy cloth ears, NO cat "
    "features; only he and Wren's grey tabby are ever imps/cats together"),
-  (("wisp", "gazette", "courier"), "Wisp: a small nervous green-furred courier creature in a buttoned "
+  # "wisp" alone is too eager: briefs mention him in the negative ("route later supplied by Wisp")
+  (("wisp",), lambda tl: any(k in tl for k in ("waistcoat","satchel","cart","bottle","press","delivery",
+   "gazette office")) and "Wisp: a small nervous green-furred courier creature in a buttoned "
    "waistcoat, long ears, ink-stained fingers, enormous satchel"),
+  (("courier",), lambda tl: "Wisp: a small nervous green-furred courier creature in a "
+   "buttoned waistcoat, long ears, ink-stained fingers, enormous satchel"),
   (("duchess", "porcelain"), "the Duchess of HA: a tall stiff porcelain-faced woman in an antique gown "
    "with a big brass winding key between her shoulder blades"),
   (("toastbrig", "troll", "inspector"), "Toastbrig: an enormous plank-backed troll inspector with a "
@@ -59,7 +63,11 @@ EXCLUDE = ("Only the characters named just above may appear in the scene. No oth
 
 def cast_for(text):
     tl = text.lower()
-    extra = [d for keys, d in CHARS if any(k in tl for k in keys)]
+    extra = []
+    for keys, d in CHARS:
+        if not any(k in tl for k in keys): continue
+        d = d(tl) if callable(d) else d
+        if d and d not in extra: extra.append(d)
     return WREN_CAT + "; ".join(extra) + (". " if extra else ". ") + EXCLUDE
 
 NEG   = ("photorealistic, photograph, 3d render, gore, blood, horror, sharp teeth, jump scare, "
