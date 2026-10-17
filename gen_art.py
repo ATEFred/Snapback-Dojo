@@ -12,7 +12,7 @@ Usage:
   python3 gen_art.py --limit 3       # first three missing
 Nothing leaves the LAN: it only talks to COMFY (below) and the filesystem.
 """
-import hashlib, json, pathlib, re, sys, time, urllib.error, urllib.request
+import hashlib, json, os, pathlib, re, sys, time, urllib.error, urllib.request
 
 COMFY = "http://100.102.235.82:8188"
 HERE  = pathlib.Path(__file__).parent
@@ -21,19 +21,28 @@ OUT   = HERE / "quest-art"
 UNET = "qwen_image_2.1_bf16.safetensors"
 CLIP = "qwen3vl_8b_w4a8.safetensors"      # Qwen3-VL encoder, type qwen_image
 VAE  = "qwen_image_2.1_vae_bf16.safetensors"
-WIDTH, HEIGHT, STEPS, CFG = 1152, 640, 24, 4.0
+WIDTH, HEIGHT, STEPS, CFG = 1152, 640, 28, 4.0
 
-STYLE = ("Storybook gothic-whimsy illustration in a Tim Burton-adjacent style: elongated crooked "
-         "shapes, melancholy but gentle, deep twilight indigo and charcoal palette with soft "
-         "mint-green and lavender accents, delicate crosshatch texture, matte painterly finish, "
-         "charming whimsy, absolutely not scary, no text, no lettering, no watermark. ")
-CAST  = ("Recurring characters — Wren: a calm unbothered ten-year-old girl with a straight black "
-         "bob, pale round face, long ink-blue coat and bright green boots; her cat: a grumpy plump "
-         "grey tabby; Echo the Mimic Imp: a small crooked patchwork-fabric imp with mismatched "
-         "button eyes, a lopsided stitched smile and fraying threads. Scene: ")
+STYLE = ("Ornate Victorian dark storybook engraving: dense pen-and-ink crosshatch, indigo and slate ink "
+         "washes with antique gold accents, twisted decorative vines curling through the borders, antique "
+         "children's book plate, meticulous fine detail. "
+         "Every element shares ONE unified antique etching treatment: characters shaded with pen hatching "
+         "and ink wash, palette limited to indigo, slate, lavender and antique gold with a single muted "
+         "sage-green accent, no flat modern colours, no plastic highlights. ")
+CAST  = ("Recurring characters — Wren: a Burton-style child about ten, long thin limbs, a slightly "
+         "too-big ink-blue wool coat that hangs off her shoulders like she outgrew it, straight black "
+         "bob, sage-green wellington boots; her face: big round eyes WIDE and alert with a small spark "
+         "of nerves, composed closed mouth, quietly locked onto the strangeness like she cannot look "
+         "away; her cat: a plump unimpressed grey tabby; Echo the Mimic Imp: a small crooked patchwork "
+         "rag imp with mismatched glass button eyes, a stitched grin that stretches one stitch wider "
+         "than a mouth really should, loose fraying seams, fingers a little too long and quick — "
+         "faintly uncanny, mostly pathetic, never outright frightening — he has a blunt rag-doll head with "
+         "small floppy cloth ears, NO cat features, no tail, never resembling the cat; only ONE "
+         "imp per scene, the cat is the only other animal. Scene: ")
 NEG   = ("photorealistic, photograph, 3d render, gore, blood, horror, sharp teeth, jump scare, "
-         "menacing monster, scary, text, letters, watermark, signature, blurry, deformed hands, "
-         "extra fingers, low quality")
+         "terrified, screaming, menacing monster, truly scary, text, letters, watermark, signature, "
+         "blurry, deformed hands, extra fingers, low quality, slack mouth, dopey, vacant stare, "
+         "gormless, sleepy, bored, flat modern colours, plastic")
 
 def api(path, data=None):
     req = urllib.request.Request(COMFY + path,
@@ -76,7 +85,8 @@ def workflow(art_id, text, seed):
     }
 
 def generate(art_id, text):
-    seed = int(hashlib.sha1(art_id.encode()).hexdigest()[:8], 16)
+    salt = os.environ.get("SEED_SALT", "")  # SEED_SALT=2 python3 gen_art.py --only X → a different take
+    seed = int(hashlib.sha1((art_id + salt).encode()).hexdigest()[:8], 16)
     pid = api("/prompt", {"prompt": workflow(art_id, text, seed), "client_id": "snapback-dojo"})["prompt_id"]
     t0 = time.time()
     while time.time() - t0 < 900:
