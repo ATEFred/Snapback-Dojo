@@ -59,7 +59,8 @@ def prompts_from_pack():
     """Scan the QUESTS const for id → artPrompt pairs, in story order."""
     src  = (HERE / "index.html").read_text()
     body = src.split("<script>", 1)[1].split("</script>", 1)[0]
-    seg  = body[body.index("const QUESTS"): body.index("/* ---- runner ---- */")]
+    end = next(body.index(mk) for mk in ("/* ---- v2 runner", "/* ---- runner") if mk in body)
+    seg  = body[body.index("const QUESTS"): end]
     pairs, cur = [], None
     for m in re.finditer(r'(id|artPrompt):"((?:[^"\\]|\\.)*)"', seg):
         if m.group(1) == "id":

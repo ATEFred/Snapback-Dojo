@@ -69,28 +69,37 @@ archetype, all hand-reviewed by the model itself for "would this actually land a
 - **🧒 Ninjas (accounts)** — a picker at launch; each ninja gets their own belt, coins, trophies, streak and
   pet. Progress lives server-side so any device remembers everyone. Legacy single-user data auto-migrates.
 
-## 📖 The Unbothered Quest (story mode)
+## 🌗 The Gloomwood and the Stolen Tomorrow (story mode)
 
 A separate, fictional adventure — deliberately **not** school-flavored, so the corridor never echoes in it.
-Eight chapters (Chapter 1 ships, the rest land as they're written) of over-the-top monsters with sad little
-problems, Tim-Burton-adjacent in mood: gothic-twilight but never scary, every villain funnier than they are
-mean. Wren the Unboothered walks the Gloomwood with the dojo pet at her side; Sensei narrates.
+Queen Malvina has postponed tomorrow until everyone has properly appreciated her; tomorrow is the Moonrise
+Fair and the pet has entered the cake competition without making a cake. Wren walks the Gloomwood with the
+dojo pet at her side; Sensei coaches. Over-the-top monsters with sad little problems, Tim-Burton-adjacent in
+mood: gothic-twilight but never scary, every villain funnier than they are mean.
+**Two chapters ship** (Echo the Mimic Imp, Toastbrig the Bridge Inspector), written from
+`story-chapters-01-02-rewrite.md`; the rest of the arc lands as it's written. (The original Chapter 1 and its
+progress remain recoverable in git history.)
 
-- **Battles = 3 taunts, no failure state.** An approved line (Sensei `okish` or `best`) chips the Gloom meter.
-  A wrong answer is never a loss — the villain gets *funnier* and you retry the same taunt. Two misses reveal a
-  free 🪄 lifeline. There are no walls and no costs for borrowing.
-- **Progressive difficulty:** Chapter 1 is all multiple choice; typed answers fade in from Chapter 2, by the
-  finale everything is typed (with the lifeline forever available).
-- Every defeated villain becomes a page in **The Little Book of Former Weirdos** (sticker wall) + a trophy.
+- **No failure state.** Every beat advances on a tap. An approved line (grader `okish` or `best`, or an
+  action choice like *keep walking*) ticks the villain's **prop meter** — his stars, his wheels, his drawers —
+  never his feelings. A miss shows that choice's specific consequence + one coach line, then the same prompt
+  returns in the same shuffled order. No punishments, no escalating rounds of shame.
+- **Help is free and always on the table:** 🪄 *Borrow a line* (highlights the way through / fills a line) and
+  🦉 *Ask Sensei for help* both clear a beat and cost nothing. Stars are a flourish, not a wage.
+- **The typed grader is lenient by doctrine:** feelings never lose, plain "No" never loses, spelling is
+  invisible, and when the AI is offline the fallback pattern-grader errs gentle — it never calls an answer
+  wrong on a hunch. Threats and handing the monster control of the exit get a funny retry, never a verdict.
+- **Progressive difficulty:** Chapter 1 is all multiple choice (with action choices); Chapter 2 introduces
+  typed lines next to the walking button.
+- A bookmark saves mid-story; reopening a chapter resumes exactly where the book was closed.
+- Every crossed villain becomes a page in **The Little Book of Former Weirdos** (sticker wall) + a trophy.
 - **Story pack export / import / restore** in the parent panel: the entire story (text, taunts, options, coach
   lines, ComfyUI `artPrompt`s) is JSON with stable ids — edit it, import it back, restore anytime. Story
   *progress* is separate and survives story edits and progress resets.
-- **Art:** each encounter, phase and story page references `quest-art/<id>.png` and shows it automatically
-  when the file exists. `gen_art.py` paints them all: it reads every `artPrompt` from the story pack
-  (chapter/scene/beat level), wraps it in the shared style anchor + character cast, and batch-generates via
-  ComfyUI with **Qwen Image 2.1** (`qwen_image_2.1_bf16` + Qwen3-VL encoder). LAN only, resumable:
-  `python3 gen_art.py` (skips existing) · `--only ch1s1t2` · `--force`. Edit any prompt in the story pack
-  export/import and regenerate just that id. Generated art is gitignored — it's all reproducible from the pack.
+- **Art:** `gen_art.py` paints scene plates (`quest-art/<id>.png`, gitignored, reproducible) from `artPrompt`
+  fields via ComfyUI with **Qwen Image 2.1** (`qwen_image_2.1_bf16` + Qwen3-VL encoder), shared style anchor +
+  character cast. LAN only, resumable: `python3 gen_art.py` (skips existing) · `--only ch1s1t2` · `--force`.
+  The rewritten chapters are shipped text-first; v2 art passes come after the story reads well on screen.
 
 ## Grown-up panel (⚙)
 
@@ -171,7 +180,8 @@ it can't. The AI, if configured, is your own local model.
 
 **Content**
 
-- [ ] Quest chapters 2–8 (arc fully mapped in design notes)
+- [ ] Gloomwood chapters 3+ (arc mapped in `plannedstory.md`, Chapters 1–2 rewritten per
+      `story-chapters-01-02-rewrite.md` — now live)
 - [ ] Re-paint pass: review each generated scene, tune artPrompts in the story pack, regen single ids
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
 - [ ] Two-kid scenarios (the pair dynamic that matches the real situation at school)
