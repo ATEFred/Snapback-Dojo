@@ -10,3 +10,4 @@ audio/
 *.log
 __pycache__/
 quest-art/
+voicedemo/
