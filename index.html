@@ -1105,19 +1105,23 @@ async function speak(text, persona, onDone, queue){
   const fire = ()=>{ if (myCb && speakCB===myCb){ speakCB=null; myCb(); } };
   // safety: if the voice never reports "end", start anyway after a reading-time estimate
   if (myCb) setTimeout(()=>{ if (speakCB===myCb){ speakCB=null; myCb(); } }, 1500 + text.length*150);
-  if (!queue && pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
-  if (NAU){ try{
-    const nauF = NAU[persona+"|"+text];
-    if (nauF){
-      pendingAudio = new Audio("quest-audio/"+nauF);
-      pendingAudio.onended = fire;
-      pendingAudio.onerror = ()=>{ pendingAudio=null; browserSpeak(text,persona,fire); };
-      pendingAudio.play().catch(()=>{ pendingAudio=null; browserSpeak(text,persona,fire); });
-      return;
-    }
-  }catch(e){} }
   const canBrowser = "speechSynthesis" in window;
-  if (!canBrowser && !(S.settings.qwenTts === "on" && CAPS.tts)){ fire(); return; }
+  const ttsOn = S.settings.qwenTts === "on" && CAPS.tts;
+  // pre-generated takes and browser voices share ONE strict queue: a queued
+  // line starts only when the previous one has actually ended — Audio.play()
+  // has no native queue, so three manifest hits used to talk over each other
+  if (!ttsOn && (NAU || canBrowser)){
+    if (!queue){
+      speakQ.length = 0; speakBusy = false;
+      if (pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio = null; }
+      if (canBrowser) try{ speechSynthesis.cancel(); }catch(e){}
+    }
+    speakQ.push({text, persona, fire});
+    drainSpeakQ();
+    return;
+  }
+  if (!canBrowser && !ttsOn){ fire(); return; }
+  if (!queue && pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
   if (canBrowser && !queue) speechSynthesis.cancel();
   if (S.settings.qwenTts === "on" && CAPS.tts){
     try {
@@ -1138,6 +1142,31 @@ async function speak(text, persona, onDone, queue){
     } catch(e){ /* fall through to browser */ }
   }
   browserSpeak(text, persona, fire);
+}
+let speakQ = [], speakBusy = false;
+function drainSpeakQ(){
+  if (speakBusy || !speakQ.length) return;
+  const it = speakQ.shift();
+  speakBusy = true;
+  let fin = false;
+  const done = ()=>{ if (fin) return; fin = true; speakBusy = false; if (pendingAudio===it.aud) pendingAudio = null; it.fire(); drainSpeakQ(); };
+  const sayBrowser = ()=>{
+    try{ browserSpeak(it.text, it.persona, done); }catch(e){ return done(); }
+    // some browsers lose the end event now and then; never let the queue stall
+    setTimeout(done, 1500 + it.text.length*130);
+  };
+  const nauF = NAU && NAU[it.persona+"|"+it.text];
+  if (nauF){
+    try{
+      const a = new Audio("quest-audio/"+nauF);
+      it.aud = a; pendingAudio = a;
+      a.onended = ()=>{ if (pendingAudio===a) pendingAudio = null; done(); };
+      a.onerror = ()=>{ if (pendingAudio===a) pendingAudio = null; sayBrowser(); };
+      a.play().catch(()=>{ if (pendingAudio===a) pendingAudio = null; sayBrowser(); });
+      return;
+    }catch(e){ return sayBrowser(); }
+  }
+  sayBrowser();
 }
 function browserSpeak(text, persona, onEnd){
   const stt = new SpeechSynthesisUtterance(text);
