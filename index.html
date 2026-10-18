@@ -1112,6 +1112,7 @@ async function speak(text, persona, onDone, queue){
   // has no native queue, so three manifest hits used to talk over each other
   if (!ttsOn && (NAU || canBrowser)){
     if (!queue){
+      speakGen++;                       // invalidate guards/handlers of cancelled items
       speakQ.length = 0; speakBusy = false;
       if (pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio = null; }
       if (canBrowser) try{ speechSynthesis.cancel(); }catch(e){}
@@ -1143,13 +1144,15 @@ async function speak(text, persona, onDone, queue){
   }
   browserSpeak(text, persona, fire);
 }
-let speakQ = [], speakBusy = false;
+let speakQ = [], speakBusy = false, speakGen = 0;
 function drainSpeakQ(){
   if (speakBusy || !speakQ.length) return;
   const it = speakQ.shift();
   speakBusy = true;
+  const gen = speakGen;
   let fin = false;
-  const done = ()=>{ if (fin) return; fin = true; speakBusy = false; if (pendingAudio===it.aud) pendingAudio = null; it.fire(); drainSpeakQ(); };
+  // a cancelled item's late guard/end must never touch the live queue
+  const done = ()=>{ if (fin || gen!==speakGen) return; fin = true; speakBusy = false; if (pendingAudio===it.aud) pendingAudio = null; it.fire(); drainSpeakQ(); };
   const sayBrowser = ()=>{
     try{ browserSpeak(it.text, it.persona, done); }catch(e){ return done(); }
     // some browsers lose the end event now and then; never let the queue stall
@@ -1160,9 +1163,9 @@ function drainSpeakQ(){
     try{
       const a = new Audio("quest-audio/"+nauF);
       it.aud = a; pendingAudio = a;
-      a.onended = ()=>{ if (pendingAudio===a) pendingAudio = null; done(); };
-      a.onerror = ()=>{ if (pendingAudio===a) pendingAudio = null; sayBrowser(); };
-      a.play().catch(()=>{ if (pendingAudio===a) pendingAudio = null; sayBrowser(); });
+      a.onended = ()=>{ if (gen!==speakGen){ try{ a.pause(); }catch(e){} return; } if (pendingAudio===a) pendingAudio = null; done(); };
+      a.onerror = ()=>{ if (gen!==speakGen) return; if (pendingAudio===a) pendingAudio = null; sayBrowser(); };
+      a.play().catch(()=>{ if (gen!==speakGen) return; if (pendingAudio===a) pendingAudio = null; sayBrowser(); });
       return;
     }catch(e){ return sayBrowser(); }
   }
@@ -3538,12 +3541,12 @@ function fbSpeak(f){
     const L=[];
     if (f.echo) L.push(["wren","“"+f.echo+"”"]);
     if (f.helpLines) L.push(...f.helpLines);
-    if (f.catFirst && f.c) L.push(["pet", f.c+(f.why?" "+f.why:"")]);
+    if (f.catFirst && f.c){ L.push(["pet", f.c]); if (f.why) L.push(["pet", f.why]); }
     if (f.segs) L.push(...f.segs);
     if (f.stage) L.push(["narr", f.stage]);
     if (f.v) L.push([(QS.beat&&QS.beat.spk)||"narr", f.v]);
     if (f.wrn) L.push(["wren", f.wrn]);
-    if (!f.catFirst && f.c) L.push(["pet", f.c+(f.why?" "+f.why:"")]);
+    if (!f.catFirst && f.c){ L.push(["pet", f.c]); if (f.why) L.push(["pet", f.why]); }
     speakSay(L);
   }catch(e){}
 }
