@@ -21,6 +21,9 @@ OUT  = HERE / "voicedemo"
 COMFY = "http://fredhpc2:8188"
 
 # The one preset that must match the WAV actually on the server's input/ folder.
+# Each preset must match a WAV actually in the ComfyUI input/ folder.
+# text = exact transcript of the reference take (improves clone stability);
+# "" lets the node clone from timbre alone.
 PRESET = {
     "british_narrator": {
         "audio": "british-reference.wav",
@@ -28,6 +31,11 @@ PRESET = {
                  "places of our planet and making films about the creatures that "
                  "live there. In doing so, I've travelled widely around the globe."),
     },
+    "irene":      {"audio": "irene-early-full-reference.wav",     "text": ""},
+    "maya":       {"audio": "maya_clone_reference.wav",           "text": ""},
+    "daddy":      {"audio": "daddy_sample2_clone_reference.wav",  "text": ""},
+    "mummy_long": {"audio": "mummy-long-speaker-reference.wav",   "text": ""},
+    "mummy":      {"audio": "mummy_clone_reference.wav",          "text": ""},
 }
 
 # id, how-made, casting note (used as instruct for designs), lines to demo
@@ -37,12 +45,12 @@ CAST = [
         "The clock stopped ticking. A spoon stopped halfway to the floor.",
         "Wren looked back at the lake. Her real reflection had muddy boots, a crooked coat, and a map corner sticking out of her pocket.",
     ]),
-    ("wren", "design", 'A little girl of about nine, a real child voice: small, light, high and clear, with childlike quick rhythm and easy, unpolished diction. Curious and warm, a touch cheeky; when she is being brave the little voice slows and steadies. A child, not a woman implying a child.', [
+    ("wren", 'clone:irene', None, [
         "Why aren't we stopped? Why can you talk?",
         "Then I'm finding her. I want everyone back.",
         "That explains the smugness.",
     ]),
-    ("pet", "design", 'An old, unflappable valet cat with a magnificent bass: extremely deep, resonant and full, a rich cello of a voice, as deep as an old butler can grow while staying calm. Slow, dry British delivery over imaginary spectacles; every sentence lands a shade flatter, like an eyebrow raised.', [
+    ("pet", 'clone:daddy', None, [
         "Excellent. A qualified cat.",
         "Or we could finish our walk. A neglected possibility.",
     ]),
@@ -50,7 +58,7 @@ CAST = [
         "Well? What have you got to say for yourself?",
         "You can't lose a contest you won't enter.",
     ]),
-    ("refl", "design", "A young girl's voice gone wrong: the same child pitch, but stiff, rigid and unnaturally precise, every word set down with silver tongs. Glassy, cold, formal diction, a thin chill of contempt underneath, flat affect that never rushes. Unnervingly composed.", [
+    ("refl", 'clone:maya', None, [
         "We could start again. This time, properly.",
         "Most of that was luck. Name one thing you've actually done right.",
     ]),
@@ -69,11 +77,11 @@ CAST = [
         "We have quite a collection.",
         "Only tradition. And a short acceptance speech.",
     ]),
-    ("qvoice", "design", "A fearsome queen heard echoing down a corridor: a woman's voice, high, thin and shrill, tightly wound with fury, snapping commands at furniture. Tense, jagged, scarlet with anger; the shrillness of someone who has not been obeyed in years.", [
+    ("qvoice", 'clone:mummy_long', None, [
         "Who put a clock in my clock room?",
         "Move the throne forward. A little more. No, I should be larger than the clock.",
     ]),
-    ("mv", "design", "A fearsome ageing queen: a woman's shrill, high, brittle voice, angsty and quick to fury, threatening yet fraying at the edges. Grand announcements that crack into sharp anger; scary the way a rattlesnake is scary. Female, piercing, ungovernable.", [
+    ("mv", 'clone:mummy', None, [
         "Queen Malvina the Magnificent. You may begin being impressed.",
         "You're supposed to be embarrassed.",
     ]),
@@ -106,8 +114,9 @@ def _req(path, data=None, timeout=30):
 
 def workflow(voice, line, seed):
     prefix = f"qwen3_tts/snapback/{voice}-{int(time.time())}"
-    if voice == "narr":
-        p = PRESET["british_narrator"]
+    how = next(c[1] for c in CAST if c[0] == voice)
+    if how.startswith("clone:"):
+        p = PRESET[how.split(":", 1)[1]]
         return {
             "1": {"class_type": "LoadAudio", "inputs": {"audio": p["audio"]}},
             "2": {"class_type": "Qwen3TTSVoiceClone", "inputs": {
@@ -205,9 +214,10 @@ def playlist(_made=None):
         clips = "".join(
             f'<figure><audio controls preload="none" src="{name}?v={int((OUT/name).stat().st_mtime)}"></audio>'
             f'<figcaption>“{line}”</figcaption></figure>' for name, line in made[voice])
-        note_h = (f'<details><summary>casting note</summary><p>{note}</p></details>' if note else
-                  '<p><em>cloned from the british-reference.wav take (the one Attenborough-style '
-                  'design could not reach)</em></p>')
+        if note:
+            note_h = f'<details><summary>casting note</summary><p>{note}</p></details>'
+        else:
+            note_h = f'<p><em>cloned from {PRESET[how.split(chr(58),1)[1]]["audio"]}</em></p>'
         rows.append(f'<section id="{voice}"><h2>{labels[voice]} <small>{how}</small></h2>'
                     f'{note_h}{clips}</section>')
     (OUT/"index.html").write_text("""<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
