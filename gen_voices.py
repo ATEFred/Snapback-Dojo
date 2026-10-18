@@ -37,28 +37,20 @@ CAST = [
         "The clock stopped ticking. A spoon stopped halfway to the floor.",
         "Wren looked back at the lake. Her real reflection had muddy boots, a crooked coat, and a map corner sticking out of her pocket.",
     ]),
-    ("wren", "design", "A bright, warm ten-year-old girl with a light clear voice, British English. "
-        "Curious and quick, she speeds up when excited and slows to a steady, quiet courage when she is "
-        "being brave. Natural and conversational, never childish in a cartoon way.", [
+    ("wren", "design", 'A little girl of about nine, a real child voice: small, light, high and clear, with childlike quick rhythm and easy, unpolished diction. Curious and warm, a touch cheeky; when she is being brave the little voice slows and steadies. A child, not a woman implying a child.', [
         "Why aren't we stopped? Why can you talk?",
         "Then I'm finding her. I want everyone back.",
         "That explains the smugness.",
     ]),
-    ("pet", "design", "An old, unflappable valet cat: a low, dry British voice, unhurried, delivered "
-        "like someone reading the morning paper over spectacles. Every sentence lands a shade flatter, "
-        "like an eyebrow raised at the end.", [
+    ("pet", "design", 'An old, unflappable valet cat with a magnificent bass: extremely deep, resonant and full, a rich cello of a voice, as deep as an old butler can grow while staying calm. Slow, dry British delivery over imaginary spectacles; every sentence lands a shade flatter, like an eyebrow raised.', [
         "Excellent. A qualified cat.",
         "Or we could finish our walk. A neglected possibility.",
     ]),
-    ("echo", "design", "A scrappy little mimic imp: high, slightly rasp, gleefully cheeky, springing "
-        "between words like a ball on a string, always a second away from giggling. Fond of Wren but "
-        "delighted by any bit of trouble.", [
+    ("echo", "design", 'A small cave-dwelling creature: rasping, croaking, throaty little voice, wet and scratchy, hissing s sounds and sudden gleeful squeaks. Mutters and repeats the ends of its own sentences, slithery sing-song rhythm, itching with mischief.', [
         "Well? What have you got to say for yourself?",
         "You can't lose a contest you won't enter.",
     ]),
-    ("refl", "design", "An unnervingly calm voice: glassy, precise, unhurried, sweet on the surface "
-        "with a thin chill of contempt underneath, as if each sentence were set down with silver "
-        "tongs. Faintly doubled, like a room full of mirrors.", [
+    ("refl", "design", "A young girl's voice gone wrong: the same child pitch, but stiff, rigid and unnaturally precise, every word set down with silver tongs. Glassy, cold, formal diction, a thin chill of contempt underneath, flat affect that never rushes. Unnervingly composed.", [
         "We could start again. This time, properly.",
         "Most of that was luck. Name one thing you've actually done right.",
     ]),
@@ -73,24 +65,19 @@ CAST = [
         "Pop. Royal usher. Better performer.",
         "No, let me guess. Follow the cat and hope?",
     ]),
-    ("gleam", "design", "A smooth museum showman with a salesman's silk voice: polished, faintly "
-        "condescending, treating everything, including children, as part of the collection. British, "
-        "measured, always mid-pitch.", [
+    ("gleam", "design", 'A deeply ominous museum collector: very low, soft and unhurried, never raising the volume, with a dark, foreboding undercurrent. Quiet menace, amused cruelty, the kind of pleasant voice that makes the room go cold. British, measured, dangerous.', [
         "We have quite a collection.",
         "Only tradition. And a short acceptance speech.",
     ]),
-    ("qvoice", "design", "A queen heard before she is seen: imperious, rich, slightly distant, "
-        "commands issued to furniture. Utterly serious about absurd demands.", [
+    ("qvoice", "design", "A fearsome queen heard echoing down a corridor: a woman's voice, high, thin and shrill, tightly wound with fury, snapping commands at furniture. Tense, jagged, scarlet with anger; the shrillness of someone who has not been obeyed in years.", [
         "Who put a clock in my clock room?",
         "Move the throne forward. A little more. No, I should be larger than the clock.",
     ]),
-    ("mv", "design", "An ageing queen past her audience: cold, regal and brittle, lonely under the "
-        "pomposity. She announces herself grandly, then waits too long for the applause.", [
+    ("mv", "design", "A fearsome ageing queen: a woman's shrill, high, brittle voice, angsty and quick to fury, threatening yet fraying at the edges. Grand announcements that crack into sharp anger; scary the way a rattlesnake is scary. Female, piercing, ungovernable.", [
         "Queen Malvina the Magnificent. You may begin being impressed.",
         "You're supposed to be embarrassed.",
     ]),
-    ("wisp", "design", "A nervous courier creature: fast, jittery, slightly breathless, words tumbling "
-        "over each other like papers from a satchel, quick to apologise and quicker to continue.", [
+    ("wisp", "design", 'A nervous courier creature with a very high, thin, scratchy squeak: fast, jittery, breathless, a raspy edge to the top notes, words tumbling over each other like papers from a satchel, quick to apologise and quicker to continue.', [
         "Oh! You're her. The girl in the headline.",
         "I can do directions. How newsworthy are they?",
     ]),
@@ -216,7 +203,7 @@ def playlist(_made=None):
     for voice, how, note, _ in CAST:
         if voice not in made: continue
         clips = "".join(
-            f'<figure><audio controls preload="none" src="{name}"></audio>'
+            f'<figure><audio controls preload="none" src="{name}?v={int((OUT/name).stat().st_mtime)}"></audio>'
             f'<figcaption>“{line}”</figcaption></figure>' for name, line in made[voice])
         note_h = (f'<details><summary>casting note</summary><p>{note}</p></details>' if note else
                   '<p><em>cloned from the british-reference.wav take (the one Attenborough-style '
