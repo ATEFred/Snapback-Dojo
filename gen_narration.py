@@ -13,7 +13,7 @@ Usage:
   python3 gen_narration.py            # everything missing
   python3 gen_narration.py --limit 5  # smoke test
 """
-import hashlib, json, sys, time
+import hashlib, json, subprocess, sys, time
 from pathlib import Path
 import gen_voices as V
 
@@ -27,6 +27,17 @@ MANIFEST = OUT / "manifest.json"
 CLONES = {"narr": "british_narrator", "wren": "irene", "pet": "daddy", "refl": "maya",
           "qvoice": "mummy_long", "mv": "mummy", "mv2": "mummy", "dad": "daddy_clone"}
 GOLDEN = ["echo", "gleam", "wisp", "pip", "pop", "mum"]
+
+def normalize(path):
+    """One loudness for the whole cast — the clones and designs arrive at wildly
+    different levels (the Narrator is ~10x quieter than Wren)."""
+    tmp = path.with_suffix(".norm.wav")
+    try:
+        subprocess.run(["ffmpeg","-y","-loglevel","error","-i",str(path),
+                        "-af","loudnorm=I=-16:TP=-1.5:LRA=11","-ar","24000",str(tmp)], check=True)
+        tmp.replace(path)
+    except Exception:
+        tmp.unlink(missing_ok=True)   # keep the raw take rather than lose audio
 
 def anchor_text(voice):
     return next(c[3][0] for c in V.CAST if c[0] == voice)
@@ -69,6 +80,7 @@ def main():
             continue
         name = f"{voice}-{hashlib.sha1(text.encode()).hexdigest()[:12]}.wav"
         if V.download(f, OUT / name):
+            normalize(OUT / name)
             man[key] = name
             MANIFEST.write_text(json.dumps(man, ensure_ascii=False))
             n += 1

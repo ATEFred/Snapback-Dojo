@@ -3432,6 +3432,7 @@ function qShuffle(n){
 function qClearedHere(){ return S.quest.cleared.filter(id=>QUESTS.some(q=>q.id===id)).length; }
 let lastClearedCi = -1;   // continuous play: freshly cleared chapter may skip the next recap
 function startChapter(ci){
+  loadNau();  // narration keeps rendering between sessions — never trust a stale page copy
   const ch = effStoryPack().chapters[ci];
   const pos = S.quest.pos;
   if (pos && pos.ci===ci){
@@ -3516,7 +3517,7 @@ function speakSay(lines, queued){
 // Pre-generated cast narration (gen_narration.py). A manifest hit plays the real
 // voice; anything missing falls back to the browser voices below.
 let NAU = null;
-function loadNau(){ try{ fetch("quest-audio/manifest.json").then(r=>r.ok?r.json():null).then(j=>{NAU=j||{};}).catch(()=>{NAU={};}); }catch(e){ NAU={}; } }
+function loadNau(){ try{ fetch("quest-audio/manifest.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{ if (j) NAU=j; }).catch(()=>{ if (!NAU) NAU={}; }); }catch(e){ NAU={}; } }
 loadNau();
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
   source:"A real question. He had to go and find an answer.",
@@ -3650,6 +3651,7 @@ function drawQuestBeat(){
   if (beat.t==="sensei"){ try{ speak(speakable(Array.isArray(beat.text)?beat.text.join(" "):beat.text), "pet"); }catch(e){} }
   if (beat.t==="notice"){ try{ speak(speakable(beat.text), "narr"); }catch(e){} }
   if (beat.t==="say") speakSay(beat.lines);
+  if (beat.t==="btns"){ if (QS.btnFb) speakSay(QS.btnFb); else if (beat.lines) speakSay(beat.lines); }
   if (beat.t==="chal" && QS.answered && QS.fb) try{ fbSpeak(QS.fb); }catch(e){}
   const $ = id=>document.getElementById(id);
   $("qLeave").onclick = (e)=>{ e.stopPropagation(); QS=null; S.quest.pos=null; save(); renderQuest(); };
