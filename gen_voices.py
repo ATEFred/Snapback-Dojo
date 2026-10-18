@@ -1,44 +1,47 @@
 #!/usr/bin/env python3
 """Snap Back Dojo — cast voices on the 5090 ComfyUI box (Qwen3-TTS nodes).
 
-Narrator: voice CLONE from a reference take (the "british_narrator" preset —
-voice design could not hold a British accent, cloning can). Everyone else:
-voice DESIGN from a written casting note.
+Three casting methods:
+  clone:<preset>  — voice clone; the reference WAV lives in the server's
+                    input/ folder, its transcript in <name>.txt next to it
+                    (fetched automatically, empty falls back to timbre-only).
+  design          — voice DESIGN from a written casting note.
+  GOLDEN set      — design voices that must stay consistent across lines:
+                    take 1 is designed once and becomes the golden anchor,
+                    every other line is a CLONE of it (design invents a new
+                    voice per request; cloning one golden take does not).
 
 Usage:
-  python3 gen_voices.py              # every voice
-  python3 gen_voices.py narr wren    # only these ids
-  python3 gen_voices.py --retries 2
+  python3 gen_voices.py                 # every voice
+  python3 gen_voices.py echo wren       # only these ids
+  python3 gen_voices.py mv --alt 3      # three seed-rolled takes per line
+  python3 gen_voices.py echo --reanchor # design a new golden take 1
 
-Outputs: voicedemo/<id>-<n>.wav + voicedemo/index.html (a listening playlist).
-Nothing leaves the LAN. Model loading happens on the ComfyUI machine.
+Outputs: voicedemo/<id>-<n>[-aK].wav + voicedemo/index.html (playlist).
+Nothing leaves the LAN. Model loading and generation happen on fredhpc2.
 """
-import json, sys, time, urllib.error, urllib.request
+import json, re as _re, sys, time, urllib.error, urllib.request, uuid
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT  = HERE / "voicedemo"
 COMFY = "http://fredhpc2:8188"
 
-# The one preset that must match the WAV actually on the server's input/ folder.
-# Each preset must match a WAV actually in the ComfyUI input/ folder.
-# text = exact transcript of the reference take (improves clone stability);
-# "" lets the node clone from timbre alone.
+# Clone presets: the WAV in the server's input/ folder. Transcripts are read
+# from <name>.txt next to it on the server ("" falls back to timbre-only).
 PRESET = {
-    "british_narrator": {
-        "audio": "british-reference.wav",
-        "text": ("I've been lucky enough to spend my life exploring the wild "
-                 "places of our planet and making films about the creatures that "
-                 "live there. In doing so, I've travelled widely around the globe."),
-    },
-    "irene":      {"audio": "irene-early-full-reference.wav",     "text": ""},
-    "maya":       {"audio": "maya_clone_reference.wav",           "text": ""},
-    "daddy":      {"audio": "daddy_sample2_clone_reference.wav",  "text": ""},
-    "mummy_long": {"audio": "mummy-long-speaker-reference.wav",   "text": ""},
-    "mummy":      {"audio": "mummy_clone_reference.wav",          "text": ""},
+    "british_narrator": "british-reference.wav",
+    "irene":      "irene-early-full-reference.wav",
+    "maya":       "maya_clone_reference.wav",
+    "daddy":      "daddy_sample2_clone_reference.wav",
+    "mummy_long": "mummy-long-speaker-reference.wav",
+    "mummy":      "mummy_clone_reference.wav",
 }
 
-# id, how-made, casting note (used as instruct for designs), lines to demo
+# Designed voices that must not change accent/timbre between lines:
+# take 1 becomes the golden anchor, later lines clone it.
+GOLDEN = {"echo", "gleam", "wisp"}
+
 CAST = [
     ("narr", "clone:british_narrator", None, [
         "At seventeen minutes past eight, Wren was looking for her other boot.",
@@ -100,10 +103,12 @@ CAST = [
     ]),
 ]
 
-def _req(path, data=None, timeout=30):
-    req = urllib.request.Request(COMFY + path,
-        data=json.dumps(data).encode() if data is not None else None,
-        headers={"Content-Type": "application/json"})
+
+def _req(path, data=None, timeout=30, raw=None, ctype="application/json"):
+    headers = {"Content-Type": ctype} if data is not None or raw is not None else {}
+    req = urllib.request.Request(COMFY + path, data=raw if raw is not None else
+        (json.dumps(data).encode() if data is not None else None),
+        headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status, r.read()
@@ -112,21 +117,27 @@ def _req(path, data=None, timeout=30):
     except Exception as e:
         return 0, str(e).encode()
 
-def workflow(voice, line, seed):
-    prefix = f"qwen3_tts/snapback/{voice}-{int(time.time())}"
-    how = next(c[1] for c in CAST if c[0] == voice)
-    if how.startswith("clone:"):
-        p = PRESET[how.split(":", 1)[1]]
-        return {
-            "1": {"class_type": "LoadAudio", "inputs": {"audio": p["audio"]}},
-            "2": {"class_type": "Qwen3TTSVoiceClone", "inputs": {
-                "reference_audio": ["1", 0], "reference_text": p["text"],
-                "text": line, "language": "English", "seed": seed}},
-            "3": {"class_type": "SaveQwen3TTSAudio", "inputs": {
-                "audio_batch": ["2", 0], "filename_prefix": prefix,
-                "number_candidates": False}},
-        }, None
-    note = next(c for c in CAST if c[0] == voice)[2]
+_tr_cache = {}
+def ref_text(audio_name):
+    """Transcript of a reference take, from <name>.txt beside it on the server."""
+    if audio_name in _tr_cache: return _tr_cache[audio_name]
+    base = audio_name.rsplit(".", 1)[0]
+    st, body = _req(f"/view?filename={base}.txt&type=input")
+    txt = body.decode("utf-8", "replace").strip() if st == 200 else ""
+    _tr_cache[audio_name] = txt
+    return txt
+
+def upload(name, data):
+    """Put a golden anchor WAV into the server's input/ folder."""
+    b = uuid.uuid4().hex
+    body = (f"--{b}\r\nContent-Disposition: form-data; name=\"image\"; filename=\"{name}\"\r\n"
+            f"Content-Type: audio/wav\r\n\r\n").encode() + data + f"\r\n--{b}--\r\n".encode()
+    # ComfyUI's only input-upload route is /upload/image; it takes any file type
+    st, resp = _req("/upload/image?overwrite=true", raw=body,
+                    ctype=f"multipart/form-data; boundary={b}", timeout=60)
+    return st == 200
+
+def design_wf(line, note, seed, prefix):
     return {
         "1": {"class_type": "Qwen3TTSVoiceDesign", "inputs": {
             "text": line, "instruct": note, "language": "English",
@@ -134,10 +145,20 @@ def workflow(voice, line, seed):
         "2": {"class_type": "SaveQwen3TTSAudio", "inputs": {
             "audio_batch": ["1", 0], "filename_prefix": prefix,
             "number_candidates": False}},
-    }, None
+    }
 
-def render(voice, line, idx, retries=1):
-    wf, _ = workflow(voice, line, 4242 + idx * 17)
+def clone_wf(line, audio, text, seed, prefix):
+    return {
+        "1": {"class_type": "LoadAudio", "inputs": {"audio": audio}},
+        "2": {"class_type": "Qwen3TTSVoiceClone", "inputs": {
+            "reference_audio": ["1", 0], "reference_text": text,
+            "text": line, "language": "English", "seed": seed}},
+        "3": {"class_type": "SaveQwen3TTSAudio", "inputs": {
+            "audio_batch": ["2", 0], "filename_prefix": prefix,
+            "number_candidates": False}},
+    }
+
+def render(wf, tag, retries=1):
     for attempt in range(retries + 1):
         status, body = _req("/prompt", {"prompt": wf, "client_id": "snapback-voices"})
         if status != 200:
@@ -152,17 +173,14 @@ def render(voice, line, idx, retries=1):
             hist = json.loads(h2)
             if pid not in hist: continue
             entry = hist[pid]
-            if "error" in entry or str(entry.get("status", "")) == "error":
-                break
             outs = entry.get("outputs", {})
             for node in outs.values():
                 for key in ("audio", "gifs", "audio_batch"):
-                    for f in node.get(key, []) if isinstance(node.get(key), list) else []:
-                        if f.get("filename"):
-                            return f
-            # a finished history entry with no audio means the node errored
+                    lst = node.get(key) if isinstance(node.get(key), list) else []
+                    for f in lst:
+                        if f.get("filename"): return f
             if entry.get("status", {}).get("completed"): break
-        print(f"    ✗ no audio back for line {idx} (attempt {attempt+1})")
+        print(f"    ✗ no audio back for {tag} (attempt {attempt+1})")
     return None
 
 def download(f, dest):
@@ -172,54 +190,77 @@ def download(f, dest):
         dest.write_bytes(body); return True
     return False
 
-def main():
-    args = [a for a in sys.argv[1:] if a != "--retries"]
-    retries = int(sys.argv[sys.argv.index("--retries")+1]) if "--retries" in sys.argv else 1
-    wanted = set(args) or {c[0] for c in CAST}
-    OUT.mkdir(exist_ok=True)
-    made = {}
-    for voice, how, note, lines in CAST:
-        if voice not in wanted: continue
-        print(f"▸ {voice} ({how}) — {len(lines)} line(s)")
-        made[voice] = []
+def render_voice(voice, how, note, lines, alt=1, reanchor=False, retries=1):
+    ok = 0
+    seed0 = 4242
+    if how.startswith("clone:"):
+        audio = PRESET[how.split(":", 1)[1]]
+        text = ref_text(audio)
         for i, line in enumerate(lines):
-            f = render(voice, line, i, retries)
-            if not f: continue
-            dest = OUT / f"{voice}-{i+1}.wav"
-            if download(f, dest):
-                made[voice].append((dest.name, line))
-                print(f"    ✔ {dest.name}")
-            else:
-                print(f"    ✗ download failed for {f['filename']}")
-    playlist(made)
-    print(f"done — playlist at {OUT/'index.html'}")
+            for k in range(1, alt + 1):
+                wf = clone_wf(line, audio, text, seed0 + i*17 + (k-1)*991,
+                              f"qwen3_tts/snapback/{voice}-{i+1}-a{k}-{int(time.time())}")
+                f = render(wf, f"{voice}-{i+1} roll {k}", retries)
+                if f and download(f, OUT / (f"{voice}-{i+1}.wav" if k == 1 else f"{voice}-{i+1}-a{k}.wav")):
+                    print(f"    ✔ {voice}-{i+1}" + (f"-a{k}" if k > 1 else "")); ok += 1
+    elif voice in GOLDEN:
+        golden = OUT / f"{voice}-1.wav"
+        if reanchor or not golden.exists():
+            wf = design_wf(lines[0], note, seed0, f"qwen3_tts/snapback/{voice}-anchor-{int(time.time())}")
+            f = render(wf, f"{voice} anchor", retries)
+            if not f or not download(f, golden):
+                print("    ✗ golden anchor failed; skipping voice"); return 0
+            print("    ✔ golden anchor redesigned")
+        if not upload(f"snapback-golden-{voice}.wav", golden.read_bytes()):
+            print("    ✗ golden upload failed"); return 0
+        ok += 1
+        for i, line in enumerate(lines[1:], start=1):
+            for k in range(1, alt + 1):
+                wf = clone_wf(line, f"snapback-golden-{voice}.wav", lines[0],
+                              seed0 + i*17 + (k-1)*991,
+                              f"qwen3_tts/snapback/{voice}-{i+1}-a{k}-{int(time.time())}")
+                f = render(wf, f"{voice}-{i+1} roll {k}", retries)
+                if f and download(f, OUT / (f"{voice}-{i+1}.wav" if k == 1 else f"{voice}-{i+1}-a{k}.wav")):
+                    print(f"    ✔ {voice}-{i+1}" + (f"-a{k}" if k > 1 else "") + " (cloned from golden)"); ok += 1
+    else:
+        for i, line in enumerate(lines):
+            for k in range(1, alt + 1):
+                wf = design_wf(line, note, seed0 + i*17 + (k-1)*991,
+                               f"qwen3_tts/snapback/{voice}-{i+1}-a{k}-{int(time.time())}")
+                f = render(wf, f"{voice}-{i+1} roll {k}", retries)
+                if f and download(f, OUT / (f"{voice}-{i+1}.wav" if k == 1 else f"{voice}-{i+1}-a{k}.wav")):
+                    print(f"    ✔ {voice}-{i+1}" + (f"-a{k}" if k > 1 else "")); ok += 1
+    return ok
 
-def playlist(_made=None):
-    # Build from everything on disk, not just this run, so a partial reroll
-    # never drops the voices that were already approved on the machine.
-    made = {}
-    for voice, _how, _note, lines in CAST:
+LABELS = {"narr":"Narrator","wren":"Wren","pet":"Noodles, the cat","echo":"Echo the Mimic Imp",
+    "refl":"The Reflection","pip":"Pip","pop":"Pop","gleam":"Gleam",
+    "qvoice":"The Queen (voice, unseen)","mv":"Queen Malvina","wisp":"Wisp",
+    "mum":"Mum","dad":"Dad"}
+
+def playlist(_unused=None):
+    # every take on disk, grouped per character, so alt rolls can be compared
+    rows = []; order = []
+    for voice, how, note, lines in CAST:
+        files = sorted(OUT.glob(f"{voice}-*.wav"), key=lambda f: f.name)
+        if not files: continue
+        order.append(voice)
         clips = []
-        for i in range(1, len(lines) + 1):
-            name = f"{voice}-{i}.wav"
-            if (OUT / name).exists(): clips.append((name, lines[i-1]))
-        if clips: made[voice] = clips
-    rows = []
-    labels = {"narr":"Narrator","wren":"Wren","pet":"Noodles, the cat","echo":"Echo the Mimic Imp",
-        "refl":"The Reflection","pip":"Pip","pop":"Pop","gleam":"Gleam",
-        "qvoice":"The Queen (voice, unseen)","mv":"Queen Malvina","wisp":"Wisp",
-        "mum":"Mum","dad":"Dad"}
-    for voice, how, note, _ in CAST:
-        if voice not in made: continue
-        clips = "".join(
-            f'<figure><audio controls preload="none" src="{name}?v={int((OUT/name).stat().st_mtime)}"></audio>'
-            f'<figcaption>“{line}”</figcaption></figure>' for name, line in made[voice])
+        for fp in files:
+            mm = _re.match(rf"{voice}-(\d+)(?:-a(\d+))?\.wav", fp.name)
+            if not mm: continue
+            line = lines[int(mm.group(1)) - 1] if int(mm.group(1)) <= len(lines) else "?"
+            roll = f' <span class="roll">take {mm.group(2)}</span>' if mm.group(2) else \
+                   (' <span class="roll">golden anchor</span>' if voice in GOLDEN else "")
+            clips.append(f'<figure><audio controls preload="none" src="{fp.name}?v={int(fp.stat().st_mtime)}"></audio>'
+                         f'<figcaption>“{line}”{roll}</figcaption></figure>')
         if note:
-            note_h = f'<details><summary>casting note</summary><p>{note}</p></details>'
+            extra = " — take 1 is the golden anchor the other lines are cloned from" if voice in GOLDEN else ""
+            note_h = f'<details><summary>casting note{extra}</summary><p>{note}</p></details>'
         else:
-            note_h = f'<p><em>cloned from {PRESET[how.split(chr(58),1)[1]]["audio"]}</em></p>'
-        rows.append(f'<section id="{voice}"><h2>{labels[voice]} <small>{how}</small></h2>'
-                    f'{note_h}{clips}</section>')
+            note_h = f'<p><em>cloned from {PRESET[how.split(":",1)[1]]}'
+            note_h += ' (no transcript — timbre-only)</em></p>' if not ref_text(PRESET[how.split(":",1)[1]]) else '</em></p>'
+        rows.append(f'<section id="{voice}"><h2>{LABELS[voice]} <small>{how}</small></h2>'
+                    f'{note_h}{"".join(clips)}</section>')
     (OUT/"index.html").write_text("""<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Snap Back Dojo — cast voices</title><style>
@@ -227,13 +268,26 @@ body{background:#181620;color:#efeaf6;font-family:Georgia,serif;max-width:44em;m
 h1{font-size:1.5em}section{background:#211e2c;border-radius:12px;padding:1em 1.2em;margin:1em 0}
 h2{margin:.2em 0}h2 small{color:#9f93bb;font-size:.55em;font-style:italic}
 figure{margin:.9em 0}figcaption{color:#c7bde0;font-style:italic;margin-top:.3em}
-audio{width:100%}details{color:#9f93bb}p{color:#c7bde0}
+.roll{font-style:normal;color:#e6b455;font-size:.85em}audio{width:100%}details{color:#9f93bb}p{color:#c7bde0}
 nav{font-size:.9em}nav a{color:#b79be8;margin-right:.7em}</style></head><body>
-<h1>🥋 Snap Back Dojo — the voices, take one</h1>
-<p>Everyone except the Narrator is <em>designed</em> from the casting notes; the Narrator is
-<em>cloned</em> from the British reference. Tap through and pick who stays and who recast.</p>
-<p class="nav">""" + " ".join(f'<a href="#{v}">{v}</a>' for v in made) + "</p>"
-    + "".join(rows) + "</body></html>")
+<h1>🥋 Snap Back Dojo — the voices</h1>
+<p>Cloned voices ride on a reference take + its transcript; designed voices follow a casting note.
+Where several takes are offered, pick your favourite.</p>
+<p class="nav">""" + " ".join(f'<a href="#{v}">{LABELS[v]}</a>' for v in order) + "</p>"
+        + "".join(rows) + "</body></html>")
+
+def main():
+    args = sys.argv[1:]
+    alt = int(args[args.index("--alt") + 1]) if "--alt" in args else 1
+    reanchor = "--reanchor" in args
+    wanted = {a for a in args if not a.startswith("--") and a != str(alt)} or {c[0] for c in CAST}
+    OUT.mkdir(exist_ok=True)
+    for voice, how, note, lines in CAST:
+        if voice not in wanted: continue
+        print(f"▸ {voice} ({how}{f', {alt} takes' if alt > 1 else ''})")
+        render_voice(voice, how, note, lines, alt=alt, reanchor=reanchor)
+    playlist()
+    print(f"done — playlist at {OUT/'index.html'}")
 
 if __name__ == "__main__":
     main()
