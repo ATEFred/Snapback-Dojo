@@ -36,6 +36,7 @@ PRESET = {
     "daddy":      "daddy_sample2_clone_reference.wav",
     "mummy_long": "mummy-long-speaker-reference.wav",
     "mummy":      "mummy_clone_reference.wav",
+    "daddy_clone": "daddy_clone_reference.wav",
 }
 
 # Designed voices that must not change accent/timbre between lines:
@@ -97,8 +98,7 @@ CAST = [
         "Morning, Wren. Found your other boot?",
         "Oh, love. Come here.",
     ]),
-    ("dad", "design", "An easygoing British dad: low, warm, gentle teasing always just under the "
-        "surface, as if the whole morning were a small private joke shared with his daughter.", [
+    ("dad", "clone:daddy_clone", None, [
         "Quite a morning?",
     ]),
 ]
