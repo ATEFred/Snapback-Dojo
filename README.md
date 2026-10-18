@@ -171,6 +171,11 @@ path-guide version of the opening remain recoverable in git history.)
   Wisp, Mum, Dad). `python3 gen_voices.py [ids…]` writes `voicedemo/<id>-<n>.wav` (gitignored) + a listening
   playlist at `voicedemo/index.html`; the app keeps using browser voices until approved takes are shipped.
   LAN only — all model loading and generation happen on the 5090 machine.
+  The approved cast then records **the whole book**: `gen_narration.py` renders every line the engine
+  would speak (`tests/extract-narration.mjs` mirrors its exact rules — sfx never spoken, `{pet}` folded,
+  personas alias-resolved) into `quest-audio/` + `manifest.json`, keyed `persona|text`. `speak()` plays
+  a manifest hit through the same queue and safety timers; misses, renames of the cat and dead files
+  fall back to browser voices. Resumable — rerun after any casting change.
 
 ## Grown-up panel (⚙)
 
@@ -257,8 +262,9 @@ it can't. The AI, if configured, is your own local model.
       Noodles homecoming (live, per `story-chapters-07-08.md`) — the book is finished and replayable
 - [x] Re-paint pass: every plate QC'd on sheets; weak ones rerolled with `--force` / `SEED_SALT`, and
       `HINTS` in `gen_art.py` now guards compositions the briefs earned (one real Wren, no uninvited cast)
-- [ ] Pre-generated narration: batch-render per-beat TTS audio (quest-audio/<beat-id>), pick per-character
-      voices, ship the files; live browser TTS stays the fallback
+- [x] Pre-generated narration: every spoken story line rendered in the cast voices
+      (`tests/extract-narration.mjs` → `gen_narration.py` → `quest-audio/` + `manifest.json`, gitignored);
+      the app plays a manifest hit and falls back to browser voices for anything missing
 - [ ] Witness scenarios — what changes when friends are watching (audience-aware drills)
 - [ ] Two-kid scenarios (the pair dynamic that matches the real situation at school)
 - [ ] Voice-note roleplay: the app speaks the taunt, she answers out loud, ASR + Sensei grade spoken delivery

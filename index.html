@@ -1106,6 +1106,16 @@ async function speak(text, persona, onDone, queue){
   // safety: if the voice never reports "end", start anyway after a reading-time estimate
   if (myCb) setTimeout(()=>{ if (speakCB===myCb){ speakCB=null; myCb(); } }, 1500 + text.length*150);
   if (!queue && pendingAudio){ try{ pendingAudio.pause(); }catch(e){} pendingAudio=null; }
+  if (NAU){ try{
+    const nauF = NAU[persona+"|"+text];
+    if (nauF){
+      pendingAudio = new Audio("quest-audio/"+nauF);
+      pendingAudio.onended = fire;
+      pendingAudio.onerror = ()=>{ pendingAudio=null; browserSpeak(text,persona,fire); };
+      pendingAudio.play().catch(()=>{ pendingAudio=null; browserSpeak(text,persona,fire); });
+      return;
+    }
+  }catch(e){} }
   const canBrowser = "speechSynthesis" in window;
   if (!canBrowser && !(S.settings.qwenTts === "on" && CAPS.tts)){ fire(); return; }
   if (canBrowser && !queue) speechSynthesis.cancel();
@@ -3468,11 +3478,17 @@ function visLoad(el){
   });
 }
 function speakable(t){
-  return pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/·/g,", ").replace(/\s+/g," ").trim();
+  return pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/\s*·\s*/g,", ").replace(/\s+/g," ").trim();
 }
 function speakSay(lines, queued){
-  try{ let n=queued?1:0; lines.forEach(l=>{ if (l[0]==="sfx") return; const code = SPK_VOICE[l[0]] || l[0]; if (STORY_VOICES[code]){ speak(pp(l[1]), code, null, n>0); n++; } }); }catch(e){}
+  try{ let n=queued?1:0; lines.forEach(l=>{ if (l[0]==="sfx") return; const code = SPK_VOICE[l[0]] || l[0]; if (STORY_VOICES[code]){ speak(speakable(l[1]), code, null, n>0); n++; } }); }catch(e){}
 }
+
+// Pre-generated cast narration (gen_narration.py). A manifest hit plays the real
+// voice; anything missing falls back to the browser voices below.
+let NAU = null;
+function loadNau(){ try{ fetch("quest-audio/manifest.json").then(r=>r.ok?r.json():null).then(j=>{NAU=j||{};}).catch(()=>{NAU={};}); }catch(e){ NAU={}; } }
+loadNau();
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
   source:"A real question. He had to go and find an answer.",
   feelstop:"You said how you feel and what happens next. Both count.",
