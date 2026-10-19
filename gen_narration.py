@@ -26,7 +26,7 @@ MANIFEST = OUT / "manifest.json"
 # = that take's line from the CAST sheet).
 CLONES = {"narr": "british_narrator", "wren": "irene", "pet": "daddy", "refl": "maya",
           "qvoice": "mummy_long", "mv": "mummy", "mv2": "mummy", "dad": "daddy_clone"}
-GOLDEN = ["echo", "gleam", "wisp", "pip", "pop", "mum"]
+GOLDEN = ["echo", "gleam", "wisp", "pip", "pop", "mum", "tb", "duch"]
 
 def normalize(path):
     """One loudness for the whole cast — the clones and designs arrive at wildly

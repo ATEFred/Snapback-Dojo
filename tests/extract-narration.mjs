@@ -13,8 +13,8 @@ const QUESTS = eval(seg + "; QUESTS");
 const SPK_VOICE = {troll:"tb", woman:"duch", duchess:"duch", courier:"wisp", bat:"echo",
   tallfig:"pip", tallpup:"pip", roundfig:"pop", roundpup:"pop"};
 // personas the browser can voice but the cast cannot (stay browser voices)
-const BROWSER_ONLY = new Set(["tb","duch","queen","cvoice","vbush","pmirror"]);
-const CAST = new Set(["narr","wren","pet","echo","wisp","pip","pop","gleam","qvoice","mv","mv2","mum","dad","refl"]);
+const BROWSER_ONLY = new Set(["queen","cvoice","vbush","pmirror"]);
+const CAST = new Set(["narr","wren","pet","echo","wisp","pip","pop","gleam","qvoice","mv","mv2","mum","dad","refl","tb","duch"]);
 
 const pp = t => String(t).replace(/\{pet\}/g, "Noodle");
 const speakable = t => pp(t).replace(/[→←↑↓↔↕]/g," ").replace(/\s*·\s*/g,", ").replace(/\s+/g," ").trim()

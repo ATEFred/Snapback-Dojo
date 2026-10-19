@@ -41,7 +41,7 @@ PRESET = {
 
 # Designed voices that must not change accent/timbre between lines:
 # take 1 becomes the golden anchor, later lines clone it.
-GOLDEN = {"echo", "gleam", "wisp"}
+GOLDEN = {"echo", "gleam", "wisp", "tb", "duch"}
 
 CAST = [
     ("narr", "clone:british_narrator", None, [
