@@ -2616,7 +2616,7 @@ const QUESTS = [
           permission:{stage:"Wisp pauses with his pen above the label.", c:"You don't need a new rumour to correct the old one. Try the fact, the request, or no quote."},
           attack:{c:"Leave out the attack. Your request is strong enough on its own."},
           threat:{c:"Leave out the attack. Your request is strong enough on its own."},
-          unclear:{c:"Try a line about this moment. You can borrow one or ask me for help."}},
+          unclear:{c:""}},
         borrowL:"Print the correction. No quote.",
         help:[["wren","{pet}, can you help with this?"],["pet","Certainly. No quote, Wisp. Just the correction."],["wisp","Understood."],["narr","He tips the empty bottle upside down. One very disappointed full stop falls out."],["narr","The third royal bottle goes into the return rack. The last roller lifts, and the route drawer clicks open."]],
         helpOut:"", helpSen:""},
@@ -2934,7 +2934,7 @@ const QUESTS = [
   ],
   outro:[
     {t:"say", id:"c6_end_01", lines:[
-      ["narr","At the last bend, Wren glanced back. Pip was holding open a basket while Pop moved an apple off a chair."],
+      ["narr","At the last bend, Wren looked back. Pip held the basket open while Pop moved an apple off a chair."],
       ["pop","Our audience has practical needs."],
       ["pip","So does our employer. She pays us to keep this road clear."],
       ["pop","We may have misunderstood our duties."],
@@ -3402,6 +3402,7 @@ const STORY_VOICES = {
   vbush: {re:/daniel|george|male/i, idx:8, pitch:1.45, rate:1.05},
   pip:   {re:/daniel|george|ryan|male/i, idx:4, pitch:0.85, rate:0.95},
   gleam: {re:/daniel|george|ryan|male/i, idx:5, pitch:1.1, rate:0.88},
+  mirror:{re:/serena|libby|female/i, idx:6, pitch:1.35, rate:0.98},
   pmirror:{re:/serena|libby|female/i, idx:6, pitch:1.45, rate:0.95},
   qvoice:{re:/serena|sonia|female/i, idx:2, pitch:0.72, rate:0.84},
   mv:    {re:/serena|sonia|female/i, idx:2, pitch:0.72, rate:0.84},
@@ -3523,6 +3524,7 @@ let NAU = null;
 const NAUV = Date.now();   // takes get replaced by QC re-rolls; never trust a cached copy
 function loadNau(){ try{ fetch("quest-audio/manifest.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{ if (j) NAU=j; }).catch(()=>{ if (!NAU) NAU={}; }); }catch(e){ NAU={}; } }
 loadNau();
+const WRONG_OPEN = "You can do better than that — that reply gave him a reason to carry on.";
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
   source:"A real question. He had to go and find an answer.",
   feelstop:"You said how you feel and what happens next. Both count.",
@@ -3734,8 +3736,10 @@ async function qsSend(){
     QS.fb = { catFirst:1, echo:val, segs:w.fb, c, btn:w.btn, why:(g.coach||"").trim() || QWHY[g.tag] || "" };
   } else {
     QS.misses++;
-    const p = (b.pkgs||{})[g.tag] || { c:"Try a line about this moment. You can borrow one or ask me for help." };
-    QS.fb = { echo:val, stage:p.stage, v:p.v, c:p.c, why:(g.coach||"").trim() || QWHY[g.tag] || "" };
+    const p = (b.pkgs||{})[g.tag] || { c:"" };
+    // Noodle leads with the plain verdict — that is the line she needs first,
+    // not a hint buried after the villain's victory lap
+    QS.fb = { catFirst:1, echo:val, stage:p.stage, v:p.v, c:WRONG_OPEN+(p.c?" "+p.c:""), why:(g.coach||"").trim() || QWHY[g.tag] || "" };
   }
   drawQuestBeat();
 }

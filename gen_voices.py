@@ -98,6 +98,18 @@ CAST = [
         "Morning, Wren. Found your other boot?",
         "Oh, love. Come here.",
     ]),
+    ("tb", "design", "A big bluff bridge-troll wearing a guard's helmet two sizes too small: "
+        "a booming, blustering bark of a voice, gravelly and loud, barking made-up rules like "
+        "they are state affairs. Pompous but comic, never truly frightening; a British bully-boulder.", [
+        "BOOT INSPECTION!",
+        "HALT. Those boots aren't adventure boots.",
+    ]),
+    ("duch", "design", "A grandiose duchess who owns the stage: rich, drawling vowels, a purr of "
+        "condescension, delighting in her own jokes before she tells them. Vain, showy, theatrical "
+        "— as if the audience were a single reviewer she is determined to win over.", [
+        "And now, my funniest joke!",
+        "My reviews are excellent.",
+    ]),
     ("dad", "clone:daddy_clone", None, [
         "Quite a morning?",
     ]),
@@ -235,7 +247,8 @@ def render_voice(voice, how, note, lines, alt=1, reanchor=False, retries=1):
 LABELS = {"narr":"Narrator","wren":"Wren","pet":"Noodles, the cat","echo":"Echo the Mimic Imp",
     "refl":"The Reflection","pip":"Pip","pop":"Pop","gleam":"Gleam",
     "qvoice":"The Queen (voice, unseen)","mv":"Queen Malvina","wisp":"Wisp",
-    "mum":"Mum","dad":"Dad"}
+    "mum":"Mum","dad":"Dad",
+    "tb":"Toastbrig (bridge troll · chapter 2)","duch":"The Duchess (chapter 3)"}
 
 def playlist(_unused=None):
     # every take on disk, grouped per character, so alt rolls can be compared

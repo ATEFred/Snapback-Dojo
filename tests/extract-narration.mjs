@@ -83,6 +83,7 @@ for (const ch of QUESTS) {
 push("pet", "Aim at the way she's using power, not a personal wound.", "engine");
 push("pet", "The thinking-clock is resting. Your line is safe with me — send it again in a moment, or a grown-up can check it against the note below.", "engine");
 push("pet", "Help is always allowed.", "engine");
+push("pet", "You can do better than that — that reply gave him a reason to carry on.", "engine");
 push("wren", "{pet}, help me with this?", "engine");
 Object.keys(QWHY).forEach(k => push("pet", QWHY[k], "qwhy"));
 const uniq = new Map();
