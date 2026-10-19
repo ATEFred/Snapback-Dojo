@@ -106,19 +106,22 @@ def reroll(man, key, mf, md, tries=MAX_TRIES):
                          f"qwen3_tts/qc/{voice}-{int(time.time()*1000)%10**9}"))
         f = V.render(wf, f"qc {voice} try {attempt+1}", retries=1)
         if not f: continue
-        tmp = OUT/"_qc_try.wav"
-        if not V.download(f, tmp): continue
+        tmp = OUT/f"_qc_try-{seed}.wav"      # unique per attempt: a rejected
+        if not V.download(f, tmp): continue  # take must never delete the winner
         N.normalize(tmp)
         tf, td = f0(tmp), dur(tmp)/max(len(text), 1)
         score = abs(tf-mf)/mf if mf else 9
-        if best is None or score < best[0]: best = (score, tf, tmp)
-        else: tmp.unlink()
+        if best is None or score < best[0]:
+            if best: best[1].unlink(missing_ok=True)
+            best = (score, tmp)
+        else:
+            tmp.unlink()
         if F0_LO*mf <= tf <= F0_HI*mf and DPC_LO*md <= td <= DPC_HI*md:
             break   # back in the band, take it
     if not best:
         print(f"  ✗ could not fix: {fname}")
         return False
-    best[2].replace(OUT/fname)
+    best[1].replace(OUT/fname)
     print(f"  ✔ re-rolled: {fname}")
     return True
 

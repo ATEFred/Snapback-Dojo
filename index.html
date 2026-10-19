@@ -1161,7 +1161,7 @@ function drainSpeakQ(){
   const nauF = NAU && NAU[it.persona+"|"+it.text];
   if (nauF){
     try{
-      const a = new Audio("quest-audio/"+nauF);
+      const a = new Audio("quest-audio/"+nauF+"?v="+NAUV);
       it.aud = a; pendingAudio = a;
       a.onended = ()=>{ if (gen!==speakGen){ try{ a.pause(); }catch(e){} return; } if (pendingAudio===a) pendingAudio = null; done(); };
       a.onerror = ()=>{ if (gen!==speakGen) return; if (pendingAudio===a) pendingAudio = null; sayBrowser(); };
@@ -3520,6 +3520,7 @@ function speakSay(lines, queued){
 // Pre-generated cast narration (gen_narration.py). A manifest hit plays the real
 // voice; anything missing falls back to the browser voices below.
 let NAU = null;
+const NAUV = Date.now();   // takes get replaced by QC re-rolls; never trust a cached copy
 function loadNau(){ try{ fetch("quest-audio/manifest.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{ if (j) NAU=j; }).catch(()=>{ if (!NAU) NAU={}; }); }catch(e){ NAU={}; } }
 loadNau();
 const QWHY = { boundary:"A clean end — nothing left for him to hold on to.",
